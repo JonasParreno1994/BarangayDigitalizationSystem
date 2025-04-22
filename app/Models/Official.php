@@ -17,4 +17,9 @@ class Official extends Model
     {
         return $this->belongsTo(Position::class, 'position_id');
     }
+
+    public function comelec()
+    {
+        return $this->belongsTo(ComelecModel::class, 'comelec_id');
+    }
 }

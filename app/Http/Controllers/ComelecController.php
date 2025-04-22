@@ -14,4 +14,15 @@ class ComelecController extends Controller
     }
 
     
+    public function getNameDetails($id)
+    {
+        $details = DB::table('tblcomelec')->where('id', $id)->first();
+
+        if (!$details) {
+            return response()->json(['error' => 'Data not found'], 404);
+        }
+
+        return response()->json($details);
+    }
+
 }

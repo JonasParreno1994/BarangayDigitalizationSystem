@@ -18,6 +18,15 @@
         <script defer="" src="{{ asset('/admin/assets/js/tippy-bundle.umd.min.js') }}"></script>
         <script defer="" src="{{ asset('/admin/assets/js/sweetalert.min.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <!-- jQuery (required) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Select2 -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<!-- Select2 Bootstrap 4 theme (optional if you're using bootstrap4) -->
+<link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css" rel="stylesheet" />
     </head>
 
     <body x-data="main" class="relative overflow-x-hidden font-nunito text-sm font-normal antialiased" :class="[ $store.app.sidebar ? 'toggle-sidebar' : '', $store.app.theme === 'dark' || $store.app.isDarkMode ?  'dark' : '', $store.app.menu, $store.app.layout,$store.app.rtlClass]">
@@ -1046,6 +1055,33 @@
                 </header>
                 <!-- end header section -->
 
+                <script>
+                        $(function() {
+                            //Initialize Select2 Elements
+                            $('.select2').select2()
+
+                            //Initialize Select2 Elements
+                            $('.select2bs4').select2({
+                                theme: 'bootstrap4'
+                            })
+
+                            $("#example1").DataTable({
+                                "responsive": true,
+                                "lengthChange": false,
+                                "autoWidth": false,
+
+                            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+                            $('#example2').DataTable({
+                                "paging": true,
+                                "lengthChange": false,
+                                "searching": false,
+                                "ordering": true,
+                                "info": true,
+                                "autoWidth": false,
+                                "responsive": true,
+                            });
+                        });
+                    </script>
                 <div class="animate__animated p-6" :class="[$store.app.animation]">
                   <main>
                     @yield('content')

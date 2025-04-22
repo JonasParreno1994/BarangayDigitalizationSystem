@@ -24,6 +24,8 @@ Route::post('/officials/store', [OfficialController::class, 'store'])->name('off
 Route::get('/officials/edit/{id}', [OfficialController::class, 'edit'])->name('officials.edit');
 Route::post('/officials/update/{id}', [OfficialController::class, 'update'])->name('officials.update');
 Route::delete('/officials/{id}', [OfficialController::class, 'destroy'])->name('officials.destroy');
+Route::get('/get-comelec-data', [OfficialController::class, 'getComelecData'])->name('getComelecData');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -41,6 +43,7 @@ Route::delete('/users/{id}', [UsersController::class, 'destroy'])->name('users.d
 
 Route::get('/comelecFolder', [ComelecController::class, 'comelecData'])->name('comelec');
 Route::get('/comelec/create', [ComelecController::class, 'create'])->name('comelec.create');
+Route::get('/get-name-details/{id}', [ComelecController::class, 'getNameDetails'])->name('get-name-details');
 
 Route::get('/positionFolder', [PositionController::class, 'positionData'])->name('position.index');
 Route::get('/position/create', [PositionController::class, 'create'])->name('position.create');

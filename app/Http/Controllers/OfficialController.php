@@ -10,14 +10,25 @@ class OfficialController extends Controller
 {
     public function index()
     {
-        $officials = Official::with('position')->get();
-        return view('officials.index', compact('officials'));
+        $officials = Official::with(['position', 'comelec'])->get();
+        $positions = Position::all();
+        $comelecs = Position::all();
+        return view('officials.index', compact('officials', 'positions', 'comelecs'));
+    }
+
+    public function getComelecData()
+    {
+        $data = ComelecModel::orderBy('name', 'ASC')->get();
+        return response()->json($data);
+        
     }
 
     public function create()
     {
         $positions = Position::all();
         return view('officials.create', compact('positions'));
+        
+        
     }
 
     public function store(Request $request)

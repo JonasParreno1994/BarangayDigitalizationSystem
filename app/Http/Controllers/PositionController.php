@@ -12,5 +12,6 @@ class PositionController extends Controller
     {
         $position = Position::all();
         return view('positionFolder.index', compact('position'));
+        
     }
 }

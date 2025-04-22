@@ -1,12 +1,12 @@
 @extends('layouts.adminLayout.index')
 @section('content') 
-
+<div x-data="modal" class="mb-5">
 <div class="animate__animated p-6" :class="[$store.app.animation]">
     <!-- start main content section -->
     <div x-data="multipleTable">
         <div class="panel flex items-center overflow-x-auto whitespace-nowrap p-3 text-primary text-2xl font-bold">
             <h1 class="ltr:mr-4 rtl:ml-3">Barangay Officials</h1>
-            <a href="{{ route('officials.create') }}" class="btn btn-primary ml-auto">Add New Official</a>
+            <button type="button" class="btn btn-success" @click="toggle">Add Officials</button>
         </div>
         <div class="panel mt-6">
             <table id="myTable2" class="whitespace-nowrap"></table>
@@ -14,6 +14,89 @@
     </div>
     <!-- end main content section -->
 </div>
+
+
+<div class="fixed inset-0 z-[999] hidden overflow-y-auto bg-[black]/60" :class="open && '!block'">
+    <div class="flex min-h-screen items-start justify-center px-4" @click.self="open = false">
+        <div x-show="open" x-transition="" x-transition.duration.300="" class="panel my-8 w-full max-w-lg overflow-hidden rounded-lg border-0 p-0">
+            <div class="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
+                <div class="text-lg font-bold">Add Official</div>
+                <button type="button" class="text-white-dark hover:text-dark" @click="toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="p-5">
+                <div class="text-base font-medium text-[#1f2937] dark:text-white-dark/70">
+                    <form  id="nameSelect1" action="{{ route('officials.store') }}" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Full Name</label>
+                            <select class="form-control form-control-sm select2bs4" name="name" id="comelec" required>
+                            </select>
+                        </div>
+                                                
+                        <script>
+                            $(document).ready(function () {
+                                $('#comelec').select2({
+                                    theme: 'bootstrap4'
+                                });
+                            
+                                $.ajax({
+                                    url: "{{ route('getComelecData') }}",
+                                    type: 'GET',
+                                    success: function (data) {
+                                        $('#comelec').append('<option disabled selected> --Select-- </option>');
+                                        $.each(data, function (index, item) {
+                                            if (item.name) {
+                                                $('#comelec').append('<option value="' + item.name + '">' + item.name + '</option>');
+                                            }
+                                        });
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error('AJAX Error:', error);
+                                    }
+                                });
+                            });
+                            </script>
+                        <div class="mb-3">
+                            <label for="position_id" class="form-label">Position</label>
+                            <select class="form-select w-full" id="position_id" name="position_id" required>
+                                <option value="">Select Position</option>
+                                @foreach($positions as $position)
+                                    <option value="{{ $position->id }}">{{ $position->position }}</option>
+                                @endforeach
+                            </select>
+                            
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="committee" class="form-label">Committee</label>
+                            <input type="text" class="form-control w-full border border-gray-300 rounded-md" id="committee" name="committee">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Status</label>
+                            <select class="form-select w-full" id="status" name="status" required>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="mt-8 flex items-center justify-end">
+                    <button type="button" class="btn btn-outline-danger" @click="toggle">Discard</button>
+                    <button type="submit" class="btn btn-primary ltr:ml-4 rtl:mr-4">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 <script>
     document.addEventListener('alpine:init', () => {
@@ -85,5 +168,4 @@
 </script>
 
 <script src="{{ asset('admin/assets/js/simple-datatables.js') }}"></script>
-
 @endsection

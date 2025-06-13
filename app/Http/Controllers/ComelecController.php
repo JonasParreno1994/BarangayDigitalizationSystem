@@ -14,6 +14,12 @@ class ComelecController extends Controller
     }
 
     
+    public function getNames()
+    {
+        $names = DB::table('tblcomelec')->select('id', 'name')->get();
+        return response()->json($names);
+    }
+
     public function getNameDetails($id)
     {
         $details = DB::table('tblcomelec')->where('id', $id)->first();
@@ -24,5 +30,4 @@ class ComelecController extends Controller
 
         return response()->json($details);
     }
-
 }

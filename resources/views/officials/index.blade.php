@@ -5,8 +5,8 @@
     <!-- start main content section -->
     <div x-data="multipleTable">
         <div class="panel flex items-center overflow-x-auto whitespace-nowrap p-3 text-primary text-2xl font-bold">
-            <h1 class="ltr:mr-4 rtl:ml-3">Barangay Officials</h1>
             <button type="button" class="btn btn-success" @click="toggle">Add Officials</button>
+            <h1 class="ltr:mr-4 rtl:ml-3 text-center w-full">Barangay Officials</h1>
         </div>
         <div class="panel mt-6">
             <table id="myTable2" class="whitespace-nowrap"></table>
@@ -33,34 +33,17 @@
                     <form  id="nameSelect1" action="{{ route('officials.store') }}" method="POST">
                         @csrf
                         <div class="mb-3">
+                            <label for="name" class="form-label">Search Name..</label>
+                            <select class="form-control form-control-sm select2bs4" name="name1" id="comelec" >
+                            </select>
+                        </div>
+                        <div class="mb-3">
                             <label for="name" class="form-label">Full Name</label>
-                            <select class="form-control form-control-sm select2bs4" name="name" id="comelec" required>
+                            <input type="text" class="form-control w-full border border-gray-300 rounded-md" id="committee" name="name" >
                             </select>
                         </div>
                                                 
-                        <script>
-                            $(document).ready(function () {
-                                $('#comelec').select2({
-                                    theme: 'bootstrap4'
-                                });
-                            
-                                $.ajax({
-                                    url: "{{ route('getComelecData') }}",
-                                    type: 'GET',
-                                    success: function (data) {
-                                        $('#comelec').append('<option disabled selected> --Select-- </option>');
-                                        $.each(data, function (index, item) {
-                                            if (item.name) {
-                                                $('#comelec').append('<option value="' + item.name + '">' + item.name + '</option>');
-                                            }
-                                        });
-                                    },
-                                    error: function (xhr, status, error) {
-                                        console.error('AJAX Error:', error);
-                                    }
-                                });
-                            });
-                            </script>
+                       
                         <div class="mb-3">
                             <label for="position_id" class="form-label">Position</label>
                             <select class="form-select w-full" id="position_id" name="position_id" required>
@@ -74,7 +57,7 @@
 
                         <div class="mb-3">
                             <label for="committee" class="form-label">Committee</label>
-                            <input type="text" class="form-control w-full border border-gray-300 rounded-md" id="committee" name="committee">
+                            <input type="text" class="form-control w-full border border-gray-300 rounded-md" id="committee" name="committee" >
                         </div>
 
                         <div class="mb-3">
@@ -84,12 +67,13 @@
                                 <option value="Inactive">Inactive</option>
                             </select>
                         </div>
-                    </form>
+                    
                 </div>
                 <div class="mt-8 flex items-center justify-end">
                     <button type="button" class="btn btn-outline-danger" @click="toggle">Discard</button>
                     <button type="submit" class="btn btn-primary ltr:ml-4 rtl:mr-4">Save</button>
                 </div>
+            </form>
             </div>
         </div>
     </div>
@@ -97,7 +81,30 @@
 
 
 
-
+<script>
+    $(document).ready(function () {
+        $('#comelec').select2({
+            theme: 'bootstrap4'
+        });
+    
+        $.ajax({
+            url: "{{ route('getComelecData') }}",
+            type: 'GET',
+            success: function (data) {
+                $('#comelec').append('<option disabled selected> --Select-- </option>');
+                $.each(data, function (index, item) {
+                    if (item.name) {
+                        $('#comelec').append('<option value="' + item.name + '">' + item.name + '</option>');
+                    }
+                });
+                $('#comelec').prop('required', true); // Add required attribute
+            },
+            error: function (xhr, status, error) {
+                console.error('AJAX Error:', error);
+            }
+        });
+    });
+</script>
 <script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('multipleTable', () => ({

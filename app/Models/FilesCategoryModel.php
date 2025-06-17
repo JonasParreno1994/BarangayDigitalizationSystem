@@ -5,21 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ComelecModel extends Model
+class FilesCategoryModel extends Model
 {
-    use HasFactory;
-
-    protected $table = 'tblcomelec';
+    protected $table = 'tblfilescategory';
     protected $primaryKey = 'id';
     public $timestamps = false;
-
+    
     protected $fillable = [
-        
-        'precinct_no',
-        'no',
-        'name',
-        'barangay',
-        'purok',
-        'comelec_id',
+        'id',
+        'category_name'
     ];
 }
+

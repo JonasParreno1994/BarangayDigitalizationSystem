@@ -6,8 +6,8 @@
         <!-- start main content section -->
         <div x-data="multipleTable">
             <div class="panel flex items-center overflow-x-auto whitespace-nowrap p-3 text-primary text-2xl font-bold">
-                <button type="button" class="btn btn-success" @click="toggle">Add Position</button>
-                <h1 class="ltr:mr-4 rtl:ml-3 text-center w-full">List of Position</h1>
+                <button type="button" class="btn btn-success" @click="toggle">Add Category</button>
+                <h1 class="ltr:mr-4 rtl:ml-3 text-center w-full">List of Files Category</h1>
             </div>
             <div class="panel mt-6">
             
@@ -19,7 +19,7 @@
             <div class="flex min-h-screen items-start justify-center px-4" @click.self="open = false">
                 <div x-show="open" x-transition="" x-transition.duration.300="" class="panel my-8 w-full max-w-lg overflow-hidden rounded-lg border-0 p-0">
                     <div class="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
-                        <div class="text-lg font-bold">Add Position</div>
+                        <div class="text-lg font-bold">Add Category</div>
                         <button type="button" class="text-white-dark hover:text-dark" @click="toggle">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
                                 <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -29,11 +29,11 @@
                     </div>
                     <div class="p-5">
                         <div class="text-base font-medium text-[#1f2937] dark:text-white-dark/70">
-                            <form  id="nameSelect1" action="{{ route('position.store') }}" method="POST">
+                            <form  id="nameSelect1" action="{{ route('filescategory.store') }}" method="POST">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="committee" class="form-label">Position Name</label>
-                                    <input type="text" class="form-control w-full border border-gray-300 rounded-md" id="committee" name="position" required>
+                                    <label for="committee" class="form-label">Category Name</label>
+                                    <input type="text" class="form-control w-full border border-gray-300 rounded-md" id="committee" name="category_name" required>
                                 </div>
                         </div>
                         <div class="mt-8 flex items-center justify-end">
@@ -89,12 +89,12 @@
             init() {
                 this.datatable2 = new simpleDatatables.DataTable('#myTable2', {
                     data: {
-                        headings: ['id', 'Position', 'Actions'],
+                        headings: ['id', 'Category Name', 'Actions'],
                         data: [
-                            @foreach ($position as $positions)
-                                ['{{ $positions->id }}', '{{ $positions->position }}', 
+                            @foreach ($filescategory as $files)
+                                ['{{ $files    ->id }}', '{{ $files->category_name }}', 
                                 `<div class="flex space-x-2">
-                                    <form action="{{ route('position.destroy', $positions->id) }}" method="POST" class="d-inline">
+                                    <form action="{{ route('filescategory.destroy', $files->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this position?')">Delete</button>

@@ -13,18 +13,13 @@ class ResidentModel extends Model
     protected $primaryKey = 'id';
     public $timestamps = false;
 
-    protected $fillable = [
+    use HasFactory;
 
-        'id',  
-        'region',
-        'city_municipality',
-        'province',
-        'barangay',
-        'census_no',
+    protected $fillable = [
         'last_name',
-        'suffix',
         'first_name',
         'middle_name',
+        'suffix',
         'birth_date',
         'birth_place',
         'sex',
@@ -35,17 +30,25 @@ class ResidentModel extends Model
         'occupation',
         'contact_number',
         'email',
+        'voter_status',
+        'precinct_number',
         'education',
         'education_status',
-        'signature',
         'household_number',
-        'voter_status',
-        'voter_id',
-        'precinct_number'
-       
+        'region',
+        'province',
+        'city_municipality',
+        'barangay',
+        'census_no',
+        'profile_picture'
     ];
 
-
-
+    protected $casts = [
+        'birth_date' => 'date',
+    ];
+    
+    public function getFullNameAttribute()
+    {
+        return "{$this->last_name}, {$this->first_name}" . ($this->middle_name ? " {$this->middle_name}" : '') . ($this->suffix ? " {$this->suffix}" : '');
+    }
 }
-

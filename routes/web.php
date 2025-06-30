@@ -6,6 +6,7 @@ use App\Http\Controllers\ComelecController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\officialController;
 use App\Http\Controllers\FilesCategoryController;
+use App\Http\Controllers\BrangayidDetailsController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ResidentController;
 use App\Http\Controllers\DashboardController;
@@ -22,6 +23,13 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
+Route::middleware('auth')->group(function () {
+    
+Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+
 Route::get('/officials', [OfficialController::class, 'index'])->name('officials.index');
 Route::get('/officials/create', [OfficialController::class, 'create'])->name('officials.create');
 Route::post('/officials/store', [OfficialController::class, 'store'])->name('officials.store');
@@ -31,11 +39,6 @@ Route::delete('/officials/{id}', [OfficialController::class, 'destroy'])->name('
 Route::get('/get-comelec-data', [OfficialController::class, 'getComelecData'])->name('getComelecData');
 
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 Route::get('/auth', [RegisteredUserController::class, 'register'])->name('auth.register');
 Route::post('/auth', [RegisteredUserController::class, 'register'])->name('auth.register'); 
 
@@ -65,17 +68,27 @@ Route::get('/filesCategory/edit/{id}', [FilesCategoryController::class, 'edit'])
 Route::post('/filesCategory/update/{id}', [FilesCategoryController::class, 'update'])->name('filescategory.update');
 Route::delete('/filesCategory/{id}', [FilesCategoryController::class, 'destroy'])->name('filescategory.destroy');
 
+Route::get('/barangayiddetails', [BrangayidDetailsController::class, 'index'])->name('barangayid.index');
+Route::get('/barangayiddetails/create', [BrangayidDetailsController::class, 'create'])->name('barangayid.create');
+Route::post('/barangayiddetails/store', [BrangayidDetailsController::class, 'store'])->name('barangayid.store');
+Route::get('/barangayiddetails/{id}/edit', [BrangayidDetailsController::class, 'edit'])->name('barangayid.edit');
+Route::put('/barangayiddetails/{id}/update', [BrangayidDetailsController::class, 'update'])->name('barangayid.update');
+Route::delete('/barangayiddetails/{id}', [BrangayidDetailsController::class, 'destroy'])->name('barangayid.destroy');
+
 Route::get('/residentFolder', [ResidentController::class, 'index'])->name('resident.index');
 Route::get('/residentFolder/create', [ResidentController::class, 'create'])->name('resident.create');
 Route::post('/residentFolder/store', [ResidentController::class, 'store'])->name('resident.store');
-Route::get('/residentFolder/edit/{id}', [ResidentController::class, 'edit'])->name('resident.edit');
-Route::post('/residentFolder/update/{id}', [ResidentController::class, 'update'])->name('resident.update');
+Route::get('/residentFolder/{id}/view', [ResidentController::class, 'view'])->name('resident.view');
+Route::get('/residentFolder/{id}/edit', [ResidentController::class, 'edit'])->name('resident.edit');
+Route::post('/residentFolder/{id}/update', [ResidentController::class, 'update'])->name('resident.update'); 
 Route::delete('/residentFolder/{id}', [ResidentController::class, 'destroy'])->name('resident.destroy');
-Route::get('/residentFolder/print/{id}', [ResidentController::class, 'print'])->name('resident.print');
+Route::get('/residentFolder/{id}/print', [ResidentController::class, 'print'])->name('resident.print');
+Route::get('/residentFolder/{id}/printid', [ResidentController::class, 'printid'])->name('resident.printid');
+
 Route::get('/residentFolder/printAll', [ResidentController::class, 'printAll'])->name('resident.printAll');
 Route::get('/residentFolder/printAllPDF', [ResidentController::class, 'printAllPDF'])->name('resident.printAllPDF');
 Route::get('/residentFolder/printAllPDF', [ResidentController::class, 'printAllPDF'])->name('resident.printAllPDF');
 
 
-
+});
 require __DIR__.'/auth.php';

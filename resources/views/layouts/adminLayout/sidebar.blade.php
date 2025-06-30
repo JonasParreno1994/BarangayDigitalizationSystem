@@ -3,7 +3,7 @@
         <div class="h-full bg-white dark:bg-[#0e1726]">
             <div class="flex items-center justify-between px-4 py-3">
                 <a href="index.html" class="main-logo flex shrink-0 items-center">
-                    <img class="ml-[10px] w-20 flex-none" src="{{ asset('/1.png') }}" alt="image">
+                    <img class="ml-[10px] w-20 flex-none" src="{{ asset('/1.jfif') }}" alt="image">
                     <span class="align-middle text-2xl font-semibold ltr:ml-1.5 rtl:mr-1.5 dark:text-white-light lg:inline">iBarangay</span>
                 </a>
                 <a href="javascript:;" class="collapse-icon flex h-8 w-8 items-center rounded-full transition duration-300 hover:bg-gray-500/10 rtl:rotate-180 dark:text-white-light dark:hover:bg-dark-light/10" @click="$store.app.toggleSidebar()">
@@ -48,7 +48,7 @@
                     <svg class="hidden h-5 w-4 flex-none" viewbox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
-                    <span>BARANGAY MANAGEMENT</span>
+                    <span>RESIDENTS RECORDS</span>
                 </h2>
 
                 <li class="nav-item">
@@ -69,7 +69,33 @@
                        
                     </ul>
                 </li>
+                
+                {{-- FOR FILES MANAGEMENT --}}
+                 <h2 class="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
+                    <svg class="hidden h-5 w-4 flex-none" viewbox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    <span>FILES MANAGEMENT</span>
+                </h2>
 
+                <li class="nav-item">
+                    <ul>
+                        <li class="nav-item">
+                            <a href="{{ route('resident.index') }}" class="group">
+                                <div class="flex items-center">
+                                    <svg class="shrink-0 group-hover:!text-primary" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path opacity="0.5" d="M16 11C18.2091 11 20 9.20914 20 7C20 4.79086 18.2091 3 16 3C13.7909 3 12 4.79086 12 7C12 9.20914 13.7909 11 16 11Z" fill="currentColor"></path>
+                                        <path opacity="0.5" d="M8 11C10.2091 11 12 9.20914 12 7C12 4.79086 10.2091 3 8 3C5.79086 3 4 4.79086 4 7C4 9.20914 5.79086 11 8 11Z" fill="currentColor"></path>
+                                        <path d="M22 19C22 15.6863 19.3137 13 16 13C12.6863 13 10 15.6863 10 19C10 19.5523 10.4477 20 11 20H21C21.5523 20 22 19.5523 22 19Z" fill="currentColor"></path>
+                                        <path d="M14 19C14 15.6863 11.3137 13 8 13C4.68629 13 2 15.6863 2 19C2 19.5523 2.44772 20 3 20H13C13.5523 20 14 19.5523 14 19Z" fill="currentColor"></path>
+                                    </svg>
+                                    <span class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Barangay Clearance</span>
+                                </div>
+                            </a>
+                        </li>
+                       
+                    </ul>
+                </li>
 
                 <h2 class="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
                     <svg class="hidden h-5 w-4 flex-none" viewbox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -127,13 +153,18 @@
                         </li>
                         <li>
                             <a href="{{ route('filescategory.index') }}" class="group" :class="{'active' : activeDropdown === 'filesCategory'}" @click="activeDropdown = 'filesCategory'">Files Category</a>
-            
                         </li>
+
                         <li>
                             <a href="{{ route('comelec') }}" class="group" :class="{'active' : activeDropdown === 'comelec'}" @click="activeDropdown = 'comelec'">Comelec Data</a>
                         </li>
+
                         <li>
                             <a href="{{ route('position.index') }}" class="group" :class="{'active' : activeDropdown === 'comelec'}" @click="activeDropdown = 'comelec'">List of Position</a>
+                        </li>
+
+                         <li>
+                            <a href="{{ route('barangayid.index') }}" class="group" :class="{'active' : activeDropdown === 'barangayid'}" @click="activeDropdown = 'barangayid'">Barangay ID details</a>
                         </li>
                     </ul>
                 </li>

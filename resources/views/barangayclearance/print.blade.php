@@ -49,8 +49,8 @@
             object-fit: contain;
             transform: translateY(-50%);
         }
-        .logo-left { left: 120px; }
-        .logo-right { right: 120px; }
+        .logo-left { left: 90px; }
+        .logo-right { right: 90px; }
         .official { margin-bottom: 6px; }
         .clearance-title {
             text-align: center;
@@ -59,9 +59,9 @@
             margin: 20px 0;
         }
         .content {
-            margin: 15px 0;
+            margin: 1px 0;
             font-size: 13px;
-            line-height: 1.5;
+           
         }
         .content p { margin: 8px 0; }
         .signature {
@@ -77,12 +77,7 @@
             margin-top: -8px;
             font-style: italic;
         }
-        .footer {
-            margin-top: 20px;
-            font-size: 11px;
-            text-align: center;
-            line-height: 1.3;
-        }
+       
         .checkbox {
             display: inline-block;
             width: 12px;
@@ -96,8 +91,8 @@
         .underline { text-decoration: underline; }
         @media print {
             body, html {
-                width: 794px;
-                height: 1123px;
+                width: 800px;
+                height: 950px;
                 margin: 0 auto;
                 padding: 0;
             }
@@ -157,7 +152,7 @@
             );
         @endphp
 
-        <div class="clearance-title">BARANGAY CLEARANCE</div>
+       
         <br>
         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
             <!-- Left: Officials Column -->
@@ -186,7 +181,7 @@
                         @endif
                     </div>
                 @endforeach
-                <br><br><br><br>
+                <br><br>   <br><br>
                 <div style="text-align: left; width: 100%; align-self: flex-start; line-height:5px; font-size: 10px;">
                     <div style="margin-bottom: 6px;">
                         Clearance No.: {{ $clearance->id ?? '__________' }}
@@ -204,36 +199,35 @@
                         VALID UNTIL {{ $clearance->date_of_issuance->addYear()->format('F j, Y') }}
                     </div>
                 </div>
-                <br><br><br><br><br><br><br><br>
+                <br><br>
             </div>
             <div style="width: 2px; margin: 0 10px; align-self: stretch; display: flex;">
                 <div style="background: #000; width: 100%; height: 100%;"></div>
             </div>
             <!-- Right: Clearance Content -->
             <div style="width: 58%; display: flex; flex-direction: column; align-items: center; font-size: 15px; font-family: 'Times New Roman', Times, serif;">
+                <div class="clearance-title" style="font-family: 'Bookman Old Style', serif;">BARANGAY CLEARANCE</div>
+               
                 <div class="content" style="text-align: justify; font-size: 15px;">
-                    <p>
-                        This is to certify that <strong><u>{{ strtoupper($clearance->resident->full_name) }}</u></strong>,
-                        {{ \Carbon\Carbon::parse($clearance->resident->birth_date)->age }} years old,
-                        {{ strtolower($clearance->resident->civil_status) }},
-                        a bonafide resident presently residing at
-                        <u>{{ $clearance->resident->address }}, Barangay {{ $clearance->resident->barangay }},
-                        {{ $clearance->resident->city_municipality }}</u>.
+                    <h4 style="text-align: left; font-family: 'Times New Roman', Times, serif;"><i>TO WHOM IT MAY CONCERN:</i></h4>
+                    <p style="text-indent: 0.5in;">
+                        This is to certify that Mr./Ms./Mrs. <strong><u>{{ strtoupper($clearance->resident->full_name) }}</u></strong>,
+                        <strong><u>{{ \Carbon\Carbon::parse($clearance->resident->birth_date)->age }}</u> </strong> years old,
+                        <strong>{{($clearance->resident->civil_status) }},</strong> and whose signature below is a 
+                        Filipino Citizen, a bonafide resident of this Barangay and personally known to be a law abiding citizen and has 
+                        Good Moral Character. That of my own knowledge, he/she has not committed / been involved in any kind 
+                        of unlawful activities in this Barangay. 
                     </p>
-                    <p>
-                        is a law-abiding citizen and has <strong>NO DEROGATORY</strong> record/s in this office up to this date.
+                   
+                    <p style="text-indent: 0.5in;">
+                        Issued this {{ $clearance->date_of_issuance->format('jS') }} day of 
+                        {{ $clearance->date_of_issuance->format('F') }}, {{ $clearance->date_of_issuance->format('Y') }} for   <strong>{{ $clearance->purpose }}</strong>.
                     </p>
-                    <p>
-                        Given this <u>{{ $clearance->date_of_issuance->format('jS') }}</u> day of 
-                        <u>{{ $clearance->date_of_issuance->format('F') }}</u>, 
-                        {{ $clearance->date_of_issuance->format('Y') }} at Barangay {{ $clearance->resident->barangay }}, 
-                        {{ $clearance->resident->city_municipality }}.
-                    </p>
-                    <p>
-                        Purpose: <u>{{ $clearance->purpose }}</u>
-                    </p>
+                   
+                    
+                   
                 </div>
-                <div class="signature" style="text-align: center; font-size: 17px;">
+                <div class="signature" style="margin-top: 80px; font-size: 17px; margin-left: 160px;">
                     @if($official_pos3)
                         <strong>{{ strtoupper($official_pos3->name) }}</strong><br>
                         @if($official_pos3->committee)
@@ -242,7 +236,17 @@
                     @endif
                     <br>
                 </div>
+                <div style="margin-top: 50px; margin-right: 300px; font-size: 13px; text-align: center;">
+                    <div style="border-top: 1px solid #000; width: 200px; margin: 0 auto;"></div>
+                    <span>Signature of Applicant</span>
+                    <div style="margin-top: 20px; display: flex; flex-direction: column; align-items: center;">
+                       
+                        <div style="width: 100px; height: 100px; border: 1px solid #000; margin-top: 5px;"></div>
+                        <span>Right Thumb Mark</span>
+                    </div>
+                </div>
             </div>
+        
         </div>
     </div>
     <script>

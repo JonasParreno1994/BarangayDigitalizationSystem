@@ -22,6 +22,37 @@
         font-weight: 500;
         color: #374151;
     }
+
+    .select2-container--default .select2-selection--single {
+        height: 42px;
+        border: 1px solid #d1d5db;
+        border-radius: 0.375rem;
+        background-color: #fff;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 42px;
+        padding-left: 12px;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 40px;
+    }
+
+    .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        background-color: #3b82f6;
+    }
+
+    .select2-container--default .select2-search--dropdown .select2-search__field {
+        border: 1px solid #d1d5db;
+        border-radius: 0.375rem;
+    }
+
+    .select2-container .select2-selection--single:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
 </style>
 
 @if(session('success'))
@@ -85,14 +116,24 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                                 <div>
                                     <label class="form-label">Resident <span class="text-red-500">*</span></label>
-                                    <select class="form-select" name="resident_id" required>
-                                        <option value="">Select Resident</option>
+                                    <select class="form-select resident-search" name="resident_id" id="residentSelect" required>
+                                    <option value="">Select Resident</option>
                                         @foreach($residents as $resident)
                                             <option value="{{ $resident->id }}">
                                                 {{ $resident->last_name }}, {{ $resident->first_name }} {{ $resident->middle_name }}
                                             </option>
                                         @endforeach
                                     </select>
+                                    <script>
+                                        $(document).ready(function() {
+                                            $('#residentSelect').select2({
+                                                theme: 'bootstrap4',
+                                                placeholder: 'Select Resident',
+                                                allowClear: true,
+                                                width: '100%'
+                                            });
+                                        });
+                                    </script>
                                 </div>
                                 <div>
                                     <label class="form-label">Purpose <span class="text-red-500">*</span></label>
@@ -354,6 +395,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
+    });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    $('#residentSelect').select2({
+        width: '100%',
+        placeholder: 'Search for a resident...',
+        allowClear: true,
+        dropdownParent: $('#residentSelect').parent() 
+    });
+    
+   
+    document.querySelector('[x-data="modal"]').addEventListener('toggle', function(e) {
+        if (e.detail.open) {
+            setTimeout(() => {
+                $('#residentSelect').select2({
+                    width: '100%',
+                    placeholder: 'Search for a resident...',
+                    allowClear: true,
+                    dropdownParent: $('#residentSelect').parent()
+                });
+            }, 100);
+        }
     });
 });
 </script>

@@ -19,8 +19,10 @@
         <script defer="" src="{{ asset('/admin/assets/js/sweetalert.min.js') }}"></script>
         <script src="{{ asset('/admin/assets/js/axios.min.js') }}"></script>
           <!-- Select2 -->
-    <link rel="stylesheet" href="{{ asset('/design/plugins/select2/css/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('/design/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="{{ asset('/design/plugins/select2/css/select2.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('/design/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Select2 -->
@@ -962,5 +964,8 @@
 
 
                 </div>
+
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
         @include('layouts.adminLayout.footer')

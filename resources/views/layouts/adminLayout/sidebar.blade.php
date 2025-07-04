@@ -81,7 +81,7 @@
                 <li class="nav-item">
                     <ul>
                         <li class="nav-item">
-                            <a href="{{ route('resident.index') }}" class="group">
+                            <a href="{{ route('barangayclearance.index') }}" class="group">
                                 <div class="flex items-center">
                                     <svg class="shrink-0 group-hover:!text-primary" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path opacity="0.5" d="M16 11C18.2091 11 20 9.20914 20 7C20 4.79086 18.2091 3 16 3C13.7909 3 12 4.79086 12 7C12 9.20914 13.7909 11 16 11Z" fill="currentColor"></path>

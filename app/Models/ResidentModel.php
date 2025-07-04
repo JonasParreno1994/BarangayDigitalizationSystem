@@ -51,4 +51,9 @@ class ResidentModel extends Model
     {
         return "{$this->last_name}, {$this->first_name}" . ($this->middle_name ? " {$this->middle_name}" : '') . ($this->suffix ? " {$this->suffix}" : '');
     }
+
+    public function barangayClearances()
+    {
+        return $this->hasMany(BarangayClearance::class, 'resident_id');
+    }
 }

@@ -22,4 +22,10 @@ class Official extends Model
     {
         return $this->belongsTo(ComelecModel::class, 'comelec_id');
     }
+
+    
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'Active');
+    }
 }

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /.phpunit.cache
 /node_modules
 /public/build
@@ -21,3 +22,7 @@
 /.nova
 /.vscode
 /.zed
+=======
+
+/node_modules
+>>>>>>> 6e29a0fe9d449d5fb2e0412a55c6361b55c4d7b8

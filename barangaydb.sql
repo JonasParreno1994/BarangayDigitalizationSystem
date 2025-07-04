@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 23, 2025 at 04:51 AM
+-- Generation Time: Jul 04, 2025 at 03:54 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -24,6 +24,63 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `barangay_clearances`
+--
+
+CREATE TABLE `barangay_clearances` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `resident_id` bigint(20) UNSIGNED NOT NULL,
+  `purpose` varchar(255) NOT NULL,
+  `cedula_number` varchar(255) DEFAULT NULL,
+  `date_of_issuance` date NOT NULL,
+  `or_number` varchar(255) DEFAULT NULL,
+  `amount_paid` decimal(10,2) DEFAULT NULL,
+  `status` varchar(255) NOT NULL DEFAULT 'Issued',
+  `remarks` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `barangay_clearances`
+--
+
+INSERT INTO `barangay_clearances` (`id`, `resident_id`, `purpose`, `cedula_number`, `date_of_issuance`, `or_number`, `amount_paid`, `status`, `remarks`, `created_at`, `updated_at`) VALUES
+(1, 17, 'dfsdfd', '34242', '2025-06-30', '45353', '322.00', 'Issued', 'sfdsf', '2025-06-29 21:41:32', '2025-06-29 21:41:32'),
+(2, 19, 'Employment', '02134668', '2025-07-03', '123456', '50.00', 'Issued', 'No pending case', '2025-07-02 18:28:42', '2025-07-02 18:28:42'),
+(3, 18, 'love latter', '234234', '2025-07-03', '34234', '45.00', 'Issued', 'rgerr', '2025-07-03 00:50:56', '2025-07-03 00:50:56');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `barangay_id_details`
+--
+
+CREATE TABLE `barangay_id_details` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `logo1_path` varchar(255) NOT NULL,
+  `logo2_path` varchar(255) NOT NULL,
+  `heading1` varchar(255) NOT NULL,
+  `heading2` varchar(255) NOT NULL,
+  `heading3` varchar(255) NOT NULL,
+  `validity` varchar(255) NOT NULL,
+  `details` text NOT NULL,
+  `pass_captain` varchar(255) NOT NULL,
+  `signature_path` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `barangay_id_details`
+--
+
+INSERT INTO `barangay_id_details` (`id`, `logo1_path`, `logo2_path`, `heading1`, `heading2`, `heading3`, `validity`, `details`, `pass_captain`, `signature_path`, `created_at`, `updated_at`) VALUES
+(1, 'barangay-id/logos/e8xTykfrNmlEYkPDrbJL7sWQcrmyKWFVVJ8eqPZV.jpg', 'barangay-id/logos/V6We8GKgwEJHTd0smLWKiK7vIzHTU527NksDurzb.jpg', 'Republic of the Philippines', 'Province of Negros Occidental', 'Municipality of Hinoba-an', '3', 'This ID is non transferable.', 'HON. ELIAS P. MANLANGIT', 'barangay-id/signatures/FSCXtTCPUeCTbVao8jTuVt7JIUDI1AGQQv68Ut96.png', '2025-06-25 20:02:17', '2025-06-29 19:57:17');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `cache`
 --
 
@@ -32,16 +89,6 @@ CREATE TABLE `cache` (
   `value` mediumtext NOT NULL,
   `expiration` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `cache`
---
-
-INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
-('ibarangay_integrated_barangay_management_system_cache_jonasparreno12345@gmail.com|127.0.0.1', 'i:1;', 1749800548),
-('ibarangay_integrated_barangay_management_system_cache_jonasparreno12345@gmail.com|127.0.0.1:timer', 'i:1749800548;', 1749800548),
-('ibarangay_integrated_barangay_management_system_cache_venusalihid@gmail.com|127.0.0.1', 'i:1;', 1750141527),
-('ibarangay_integrated_barangay_management_system_cache_venusalihid@gmail.com|127.0.0.1:timer', 'i:1750141527;', 1750141527);
 
 -- --------------------------------------------------------
 
@@ -133,7 +180,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (13, '2025_04_22_142548_create_officials_table', 4),
 (14, '2025_05_07_132109_create_tblresidents_table', 5),
 (15, '2025_06_17_045415_create_table_tblresidents_table', 6),
-(16, '2025_06_17_053137_create_tblresidents_table', 7);
+(16, '2025_06_17_053137_create_tblresidents_table', 7),
+(17, '2025_06_24_030216_add_profile_picture_to_residents_table', 8),
+(18, '2025_06_26_035531_create_barangay_id_details_table', 9),
+(19, '2025_06_30_051432_create_barangay_clearances_table', 10);
 
 -- --------------------------------------------------------
 
@@ -156,9 +206,16 @@ CREATE TABLE `officials` (
 --
 
 INSERT INTO `officials` (`id`, `name`, `position_id`, `committee`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'JONAS DAYRIT PARREÑO', '1', 'das', 'Active', '2025-04-22 06:26:46', '2025-04-22 06:26:46'),
-(2, 'ELIAS P. MANLANGIT', '3', NULL, 'Active', '2025-04-24 18:09:25', '2025-04-24 18:09:25'),
-(3, 'MYRA A. CARDINAL', '1', 'Chairman, Committee on Education', 'Active', '2025-04-24 18:09:56', '2025-04-24 18:09:56');
+(6, 'HON. ELIAS P. MANLANGIT', '3', 'PUNONG BARANGAY', 'Active', '2025-07-02 19:46:55', '2025-07-02 19:46:55'),
+(7, 'HON. RAY GEORPE', '1', 'Chairman, Committee on Education', 'Active', '2025-07-02 19:48:20', '2025-07-02 19:48:20'),
+(8, 'HON. MC CLARENCE BENDEJO', '1', 'Chairman, Committee on Finance', 'Active', '2025-07-02 19:48:51', '2025-07-02 19:48:51'),
+(9, 'HON. NEIKO BRYCE FANTILAGA', '1', 'Chairman, Committee on Ways and Means', 'Active', '2025-07-02 19:49:19', '2025-07-02 19:49:19'),
+(10, 'HON. WELQUIM PANOGALING', '1', 'Chairman, Committee on Agriculture', 'Active', '2025-07-02 19:49:44', '2025-07-02 19:49:44'),
+(11, 'HON. GODFRED SUGABO', '1', 'Chairman, Committee on Infrastructure', 'Active', '2025-07-02 19:50:18', '2025-07-02 19:50:18'),
+(12, 'HON. JOHN REY BOAQUINA', '1', 'Chairman, Committee on Disaster Risk', 'Active', '2025-07-02 19:50:49', '2025-07-02 19:50:49'),
+(13, 'HON. ROMAR TABLANZA', '1', 'Chairman, Committee on Information Technology', 'Active', '2025-07-02 19:51:19', '2025-07-02 19:51:19'),
+(14, 'DINA FLORES', '4', 'Barangay Secretary', 'Active', '2025-07-02 19:51:37', '2025-07-02 19:51:37'),
+(15, 'ARMIE SHEILA CALAGO', '5', 'Barangay Treasurer', 'Active', '2025-07-02 19:51:48', '2025-07-02 19:51:48');
 
 -- --------------------------------------------------------
 
@@ -192,7 +249,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('exP4BBFDl1pNbkyHJAZVzAJN2gt8x2iCsFBAjJc7', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoicURrbFl3bHA0a05kbUFYTVljemVtWmxoM0hNbVhSMHc0SGRZNWVaMSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9yZXNpZGVudEZvbGRlciI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1750646623);
+('GbGoJw1xGqIdqhQ6jrU7MU53sLA93rikmHHQ7rQ0', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiR0t6QzZ0d0dSQXZEZDVLU1pxMFNKYjJlQWpnVThtbmk3YnJXSGFrMyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1751533082);
 
 -- --------------------------------------------------------
 
@@ -5774,6 +5831,7 @@ CREATE TABLE `tblresidents` (
   `occupation` varchar(255) DEFAULT NULL,
   `contact_number` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
+  `profile_picture` varchar(255) DEFAULT NULL,
   `voter_status` enum('Voter','Non-Voter') NOT NULL,
   `precinct_number` varchar(255) DEFAULT NULL,
   `education` varchar(255) DEFAULT NULL,
@@ -5792,10 +5850,10 @@ CREATE TABLE `tblresidents` (
 -- Dumping data for table `tblresidents`
 --
 
-INSERT INTO `tblresidents` (`id`, `last_name`, `first_name`, `middle_name`, `suffix`, `birth_date`, `birth_place`, `sex`, `civil_status`, `religion`, `citizenship`, `address`, `occupation`, `contact_number`, `email`, `voter_status`, `precinct_number`, `education`, `education_status`, `household_number`, `region`, `province`, `city_municipality`, `barangay`, `census_no`, `created_at`, `updated_at`) VALUES
-(1, 'PARREÑO', 'JONAS', 'DAYRIT', NULL, '2025-06-04', 'asfasdf', 'Male', 'Single', 'ROMAN CATHOLIC', 'asdfsadf', 'dgfsdgfsdf', 'asdasd', '09887564536', 'jonaspareno12345@gmail.com', 'Voter', NULL, NULL, 'Graduate', 'H#-9230748', 'NEGROS ISLAND REGION', 'NEGROS OCCIDENTAL', 'HINOBA-AN', 'BARANGAY ASIA', '21321', NULL, NULL),
-(4, 'BACLAYON', 'FEDERICO', 'HERADO', NULL, '2025-06-12', 'fsdfsdf', 'Male', 'Married', 'ROMAN CATHOLIC', 'sdfsdfsd', 'sdgsdgsdg', 'dgsdg', '09889675434', 'sdasdas@gmail.com', 'Voter', NULL, NULL, 'Graduate', 'H#-8673714', 'NEGROS ISLAND REGION', 'NEGROS OCCIDENTAL', 'HINOBA-AN', 'BARANGAY ASIA', '3454', NULL, NULL),
-(5, 'TABLANZA', 'ROMAR', 'LASTIERE', NULL, '2025-06-08', 'MOISES PADILLA', 'Male', 'Single', 'ROMAN CATHOLIC', 'FILIPINO', 'PUROK DF', 'INSTRUCTOR', '0552331', 'DAS@GMAIL.COM', 'Voter', NULL, 'Master\'s', 'Under Graduate', 'H#-2216327', 'NEGROS ISLAND REGION', 'NEGROS OCCIDENTAL', 'HINOBA-AN', 'BARANGAY ASIA', '1556', NULL, NULL);
+INSERT INTO `tblresidents` (`id`, `last_name`, `first_name`, `middle_name`, `suffix`, `birth_date`, `birth_place`, `sex`, `civil_status`, `religion`, `citizenship`, `address`, `occupation`, `contact_number`, `email`, `profile_picture`, `voter_status`, `precinct_number`, `education`, `education_status`, `household_number`, `region`, `province`, `city_municipality`, `barangay`, `census_no`, `created_at`, `updated_at`) VALUES
+(17, 'CABASIS', 'JANINE', 'MATIA-ONG', NULL, '2006-06-06', 'sdasd', 'Male', 'Single', 'sadasd', 'asdasd', 'sdasdas', 'dasda', '0987876756', 'jeraldbabor60@gmail.com', 'profile_pictures/1750740361.jpg', 'Voter', 'Prec : 0049A', 'Other', 'Graduate', 'H#-8141942', 'NEGROS ISLAND REGION', 'NEGROS OCCIDENTAL', 'HINOBA-AN', 'BARANGAY ASIA', NULL, NULL, NULL),
+(18, 'ALOLOR', 'LOLITA', 'EBA?EZ', NULL, '2004-06-09', 'sdasdas', 'Male', 'Married', 'sdasdas', 'dsadasd', 'ffdsfsd', 'dqwdqw', '09767432434', 'venusalihid@gmail.com', 'profile_pictures/1750740622.jfif', 'Voter', 'Prec : 0049A', 'College', 'Graduate', 'H#-1673773', 'NEGROS ISLAND REGION', 'NEGROS OCCIDENTAL', 'HINOBA-AN', 'BARANGAY ASIA', NULL, NULL, NULL),
+(19, 'SEGOVIA', 'EDSON', 'YUSAY', NULL, '1995-06-07', 'dasd', 'Male', 'Single', 'asdsad', 'asfsa', 'dasdas', 'dasd', '087767567', 'venusalihid@gmail.com', 'profile_pictures/1750917868.jpg', 'Voter', 'Prec : 0052A', 'College', 'Graduate', 'H#-2773548', 'NEGROS ISLAND REGION', 'NEGROS OCCIDENTAL', 'HINOBA-AN', 'BARANGAY ASIA', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -5824,6 +5882,19 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `re
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `barangay_clearances`
+--
+ALTER TABLE `barangay_clearances`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `barangay_clearances_resident_id_foreign` (`resident_id`);
+
+--
+-- Indexes for table `barangay_id_details`
+--
+ALTER TABLE `barangay_id_details`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `cache`
@@ -5926,6 +5997,18 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `barangay_clearances`
+--
+ALTER TABLE `barangay_clearances`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `barangay_id_details`
+--
+ALTER TABLE `barangay_id_details`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
@@ -5941,13 +6024,13 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `officials`
 --
 ALTER TABLE `officials`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `tblcomelec`
@@ -5977,13 +6060,23 @@ ALTER TABLE `tblposition`
 -- AUTO_INCREMENT for table `tblresidents`
 --
 ALTER TABLE `tblresidents`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `barangay_clearances`
+--
+ALTER TABLE `barangay_clearances`
+  ADD CONSTRAINT `barangay_clearances_resident_id_foreign` FOREIGN KEY (`resident_id`) REFERENCES `tblresidents` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

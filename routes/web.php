@@ -90,6 +90,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/barangayclearance/{id}', [BrgyclearanceController::class, 'update'])->name('barangayclearance.update');
     Route::delete('/barangayclearance/{id}', [BrgyclearanceController::class, 'destroy'])->name('barangayclearance.destroy');
     Route::get('/barangayclearance/{id}/print', [BrgyclearanceController::class, 'print'])->name('barangayclearance.print');
+
+   Route::get('/residentsgraph', [DashboardController::class, 'residentsgraph'])->name('dashboard.residentsgraph');
 });
 
 require __DIR__.'/auth.php';

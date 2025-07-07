@@ -35,7 +35,7 @@
                             <a href="{{ route('dashboard') }}">Dashboard</a>
                         </li>
                         <li>
-                            <a href="" >Residents Graph</a>
+                            <a href="{{ route('dashboard.residentsgraph')}}" >Residents Graph</a>
                         </li>
                         <li>
                             <a href="">Certifications & Clerances Graph</a>

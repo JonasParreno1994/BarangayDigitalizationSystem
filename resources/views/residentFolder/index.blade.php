@@ -345,6 +345,17 @@
                                     <label class="form-label">Barangay <span class="text-red-500">*</span></label>
                                     <input type="text" class="form-input" name="barangay" required placeholder="Enter Barangay">
                                 </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Residence Address <span class="text-red-500">*</span></label>
+                               
+                                    <select class="form-select" name="address" required>
+                                        <option value="">-Select Purok-</option>
+                                        <option value="Purok 1">Purok 1</option>
+                                        <option value="Purok 2">Purok 2</option>
+                                        <option value="Purok 3">Purok 3</option>
+                                      
+                                    </select>
+                                </div>
                             </div>
                             
                             <hr class="my-6 border-gray-200">
@@ -498,11 +509,7 @@
                                 </div>
                             </div>
 
-                            <div class="mb-4">
-                                <label class="form-label">Residence Address <span class="text-red-500">*</span></label>
-                                <textarea class="form-textarea" name="address" rows="2" required placeholder="Complete Address"></textarea>
-                            </div>
-
+                           
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
                                 <div>
                                     <label class="form-label">Profession/Occupation</label>

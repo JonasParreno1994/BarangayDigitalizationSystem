@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ResidentModel extends Model
 {
@@ -40,7 +41,8 @@ class ResidentModel extends Model
         'city_municipality',
         'barangay',
         'census_no',
-        'profile_picture'
+        'profile_picture',
+        'purok_id' 
     ];
 
     protected $casts = [
@@ -55,5 +57,11 @@ class ResidentModel extends Model
     public function barangayClearances()
     {
         return $this->hasMany(BarangayClearance::class, 'resident_id');
+    }
+
+   
+    public function purok(): BelongsTo
+    {
+        return $this->belongsTo(Purok::class);
     }
 }

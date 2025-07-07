@@ -346,14 +346,14 @@
                                     <input type="text" class="form-input" name="barangay" required placeholder="Enter Barangay">
                                 </div>
                                 <div class="mb-4">
-                                    <label class="form-label">Residence Address <span class="text-red-500">*</span></label>
-                               
-                                    <select class="form-select" name="address" required>
+                                    <label class="form-label">Purok <span class="text-red-500">*</span></label>
+                                    <select class="form-select" name="purok_id" required>
                                         <option value="">-Select Purok-</option>
-                                        <option value="Purok 1">Purok 1</option>
-                                        <option value="Purok 2">Purok 2</option>
-                                        <option value="Purok 3">Purok 3</option>
-                                      
+                                        @foreach(\App\Models\Purok::all() as $purok)
+                                            <option value="{{ $purok->id }}">
+                                                {{ $purok->purok_name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>

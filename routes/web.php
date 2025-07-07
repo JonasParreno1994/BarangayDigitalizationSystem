@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\BrgyclearanceController;
 use App\Http\Controllers\ResidentController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PurokController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -61,6 +62,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/filesCategory/edit/{id}', [FilesCategoryController::class, 'edit'])->name('filescategory.edit');
     Route::post('/filesCategory/update/{id}', [FilesCategoryController::class, 'update'])->name('filescategory.update');
     Route::delete('/filesCategory/{id}', [FilesCategoryController::class, 'destroy'])->name('filescategory.destroy');
+
+    Route::resource('purok', PurokController::class);
 
     Route::get('/barangayiddetails', [BrangayidDetailsController::class, 'index'])->name('barangayid.index');
     Route::get('/barangayiddetails/create', [BrangayidDetailsController::class, 'create'])->name('barangayid.create');

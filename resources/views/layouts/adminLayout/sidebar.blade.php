@@ -163,6 +163,10 @@
                             <a href="{{ route('position.index') }}" class="group" :class="{'active' : activeDropdown === 'comelec'}" @click="activeDropdown = 'comelec'">List of Position</a>
                         </li>
 
+                       <li>
+                            <a href="{{ route('purok.index') }}" class="group" :class="{'active' : activeDropdown === 'purok'}" @click="activeDropdown = 'purok'">List Of Purok</a>
+                        </li>
+
                          <li>
                             <a href="{{ route('barangayid.index') }}" class="group" :class="{'active' : activeDropdown === 'barangayid'}" @click="activeDropdown = 'barangayid'">Barangay ID details</a>
                         </li>

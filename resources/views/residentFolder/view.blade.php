@@ -94,9 +94,11 @@
                 <div class="form-input bg-gray-100">{{ $resident->barangay }}</div>
             </div>
         </div>
-        <div class="mb-4">
-            <label class="form-label">Complete Address</label>
-            <div class="form-input bg-gray-100">{{ $resident->address }}</div>
+       <div class="mb-4">
+            <label class="form-label">Purok</label>
+            <div class="form-input bg-gray-100">
+                {{ \App\Models\Purok::find($resident->purok_id)->purok_name ?? 'No purok selected' }}
+            </div>
         </div>
     </div>
 

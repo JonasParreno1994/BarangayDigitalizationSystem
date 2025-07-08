@@ -312,7 +312,7 @@
             
             <div class="id-details">
                 <div class="id-name">{{ $fullName }}</div>
-                <div class="id-field"><span class="id-label">Address:</span> <span class="id-value">{{ $address }}</span></div>
+               <div class="id-field"><span class="id-label">Street Address:</span> <span class="id-value">{{ $resident->purok->purok_name ?? 'N/A' }}</span></div>
                 <div class="id-field"><span class="id-label">Birthdate:</span> <span class="id-value">{{ date('m/d/Y', strtotime($resident->birth_date)) }} ({{ $age }} yrs)</span></div>
                 <div class="id-field"><span class="id-label">Gender:</span> <span class="id-value">{{ $resident->sex }}</span></div>
                 <div class="id-field"><span class="id-label">Status:</span> <span class="id-value">{{ $resident->civil_status }}</span></div>

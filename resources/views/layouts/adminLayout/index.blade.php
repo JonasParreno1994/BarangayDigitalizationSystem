@@ -317,9 +317,6 @@
                                 </div>
 
                                 <div class="dropdown shrink-0" x-data="dropdown" @click.outside="open = false">
-                                    <a href="javascript:;" class="block rounded-full bg-white-light/40 p-2 hover:bg-white-light/90 hover:text-primary dark:bg-dark/40 dark:hover:bg-dark/60" @click="toggle">
-                                        <img :src="`assets/images/flags/${$store.app.locale.toUpperCase()}.svg`" alt="image" class="h-5 w-5 rounded-full object-cover">
-                                    </a>
                                     <ul x-cloak="" x-show="open" x-transition="" x-transition.duration.300ms="" class="top-11 grid w-[280px] grid-cols-2 gap-y-2 !px-2 font-semibold text-dark ltr:-right-14 rtl:-left-14 dark:text-white-dark dark:text-white-light/90 sm:ltr:-right-2 sm:rtl:-left-2">
                                         <template x-for="item in languages">
                                             <li>

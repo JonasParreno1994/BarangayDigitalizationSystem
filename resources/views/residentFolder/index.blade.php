@@ -284,7 +284,7 @@
                             </script>
 
                             <!-- Voter Status Section -->
-                            <div x-data="voterStatus()" class="mb-6">
+                            <div x-data="{ isVoter: true }" class="mb-6">
                                 <h3 class="font-bold mb-2 flex items-center gap-2">
                                     <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                         <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
@@ -294,11 +294,11 @@
                                 </h3>
                                 <div class="flex flex-col md:flex-row gap-4 mb-4">
                                     <label class="flex items-center p-3 bg-white rounded-lg shadow-sm border border-gray-200 hover:border-blue-400 transition cursor-pointer w-full md:w-auto">
-                                        <input type="radio" class="form-radio accent-blue-600" name="voter_status" value="Voter" x-model="isVoter" :checked="isVoter" @change="updateVoter(true)">
+                                        <input type="radio" class="form-radio accent-blue-600" name="voter_status" value="Voter" x-model="isVoter" :checked="isVoter" @click="isVoter = true">
                                         <span class="ml-3 font-medium text-gray-700">Registered Voter</span>
                                     </label>
                                     <label class="flex items-center p-3 bg-white rounded-lg shadow-sm border border-gray-200 hover:border-blue-400 transition cursor-pointer w-full md:w-auto">
-                                        <input type="radio" class="form-radio accent-blue-600" name="voter_status" value="Non-Voter" x-model="isVoter" :checked="!isVoter" @change="updateVoter(false)">
+                                        <input type="radio" class="form-radio accent-blue-600" name="voter_status" value="Non-Voter" x-model="isVoter" :checked="!isVoter" @click="isVoter = false">
                                         <span class="ml-3 font-medium text-gray-700">Non-Voter</span>
                                     </label>
                                 </div>

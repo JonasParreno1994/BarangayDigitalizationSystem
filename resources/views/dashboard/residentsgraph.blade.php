@@ -5,7 +5,21 @@
     <h1 class="h3 mb-2 text-gray-800">Residents Statistics</h1>
     
     <div class="row">
-       
+        <div class="col-xl-12 col-lg-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Resident Distribution by Purok</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-bar">
+                        <canvas id="purokChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
         <div class="col-xl-6 col-lg-6">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
@@ -19,7 +33,6 @@
             </div>
         </div>
 
-        
         <div class="col-xl-6 col-lg-6">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
@@ -34,7 +47,6 @@
         </div>
     </div>
 
-   
     <div class="row">
         <div class="col-xl-12 col-lg-12">
             <div class="card shadow mb-4">
@@ -51,12 +63,44 @@
     </div>
 </div>
 
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-
 document.addEventListener('DOMContentLoaded', function() {
+    var purokCtx = document.getElementById('purokChart').getContext('2d');
+    var purokChart = new Chart(purokCtx, {
+        type: 'bar',
+        data: {
+            labels: {!! json_encode($purokCounts->keys()) !!},
+            datasets: [{
+                label: 'Number of Residents',
+                data: {!! json_encode($purokCounts->values()) !!},
+                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                },
+                x: {
+                    ticks: {
+                        autoSkip: false,
+                        maxRotation: 45,
+                        minRotation: 45
+                    }
+                }
+            }
+        }
+    });
+
+   
     var ctx = document.getElementById('genderChart').getContext('2d');
     var genderChart = new Chart(ctx, {
         type: 'bar',
@@ -89,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Civil Status Chart
+
     var civilStatusCtx = document.getElementById('civilStatusChart').getContext('2d');
     var civilStatusChart = new Chart(civilStatusCtx, {
         type: 'bar',
@@ -116,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Age Group Chart
+   
     var ageGroupCtx = document.getElementById('ageGroupChart').getContext('2d');
     var ageGroupChart = new Chart(ageGroupCtx, {
         type: 'bar',

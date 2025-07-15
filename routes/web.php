@@ -12,6 +12,7 @@ use App\Http\Controllers\BrgyclearanceController;
 use App\Http\Controllers\ResidentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PurokController;
+use App\Http\Controllers\DeathCertificateController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -94,7 +95,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/barangayclearance/{id}', [BrgyclearanceController::class, 'destroy'])->name('barangayclearance.destroy');
     Route::get('/barangayclearance/{id}/print', [BrgyclearanceController::class, 'print'])->name('barangayclearance.print');
 
-   Route::get('/residentsgraph', [DashboardController::class, 'residentsgraph'])->name('dashboard.residentsgraph');
+    Route::get('/residentsgraph', [DashboardController::class, 'residentsgraph'])->name('dashboard.residentsgraph');
+
+    // Death Certificate Routes
+    Route::resource('death-certificate', DeathCertificateController::class);
+    Route::get('/death-certificate/{deathCertificate}/print', [DeathCertificateController::class, 'print'])->name('death-certificate.print');
 });
 
 require __DIR__.'/auth.php';

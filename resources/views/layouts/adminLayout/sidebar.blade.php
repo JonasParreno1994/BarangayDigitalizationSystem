@@ -92,6 +92,18 @@
                                     <span class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Barangay Clearance</span>
                                 </div>
                             </a>
+
+                            <a href="{{ route('certificate_of_indigency.index') }}" class="group">
+                                <div class="flex items-center">
+                                    <svg class="shrink-0 group-hover:!text-primary" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path opacity="0.5" d="M16 11C18.2091 11 20 9.20914 20 7C20 4.79086 18.2091 3 16 3C13.7909 3 12 4.79086 12 7C12 9.20914 13.7909 11 16 11Z" fill="currentColor"></path>
+                                        <path opacity="0.5" d="M8 11C10.2091 11 12 9.20914 12 7C12 4.79086 10.2091 3 8 3C5.79086 3 4 4.79086 4 7C4 9.20914 5.79086 11 8 11Z" fill="currentColor"></path>
+                                        <path d="M22 19C22 15.6863 19.3137 13 16 13C12.6863 13 10 15.6863 10 19C10 19.5523 10.4477 20 11 20H21C21.5523 20 22 19.5523 22 19Z" fill="currentColor"></path>
+                                        <path d="M14 19C14 15.6863 11.3137 13 8 13C4.68629 13 2 15.6863 2 19C2 19.5523 2.44772 20 3 20H13C13.5523 20 14 19.5523 14 19Z" fill="currentColor"></path>
+                                    </svg>
+                                    <span class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Barangay Indigency</span>
+                                </div>
+                            </a>
                         </li>
                        
                     </ul>

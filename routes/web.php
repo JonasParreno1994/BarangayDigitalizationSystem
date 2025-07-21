@@ -12,6 +12,7 @@ use App\Http\Controllers\BrgyclearanceController;
 use App\Http\Controllers\ResidentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PurokController;
+use App\Http\Controllers\CertificateOfIndigencyController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -94,7 +95,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/barangayclearance/{id}', [BrgyclearanceController::class, 'destroy'])->name('barangayclearance.destroy');
     Route::get('/barangayclearance/{id}/print', [BrgyclearanceController::class, 'print'])->name('barangayclearance.print');
 
-   Route::get('/residentsgraph', [DashboardController::class, 'residentsgraph'])->name('dashboard.residentsgraph');
+    Route::get('/residentsgraph', [DashboardController::class, 'residentsgraph'])->name('dashboard.residentsgraph');
+
+    Route::get('/certificate_of_indigency', [CertificateOfIndigencyController::class, 'index'])->name('certificate_of_indigency.index');
+    Route::post('/certificate_of_indigency', [CertificateOfIndigencyController::class, 'store'])->name('certificate_of_indigency.store');
+    Route::get('/certificate_of_indigency/{id}', [CertificateOfIndigencyController::class, 'show'])->name('certificate_of_indigency.show');
+    Route::get('/certificate_of_indigency/{id}/edit', [CertificateOfIndigencyController::class, 'edit'])->name('certificate_of_indigency.edit');
+    Route::put('/certificate_of_indigency/{id}', [CertificateOfIndigencyController::class, 'update'])->name('certificate_of_indigency.update');
+    Route::delete('/certificate_of_indigency/{id}', [CertificateOfIndigencyController::class, 'destroy'])->name('certificate_of_indigency.destroy');
+    Route::get('/certificate_of_indigency/{id}/print', [CertificateOfIndigencyController::class, 'print'])->name('certificate_of_indigency.print');
 });
 
 require __DIR__.'/auth.php';

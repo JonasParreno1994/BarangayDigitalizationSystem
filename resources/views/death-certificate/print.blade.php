@@ -116,7 +116,6 @@
                 <h1>REPUBLIC OF THE PHILIPPINES</h1>
                 <h1>PROVINCE OF NEGROS OCCIDENTAL</h1>
                 <h1>MUNICIPALITY OF HINOBA-AN</h1>
-                <p>BARANGAY II-POBLACION</p>
             </div>
         </div>
 
@@ -134,7 +133,7 @@
             <p style="text-indent: 0.5in; margin-bottom: 15px;">
                 This is to certify that, <strong><u>{{ strtoupper($deathCertificate->resident->first_name.' '.$deathCertificate->resident->middle_name.' '.$deathCertificate->resident->last_name) }}</u></strong>, 
                 <strong>{{ strtolower($deathCertificate->civil_status_at_death) }}</strong>, 
-                <strong><u>{{ $deathCertificate->resident->age }}</u></strong> years old and a resident of 
+                <strong><u>{{ \Carbon\Carbon::parse($deathCertificate->birth_date)->age }}</u></strong> years old and a resident of 
                 <strong>Purok-{{ $deathCertificate->purok ?? 'N/A' }}</strong>, Barangay II-Poblacion, Hinoba-an, Negros Occidental, 
                 died on <strong><u>{{ strtoupper($deathCertificate->date_of_death->format('F j, Y')) }}, {{ $deathCertificate->time_of_death ? date('h:i A', strtotime($deathCertificate->time_of_death)) : 'N/A' }}</u></strong> 
                 at their residence.
@@ -153,7 +152,7 @@
 
         <div class="signature">
             @php
-                // Get Punong Barangay
+                
                 $captain = $officials->first(function($official) {
                     return stripos($official->position->name, 'Punong') !== false || 
                            stripos($official->position->name, 'Captain') !== false;

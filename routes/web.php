@@ -97,7 +97,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/residentsgraph', [DashboardController::class, 'residentsgraph'])->name('dashboard.residentsgraph');
 
-    // Death Certificate Routes
+   
     Route::resource('death-certificate', DeathCertificateController::class);
     Route::get('/death-certificate/{deathCertificate}/print', [DeathCertificateController::class, 'print'])->name('death-certificate.print');
 });

@@ -64,4 +64,8 @@ class ResidentModel extends Model
     {
         return $this->belongsTo(Purok::class);
     }
+
+    public function certificatesOfIndigency(){
+    return $this->hasMany(CertificateOfIndigency::class, 'resident_id');
+    }
 }

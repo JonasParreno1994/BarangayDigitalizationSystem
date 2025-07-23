@@ -49,23 +49,24 @@ class ResidentModel extends Model
         'birth_date' => 'date',
     ];
     
-    public function getFullNameAttribute()
-    {
+    public function getFullNameAttribute(){
         return "{$this->last_name}, {$this->first_name}" . ($this->middle_name ? " {$this->middle_name}" : '') . ($this->suffix ? " {$this->suffix}" : '');
     }
 
-    public function barangayClearances()
-    {
+    public function barangayClearances(){
         return $this->hasMany(BarangayClearance::class, 'resident_id');
     }
 
    
-    public function purok(): BelongsTo
-    {
+    public function purok(): BelongsTo{
         return $this->belongsTo(Purok::class);
     }
 
     public function certificatesOfIndigency(){
     return $this->hasMany(CertificateOfIndigency::class, 'resident_id');
+    }
+
+    public function goodMoralCertificates(){
+    return $this->hasMany(BarangayGoodMoralCertificate::class, 'resident_id');
     }
 }

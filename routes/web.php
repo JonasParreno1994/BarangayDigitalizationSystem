@@ -13,6 +13,7 @@ use App\Http\Controllers\ResidentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PurokController;
 use App\Http\Controllers\CertificateOfIndigencyController;
+use App\Http\Controllers\BarangayGoodMoralCertificateController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -104,6 +105,10 @@ Route::middleware('auth')->group(function () {
     Route::put('/certificate_of_indigency/{id}', [CertificateOfIndigencyController::class, 'update'])->name('certificate_of_indigency.update');
     Route::delete('/certificate_of_indigency/{id}', [CertificateOfIndigencyController::class, 'destroy'])->name('certificate_of_indigency.destroy');
     Route::get('/certificate_of_indigency/{id}/print', [CertificateOfIndigencyController::class, 'print'])->name('certificate_of_indigency.print');
+
+    Route::resource('barangaygoodmoral', BarangayGoodMoralCertificateController::class);
+    Route::get('barangaygoodmoral/{id}/print', [BarangayGoodMoralCertificateController::class, 'print'])
+    ->name('barangaygoodmoral.print');
 });
 
 require __DIR__.'/auth.php';

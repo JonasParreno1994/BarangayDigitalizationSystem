@@ -318,7 +318,7 @@ document.getElementById('viewIndigencyModal').addEventListener('click', function
     }
 });
 
-// Delete Confirmation
+
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.delete-certificate').forEach(button => {
         button.addEventListener('click', function(e) {

@@ -78,7 +78,12 @@ class BarangayGoodMoralCertificateController extends Controller
     public function destroy($id)
     {
         $certificate = BarangayGoodMoralCertificate::findOrFail($id);
-        $certificate->delete();
+
+        if (method_exists($certificate, 'forceDelete')) {
+            $certificate->forceDelete();
+        } else {
+            $certificate->delete();
+        }
 
         return redirect()->route('barangaygoodmoral.index')
             ->with('success', 'Good Moral Certificate deleted successfully!');

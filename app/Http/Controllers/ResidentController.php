@@ -6,8 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\ResidentModel;
 use App\Models\Purok;
 use App\Models\BarangayIdDetail;
+use App\Models\BarangayClearance;
+use App\Models\CertificateOfIndigency;
+use App\Models\BarangayGoodMoralCertificate;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 
 class ResidentController extends Controller
 {
@@ -191,7 +195,20 @@ class ResidentController extends Controller
         try {
             $resident = ResidentModel::findOrFail($id);
             
-            // Delete profile picture if exists
+           
+            \App\Models\BarangayClearance::where('resident_id', $id)->delete();
+            \App\Models\CertificateOfIndigency::where('resident_id', $id)->delete();
+
+            
+            $goodMorals = \App\Models\BarangayGoodMoralCertificate::where('resident_id', $id)->get();
+            foreach ($goodMorals as $certificate) {
+                if (method_exists($certificate, 'forceDelete')) {
+                    $certificate->forceDelete();
+                } else {
+                    $certificate->delete();
+                }
+            }
+            
             if ($resident->profile_picture) {
                 Storage::delete('public/' . $resident->profile_picture);
             }
@@ -199,7 +216,7 @@ class ResidentController extends Controller
             $resident->delete();
             
             return redirect()->route('resident.index')
-                ->with('success', 'Resident deleted successfully!');
+                ->with('success', 'Resident and all associated certificates deleted successfully!');
         } catch (\Exception $e) {
             return redirect()->route('resident.index')
                 ->with('error', 'Error deleting resident: ' . $e->getMessage());

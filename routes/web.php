@@ -79,7 +79,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/residentFolder/store', [ResidentController::class, 'store'])->name('resident.store');
     Route::get('/residentFolder/{id}/view', [ResidentController::class, 'view'])->name('resident.view');
     Route::get('/residentFolder/{id}/edit', [ResidentController::class, 'edit'])->name('resident.edit');
-    Route::post('/residentFolder/{id}/update', [ResidentController::class, 'update'])->name('resident.update'); 
+    Route::put('/residentFolder/{id}/update', [ResidentController::class, 'update'])->name('resident.update'); 
     Route::delete('/residentFolder/{id}', [ResidentController::class, 'destroy'])->name('resident.destroy');
     Route::get('/residentFolder/{id}/print', [ResidentController::class, 'print'])->name('resident.print');
     Route::get('/residentFolder/{id}/printid', [ResidentController::class, 'printid'])->name('resident.printid');

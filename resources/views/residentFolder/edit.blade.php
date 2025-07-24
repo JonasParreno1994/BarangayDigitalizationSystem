@@ -374,7 +374,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
                 <div>
                     <label class="form-label">Birth Date <span class="text-red-500">*</span></label>
-                    <input type="date" class="form-input" name="birth_date" value="{{ old('birth_date', $resident->birth_date) }}" required>
+                    <input type="date" class="form-input" name="birth_date" value="{{ old('birth_date', \Carbon\Carbon::parse($resident->birth_date)->format('Y-m-d')) }}" required>
                 </div>
                 <div>
                     <label class="form-label">Birth Place <span class="text-red-500">*</span></label>

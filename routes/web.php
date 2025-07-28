@@ -14,6 +14,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PurokController;
 use App\Http\Controllers\CertificateOfIndigencyController;
 use App\Http\Controllers\BarangayGoodMoralCertificateController;
+use App\Http\Controllers\CertificateOfResidencyController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -109,6 +110,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('barangaygoodmoral', BarangayGoodMoralCertificateController::class);
     Route::get('barangaygoodmoral/{id}/print', [BarangayGoodMoralCertificateController::class, 'print'])
     ->name('barangaygoodmoral.print');
+
+    Route::resource('certificate-of-residency', CertificateOfResidencyController::class);
+    Route::get('/certificate-of-residency/{id}/print', [CertificateOfResidencyController::class, 'print'])->name('certificate-of-residency.print');
 });
 
 require __DIR__.'/auth.php';

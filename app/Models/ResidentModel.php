@@ -69,4 +69,8 @@ class ResidentModel extends Model
     public function goodMoralCertificates(){
     return $this->hasMany(BarangayGoodMoralCertificate::class, 'resident_id');
     }
+
+    public function certificatesOfResidency(){
+    return $this->hasMany(CertificateOfResidency::class, 'resident_id');
+    }
 }

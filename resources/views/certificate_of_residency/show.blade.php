@@ -4,11 +4,11 @@
 <div class="animate__animated p-6" :class="[$store.app.animation]">
     <div class="panel">
         <div class="flex items-center justify-between mb-5">
-            <h1 class="text-2xl font-bold">Certificate of Indigency Details</h1>
+            <h1 class="text-2xl font-bold">Good Moral Certificate Details</h1>
             <div class="flex space-x-2">
-                <a href="{{ route('certificate_of_indigency.edit', $certificate->id) }}" class="btn btn-primary">Edit</a>
-                <a href="{{ route('certificate_of_indigency.print', $certificate->id) }}" class="btn btn-success" target="_blank">Print</a>
-                <form action="{{ route('certificate_of_indigency.destroy', $certificate->id) }}" method="POST">
+                <a href="{{ route('barangaygoodmoral.edit', $certificate->id) }}" class="btn btn-primary">Edit</a>
+                <a href="{{ route('barangaygoodmoral.print', $certificate->id) }}" class="btn btn-success" target="_blank">Print</a>
+                <form action="{{ route('barangaygoodmoral.destroy', $certificate->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="button" class="btn btn-danger delete-certificate">Delete</button>
@@ -28,7 +28,11 @@
                     <h3 class="font-semibold">Certificate Details</h3>
                     <p class="text-gray-600"><strong>Certificate ID:</strong> {{ $certificate->id }}</p>
                     <p class="text-gray-600"><strong>Date Issued:</strong> {{ $certificate->date_of_issuance->format('F d, Y') }}</p>
-                    <p class="text-gray-600"><strong>Status:</strong> <span class="badge {{ $certificate->status == 'Issued' ? 'bg-success' : ($certificate->status == 'Pending' ? 'bg-warning' : 'bg-danger') }}">{{ $certificate->status }}</span></p>
+                    <p class="text-gray-600"><strong>Status:</strong> 
+                        <span class="badge {{ $certificate->status == 'Issued' ? 'bg-success' : ($certificate->status == 'Pending' ? 'bg-warning' : 'bg-danger') }}">
+                            {{ $certificate->status }}
+                        </span>
+                    </p>
                 </div>
             </div>
 
@@ -44,17 +48,19 @@
                 </div>
             </div>
 
-            @if($certificate->remarks)
-            <div class="grid grid-cols-1 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <h3 class="font-semibold">Cedula Number</h3>
+                    <p class="text-gray-600">{{ $certificate->cedula_number ?? 'N/A' }}</p>
+                </div>
                 <div>
                     <h3 class="font-semibold">Remarks</h3>
-                    <p class="text-gray-600">{{ $certificate->remarks }}</p>
+                    <p class="text-gray-600">{{ $certificate->remarks ?? 'N/A' }}</p>
                 </div>
             </div>
-            @endif
             
             <div class="pt-4 flex justify-end">
-                <a href="{{ route('certificate_of_indigency.index') }}" class="btn btn-outline-secondary">Back to List</a>
+                <a href="{{ route('barangaygoodmoral.index') }}" class="btn btn-outline-secondary">Back to List</a>
             </div>
         </div>
     </div>

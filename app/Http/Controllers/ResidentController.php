@@ -9,6 +9,7 @@ use App\Models\BarangayIdDetail;
 use App\Models\BarangayClearance;
 use App\Models\CertificateOfIndigency;
 use App\Models\BarangayGoodMoralCertificate;
+use App\Models\CertificateOfResidency;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -198,6 +199,7 @@ class ResidentController extends Controller
            
             \App\Models\BarangayClearance::where('resident_id', $id)->delete();
             \App\Models\CertificateOfIndigency::where('resident_id', $id)->delete();
+            \App\Models\CertificateOfResidency::where('resident_id', $id)->delete();
 
             
             $goodMorals = \App\Models\BarangayGoodMoralCertificate::where('resident_id', $id)->get();

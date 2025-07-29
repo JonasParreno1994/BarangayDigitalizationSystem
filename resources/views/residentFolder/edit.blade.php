@@ -274,8 +274,8 @@
                     <label class="form-label">Profile Picture</label>
                     <div class="flex items-center gap-4">
                         <div class="camera-options">
-                            <input type="file" id="profile_picture_input" class="form-input hidden" name="profile_picture" accept="image/*">
-                            <button type="button" onclick="document.getElementById('profile_picture_input').click()" class="btn btn-primary py-2 px-4">
+                            <input type="file" id="profilePictureInput" class="form-input hidden" name="profile_picture" accept="image/*">
+                            <button type="button" onclick="document.getElementById('profilePictureInput').click()" class="btn btn-primary py-2 px-4">
                                 Upload File
                             </button>
                             <button type="button" id="openCameraBtn" class="btn btn-outline-primary py-2 px-4">
@@ -287,18 +287,17 @@
                                 @if($resident->profile_picture)
                                     <img id="profilePreview" src="{{ asset('storage/public/' . $resident->profile_picture) }}" alt="Profile Preview" class="w-full h-full object-cover">
                                 @else
-                                    <svg id="defaultProfileIcon" class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                    </svg>
+                                    <img id="profilePreview" src="" alt="Profile Preview" class="w-full h-full object-cover hidden">
                                 @endif
+                                <svg id="defaultProfileIcon" class="w-8 h-8 text-gray-400 {{ $resident->profile_picture ? 'hidden' : '' }}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                </svg>
                             </div>
-                            @if($resident->profile_picture)
-                                <button type="button" id="removePhotoBtn" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
-                            @endif
+                            <button type="button" id="removePhotoBtn" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 {{ $resident->profile_picture ? '' : 'hidden' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
                         </div>
                     </div>
                     
@@ -319,20 +318,20 @@
                                     <canvas id="photoCanvas" class="absolute inset-0 w-full h-full hidden"></canvas>
                                 </div>
                                 <div class="flex justify-center mt-3 gap-2">
-                                    <button id="captureBtn" class="btn btn-primary flex items-center gap-2 text-sm px-3 py-1.5">
+                                    <button type="button" id="captureBtn" class="btn btn-primary flex items-center gap-2 text-sm px-3 py-1.5">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                                         </svg>
                                         Capture
                                     </button>
-                                    <button id="retakeBtn" class="btn btn-outline-danger hidden flex items-center gap-2 text-sm px-3 py-1.5">
+                                    <button type="button" id="retakeBtn" class="btn btn-outline-danger hidden flex items-center gap-2 text-sm px-3 py-1.5">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                         </svg>
                                         Retake
                                     </button>
-                                    <button id="usePhotoBtn" class="btn btn-success hidden flex items-center gap-2 text-sm px-3 py-1.5">
+                                    <button type="button" id="usePhotoBtn" class="btn btn-success hidden flex items-center gap-2 text-sm px-3 py-1.5">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                         </svg>
@@ -506,8 +505,8 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Profile picture upload preview
-        const profilePictureInput = document.getElementById('profile_picture_input');
+        // Profile picture upload preview - Fixed variable names
+        const profilePictureInput = document.getElementById('profilePictureInput');
         const profilePreview = document.getElementById('profilePreview');
         const defaultProfileIcon = document.getElementById('defaultProfileIcon');
         const removePhotoBtn = document.getElementById('removePhotoBtn');
@@ -543,7 +542,7 @@
             });
         }
         
-        // Camera functionality
+        // Camera functionality - Fixed and improved
         const openCameraBtn = document.getElementById('openCameraBtn');
         const cameraModal = document.getElementById('cameraModal');
         const closeCameraModal = document.getElementById('closeCameraModal');
@@ -552,7 +551,6 @@
         const captureBtn = document.getElementById('captureBtn');
         const retakeBtn = document.getElementById('retakeBtn');
         const usePhotoBtn = document.getElementById('usePhotoBtn');
-        const profilePictureInputHidden = document.getElementById('profile_picture_input');
         
         let stream = null;
         
@@ -566,26 +564,59 @@
         if (closeCameraModal) {
             closeCameraModal.addEventListener('click', function() {
                 stopCamera();
+                resetCameraModal();
                 cameraModal.classList.add('hidden');
             });
         }
         
+        // Close modal when clicking outside
+        if (cameraModal) {
+            cameraModal.addEventListener('click', function(e) {
+                if (e.target === cameraModal) {
+                    stopCamera();
+                    resetCameraModal();
+                    cameraModal.classList.add('hidden');
+                }
+            });
+        }
+        
         function startCamera() {
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(function(s) {
-                    stream = s;
-                    cameraFeed.srcObject = stream;
-                })
-                .catch(function(err) {
-                    console.error("Error accessing camera: ", err);
-                });
+            navigator.mediaDevices.getUserMedia({ 
+                video: { 
+                    width: { ideal: 640 }, 
+                    height: { ideal: 480 },
+                    facingMode: 'user'
+                } 
+            })
+            .then(function(s) {
+                stream = s;
+                cameraFeed.srcObject = stream;
+                console.log('Camera started successfully');
+            })
+            .catch(function(err) {
+                console.error("Error accessing camera: ", err);
+                alert('Could not access camera. Please check permissions and try again.');
+                if (cameraModal) cameraModal.classList.add('hidden');
+            });
         }
         
         function stopCamera() {
             if (stream) {
-                stream.getTracks().forEach(track => track.stop());
+                stream.getTracks().forEach(track => {
+                    track.stop();
+                    console.log('Camera track stopped');
+                });
                 stream = null;
+                if (cameraFeed) cameraFeed.srcObject = null;
             }
+        }
+        
+        function resetCameraModal() {
+            if (photoCanvas) photoCanvas.classList.add('hidden');
+            if (cameraFeed) cameraFeed.classList.remove('hidden');
+            if (captureBtn) captureBtn.classList.remove('hidden');
+            if (retakeBtn) retakeBtn.classList.add('hidden');
+            if (usePhotoBtn) usePhotoBtn.classList.add('hidden');
         }
         
         if (captureBtn) {
@@ -607,12 +638,7 @@
         
         if (retakeBtn) {
             retakeBtn.addEventListener('click', function() {
-                photoCanvas.classList.add('hidden');
-                cameraFeed.classList.remove('hidden');
-                captureBtn.classList.remove('hidden');
-                retakeBtn.classList.add('hidden');
-                usePhotoBtn.classList.add('hidden');
-                
+                resetCameraModal();
                 startCamera();
             });
         }
@@ -620,33 +646,50 @@
         if (usePhotoBtn) {
             usePhotoBtn.addEventListener('click', function() {
                 photoCanvas.toBlob(function(blob) {
-                    const file = new File([blob], 'profile-photo.png', { type: 'image/png' });
-                    
-                    // Create a data transfer object to simulate file input
-                    const dataTransfer = new DataTransfer();
-                    dataTransfer.items.add(file);
-                    profilePictureInputHidden.files = dataTransfer.files;
-                    
-                    // Update preview
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        profilePreview.src = e.target.result;
-                        profilePreview.classList.remove('hidden');
-                        if (defaultProfileIcon) defaultProfileIcon.classList.add('hidden');
-                        if (removePhotoBtn) removePhotoBtn.classList.remove('hidden');
-                    };
-                    reader.readAsDataURL(file);
-                    
-                    // Close modal
-                    cameraModal.classList.add('hidden');
-                    photoCanvas.classList.add('hidden');
-                    cameraFeed.classList.remove('hidden');
-                    captureBtn.classList.remove('hidden');
-                    retakeBtn.classList.add('hidden');
-                    usePhotoBtn.classList.add('hidden');
-                }, 'image/png');
+                    if (blob) {
+                        const file = new File([blob], 'profile-photo.png', { type: 'image/png' });
+                        
+                        // Create a data transfer object to simulate file input
+                        const dataTransfer = new DataTransfer();
+                        dataTransfer.items.add(file);
+                        profilePictureInput.files = dataTransfer.files;
+                        
+                        // Update preview
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            profilePreview.src = e.target.result;
+                            profilePreview.classList.remove('hidden');
+                            if (defaultProfileIcon) defaultProfileIcon.classList.add('hidden');
+                            if (removePhotoBtn) removePhotoBtn.classList.remove('hidden');
+                        };
+                        reader.readAsDataURL(file);
+                        
+                        // Close modal and reset
+                        resetCameraModal();
+                        cameraModal.classList.add('hidden');
+                        
+                        console.log('Photo captured and set successfully');
+                    } else {
+                        console.error('Failed to create blob from canvas');
+                        alert('Failed to capture photo. Please try again.');
+                    }
+                }, 'image/png', 0.8);
             });
         }
+        
+        // Handle page visibility change to stop camera if page is hidden
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden && stream) {
+                stopCamera();
+            }
+        });
+        
+        // Stop camera when page is about to unload
+        window.addEventListener('beforeunload', function() {
+            if (stream) {
+                stopCamera();
+            }
+        });
     });
 </script>
 

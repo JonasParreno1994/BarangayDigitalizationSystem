@@ -2,11 +2,12 @@
 
 @section('content')
 <div class="container-fluid">
-    <h1 class="h3 mb-2 text-gray-800">Residents Statistics</h1>
+    <h1 class="h3 mb-4 text-gray-800">Residents Statistics</h1>
     
-    <div class="row">
-        <div class="col-xl-12 col-lg-12">
-            <div class="card shadow mb-4">
+    <!-- Full width chart for Purok distribution -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Resident Distribution by Purok</h6>
                 </div>
@@ -19,9 +20,10 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-xl-6 col-lg-6">
-            <div class="card shadow mb-4">
+    <!-- Side-by-side cards for Gender and Civil Status -->
+    <div class="cards-container mb-4">
+        <div class="card-wrapper">
+            <div class="card shadow h-100">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Gender Distribution</h6>
                 </div>
@@ -33,8 +35,8 @@
             </div>
         </div>
 
-        <div class="col-xl-6 col-lg-6">
-            <div class="card shadow mb-4">
+        <div class="card-wrapper">
+            <div class="card shadow h-100">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Civil Status Distribution</h6>
                 </div>
@@ -47,9 +49,10 @@
         </div>
     </div>
 
+    <!-- Full width chart for Age Group distribution -->
     <div class="row">
-        <div class="col-xl-12 col-lg-12">
-            <div class="card shadow mb-4">
+        <div class="col-12">
+            <div class="card shadow">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Age Group Distribution</h6>
                 </div>
@@ -82,6 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 y: {
                     beginAtZero: true,
@@ -122,6 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 y: {
                     beginAtZero: true,
@@ -149,6 +154,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 y: {
                     beginAtZero: true,
@@ -176,6 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 y: {
                     beginAtZero: true,
@@ -193,6 +200,91 @@ document.addEventListener('DOMContentLoaded', function() {
 .chart-bar {
     position: relative;
     height: 300px;
+}
+
+
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    justify-content: center;
+}
+
+.card-wrapper {
+    flex: 1;
+    min-width: 300px;
+    max-width: 600px;
+}
+
+.card {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border-radius: 0 !important; 
+    margin: 0;
+    height: 100%;
+}
+
+
+.card-wrapper:not(:last-child) .card {
+    border-right: 1px solid #e3e6f0;
+}
+
+.card-wrapper:first-child .card {
+    border-top-left-radius: calc(0.35rem - 1px) !important;
+    border-bottom-left-radius: calc(0.35rem - 1px) !important;
+}
+
+.card-wrapper:last-child .card {
+    border-top-right-radius: calc(0.35rem - 1px) !important;
+    border-bottom-right-radius: calc(0.35rem - 1px) !important;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15) !important;
+    z-index: 10;
+}
+
+
+.card-body {
+    position: relative;
+    z-index: 2;
+}
+
+.card-header {
+    position: relative;
+    z-index: 2;
+}
+
+
+@media (max-width: 1200px) {
+    .card-wrapper {
+        max-width: 500px;
+    }
+}
+
+@media (max-width: 992px) {
+    .cards-container {
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    
+    .card-wrapper {
+        flex: 0 0 100%;
+        max-width: none;
+    }
+    
+    .card {
+        border-radius: calc(0.35rem - 1px) !important;
+        border-right: none !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .card-wrapper {
+        min-width: 250px;
+    }
 }
 </style>
 @endsection

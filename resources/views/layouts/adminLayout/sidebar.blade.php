@@ -28,7 +28,7 @@
                     </button>
                     <ul x-cloak x-show="activeDropdown === 'dashboard'" x-collapse class="sub-menu text-gray-500 ml-9 mt-1 space-y-2">
                         <li>
-                            <a href="{{ route('dashboard') }}" class="block py-1 hover:text-primary transition-colors duration-200">Overview</a>
+                            <a href="{{ route('dashboard.overview') }}" class="block py-1 hover:text-primary transition-colors duration-200">Overview</a>
                         </li>
                         <li>
                             <a href="{{ route('dashboard.residentsgraph')}}" class="block py-1 hover:text-primary transition-colors duration-200">Residents Graph</a>
@@ -170,6 +170,9 @@
                                 </li>
                                 <li>
                                     <a href="{{ route('purok.index') }}" class="block py-1 hover:text-primary transition-colors duration-200">List Of Purok</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('dashboard-items.index') }}" class="block py-1 hover:text-primary transition-colors duration-200">Dashboard Items</a>
                                 </li>
                                 <li>
                                     <a href="{{ route('barangayid.index') }}" class="block py-1 hover:text-primary transition-colors duration-200">Barangay ID details</a>

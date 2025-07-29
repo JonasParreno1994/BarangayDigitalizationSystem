@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\BrgyclearanceController;
 use App\Http\Controllers\ResidentController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DashboardItemController;
 use App\Http\Controllers\PurokController;
 use App\Http\Controllers\CertificateOfIndigencyController;
 use App\Http\Controllers\BarangayGoodMoralCertificateController;
@@ -21,9 +22,9 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardItemController::class, 'overview'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     
@@ -113,6 +114,9 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('certificate-of-residency', CertificateOfResidencyController::class);
     Route::get('/certificate-of-residency/{id}/print', [CertificateOfResidencyController::class, 'print'])->name('certificate-of-residency.print');
+
+    Route::resource('dashboard-items', DashboardItemController::class)->except(['show']);
+    Route::get('/dashboard-items/overview', [DashboardItemController::class, 'overview'])->name('dashboard.overview');
 });
 
 require __DIR__.'/auth.php';

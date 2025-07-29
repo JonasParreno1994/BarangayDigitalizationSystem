@@ -53,18 +53,17 @@ class OfficialController extends Controller
         return view('officials.edit', compact('official', 'positions'));
     }
 
-    public function update(Request $request, $id)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'position_id' => 'required|exists:positions,id',
-            'committee' => 'nullable|string|max:255',
-            'status' => 'required|in:Active,Inactive'
-        ]);
+    public function update(Request $request, $id){
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'position_id' => 'required|exists:tblposition,id',
+        'committee' => 'nullable|string|max:255',
+        'status' => 'required|in:Active,Inactive'
+    ]);
 
-        $official = Official::findOrFail($id);
-        $official->update($validated);
-        return redirect()->route('officials.index')->with('success', 'Official updated successfully');
+    $official = Official::findOrFail($id);
+    $official->update($validated);
+    return redirect()->route('officials.index')->with('success', 'Official updated successfully');
     }
 
     public function destroy($id)

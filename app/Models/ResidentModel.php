@@ -73,4 +73,8 @@ class ResidentModel extends Model
     public function certificatesOfResidency(){
     return $this->hasMany(CertificateOfResidency::class, 'resident_id');
     }
+
+    public function files(){
+    return $this->hasMany(File::class, 'resident_id');
+    }
 }

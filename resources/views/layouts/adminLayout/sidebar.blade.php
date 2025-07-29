@@ -28,13 +28,13 @@
                     </button>
                     <ul x-cloak x-show="activeDropdown === 'dashboard'" x-collapse class="sub-menu text-gray-500 ml-9 mt-1 space-y-2">
                         <li>
-                            <a href="{{ route('dashboard.overview') }}" class="block py-1 hover:text-primary transition-colors duration-200">Overview</a>
+                            <a href="{{ route('dashboard.overview') }}" class="nav-link {{ request()->routeIs('dashboard.overview') ? 'active' : '' }}">Overview</a>
                         </li>
                         <li>
-                            <a href="{{ route('dashboard.residentsgraph')}}" class="block py-1 hover:text-primary transition-colors duration-200">Residents Graph</a>
+                            <a href="{{ route('dashboard.residentsgraph')}}" class="nav-link {{ request()->routeIs('dashboard.residentsgraph') ? 'active' : '' }}">Residents Graph</a>
                         </li>
                         <li>
-                            <a href="#" class="block py-1 hover:text-primary transition-colors duration-200">Certifications Graph</a>
+                            <a href="#" class="nav-link {{ request()->routeIs('dashboard.certificationsgraph') ? 'active' : '' }}">Certifications Graph</a>
                         </li>
                     </ul>
                 </li>
@@ -49,7 +49,7 @@
                     </h2>
                     <ul class="mt-2 space-y-1">
                         <li class="nav-item">
-                            <a href="{{ route('resident.index') }}" class="nav-link group">
+                            <a href="{{ route('resident.index') }}" class="nav-link {{ request()->routeIs('resident.index') ? 'active' : '' }}">
                                 <div class="flex items-center">
                                     <svg class="shrink-0 group-hover:!text-primary" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path opacity="0.5" d="M16 11C18.2091 11 20 9.20914 20 7C20 4.79086 18.2091 3 16 3C13.7909 3 12 4.79086 12 7C12 9.20914 13.7909 11 16 11Z" fill="currentColor"></path>
@@ -74,7 +74,7 @@
                     </h2>
                     <ul class="mt-2 space-y-1">
                         <li class="nav-item">
-                            <a href="{{ route('barangayclearance.index') }}" class="nav-link group">
+                            <a href="{{ route('barangayclearance.index') }}" class="nav-link {{ request()->routeIs('barangayclearance.index') ? 'active' : '' }}">
                                 <div class="flex items-center">
                                     <svg class="shrink-0 group-hover:!text-primary" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd" d="M14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V10C2 6.22876 2 4.34315 3.17157 3.17157C4.34315 2 6.23869 2 10.0298 2C10.6358 2 11.1214 2 11.53 2.01666C11.5166 2.09659 11.5095 2.17813 11.5092 2.26057L11.5 5.09497C11.4999 6.19207 11.4998 7.16164 11.6049 7.94316C11.7188 8.79028 11.9803 9.63726 12.6716 10.3285C13.3628 11.0198 14.2098 11.2813 15.0569 11.3952C15.8385 11.5003 16.808 11.5002 17.9051 11.5001L18 11.5001H21.9574C22 12.0344 22 12.6901 22 13.5629V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22Z" fill="currentColor"></path>
@@ -87,7 +87,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('certificate_of_indigency.index') }}" class="nav-link group">
+                            <a href="{{ route('certificate_of_indigency.index') }}" class="nav-link{{ request()->routeIs('certificate_of_indigency.index') ? 'active' : '' }}">
                                 <div class="flex items-center">
                                     <svg class="shrink-0 group-hover:!text-primary" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd" d="M14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V10C2 6.22876 2 4.34315 3.17157 3.17157C4.34315 2 6.23869 2 10.0298 2C10.6358 2 11.1214 2 11.53 2.01666C11.5166 2.09659 11.5095 2.17813 11.5092 2.26057L11.5 5.09497C11.4999 6.19207 11.4998 7.16164 11.6049 7.94316C11.7188 8.79028 11.9803 9.63726 12.6716 10.3285C13.3628 11.0198 14.2098 11.2813 15.0569 11.3952C15.8385 11.5003 16.808 11.5002 17.9051 11.5001L18 11.5001H21.9574C22 12.0344 22 12.6901 22 13.5629V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22Z" fill="currentColor"></path>
@@ -100,7 +100,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('barangaygoodmoral.index') }}" class="nav-link group">
+                            <a href="{{ route('barangaygoodmoral.index') }}" class="nav-link {{ request()->routeIs('barangaygoodmoral.index') ? 'active' : '' }}">
                                 <div class="flex items-center">
                                     <svg class="shrink-0 group-hover:!text-primary" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd" d="M14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V10C2 6.22876 2 4.34315 3.17157 3.17157C4.34315 2 6.23869 2 10.0298 2C10.6358 2 11.1214 2 11.53 2.01666C11.5166 2.09659 11.5095 2.17813 11.5092 2.26057L11.5 5.09497C11.4999 6.19207 11.4998 7.16164 11.6049 7.94316C11.7188 8.79028 11.9803 9.63726 12.6716 10.3285C13.3628 11.0198 14.2098 11.2813 15.0569 11.3952C15.8385 11.5003 16.808 11.5002 17.9051 11.5001L18 11.5001H21.9574C22 12.0344 22 12.6901 22 13.5629V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22Z" fill="currentColor"></path>
@@ -114,7 +114,7 @@
                         </li>
 
                          <li class="nav-item">
-                            <a href="{{ route('certificate-of-residency.index') }}" class="nav-link group">
+                            <a href="{{ route('certificate-of-residency.index') }}" class="nav-link {{ request()->routeIs('certificate-of-residency.index') ? 'active' : '' }}">
                                 <div class="flex items-center">
                                     <svg class="shrink-0 group-hover:!text-primary" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd" d="M14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V10C2 6.22876 2 4.34315 3.17157 3.17157C4.34315 2 6.23869 2 10.0298 2C10.6358 2 11.1214 2 11.53 2.01666C11.5166 2.09659 11.5095 2.17813 11.5092 2.26057L11.5 5.09497C11.4999 6.19207 11.4998 7.16164 11.6049 7.94316C11.7188 8.79028 11.9803 9.63726 12.6716 10.3285C13.3628 11.0198 14.2098 11.2813 15.0569 11.3952C15.8385 11.5003 16.808 11.5002 17.9051 11.5001L18 11.5001H21.9574C22 12.0344 22 12.6901 22 13.5629V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22Z" fill="currentColor"></path>
@@ -157,25 +157,25 @@
                             </button>
                             <ul x-cloak x-show="activeDropdown === 'settings'" x-collapse class="sub-menu text-gray-500 ml-9 mt-1 space-y-2">
                                 <li>
-                                    <a href="{{ route('officials.index') }}" class="block py-1 hover:text-primary transition-colors duration-200">Officials Data</a>
+                                    <a href="{{ route('officials.index') }}" class="nav-link {{ request()->routeIs('officials.index') ? 'active' : '' }}">Officials Data</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('filescategory.index') }}" class="block py-1 hover:text-primary transition-colors duration-200">Files Category</a>
+                                    <a href="{{ route('filescategory.index') }}" class="nav-link {{ request()->routeIs('filescategory.index') ? 'active' : '' }}">Files Category</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('comelec') }}" class="block py-1 hover:text-primary transition-colors duration-200">Comelec Data</a>
+                                    <a href="{{ route('comelec') }}" class="nav-link {{ request()->routeIs('comelec') ? 'active' : '' }}">Comelec Data</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('position.index') }}" class="block py-1 hover:text-primary transition-colors duration-200">List of Position</a>
+                                    <a href="{{ route('position.index') }}" class="nav-link {{ request()->routeIs('position.index') ? 'active' : '' }}">List of Position</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('purok.index') }}" class="block py-1 hover:text-primary transition-colors duration-200">List Of Purok</a>
+                                    <a href="{{ route('purok.index') }}" class="nav-link {{ request()->routeIs('purok.index') ? 'active' : '' }}">List Of Purok</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('dashboard-items.index') }}" class="block py-1 hover:text-primary transition-colors duration-200">Dashboard Items</a>
+                                    <a href="{{ route('dashboard-items.index') }}" class="nav-link {{ request()->routeIs('dashboard-items.index') ? 'active' : '' }}">Dashboard Items</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('barangayid.index') }}" class="block py-1 hover:text-primary transition-colors duration-200">Barangay ID details</a>
+                                    <a href="{{ route('barangayid.index') }}" class="nav-link {{ request()->routeIs('barangayid.index') ? 'active' : '' }}">Barangay ID details</a>
                                 </li>
                             </ul>
                         </li>

@@ -7,7 +7,7 @@ use App\Http\Controllers\PositionController;
 use App\Http\Controllers\officialController;
 use App\Http\Controllers\FilesCategoryController;
 use APP\Http\Controllers\filesController;
-use App\Http\Controllers\FileController; // Add this import
+use App\Http\Controllers\FileController; 
 use App\Http\Controllers\BrangayidDetailsController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\BrgyclearanceController;

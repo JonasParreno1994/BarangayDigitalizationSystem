@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class FilesCategoryModel extends Model
 {
+    use HasFactory;
+    
     protected $table = 'tblfilescategory';
     protected $primaryKey = 'id';
     public $timestamps = false;
@@ -15,5 +17,9 @@ class FilesCategoryModel extends Model
         'id',
         'category_name'
     ];
-}
 
+    public function documents()
+    {
+        return $this->hasMany(Document::class, 'category_id');
+    }
+}

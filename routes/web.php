@@ -6,7 +6,6 @@ use App\Http\Controllers\ComelecController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\officialController;
 use App\Http\Controllers\FilesCategoryController;
-use App\Http\Controllers\FileController;
 use App\Http\Controllers\BrangayidDetailsController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\BrgyclearanceController;
@@ -27,7 +26,20 @@ Route::get('/dashboard', [DashboardItemController::class, 'overview'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+
+
+
 Route::middleware('auth')->group(function () {
+
+    Route::prefix('users')->group(function () {
+    Route::get('/', [UsersController::class, 'index'])->name('users.list');
+    Route::get('/create', [UsersController::class, 'create'])->name('users.create');
+    Route::post('/', [UsersController::class, 'store'])->name('users.store');
+    Route::get('/users/{user}', [UsersController::class, 'show'])->name('users.show');
+    Route::get('/{user}/edit', [UsersController::class, 'edit'])->name('users.edit');
+    Route::put('/{user}', [UsersController::class, 'update'])->name('users.update');
+    Route::delete('/{user}', [UsersController::class, 'destroy'])->name('users.destroy');
+    });
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -68,15 +80,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/filesCategory/update/{id}', [FilesCategoryController::class, 'update'])->name('filescategory.update');
     Route::delete('/filesCategory/{id}', [FilesCategoryController::class, 'destroy'])->name('filescategory.destroy');
 
-  
-    Route::prefix('resident/{residentId}/files')->group(function () {
-        Route::get('/', [FileController::class, 'index'])->name('resident.files.index');
-        Route::get('/create', [FileController::class, 'create'])->name('resident.files.create');
-        Route::post('/', [FileController::class, 'store'])->name('resident.files.store');
-        Route::get('/{fileId}', [FileController::class, 'show'])->name('resident.files.show');
-        Route::get('/{fileId}/download', [FileController::class, 'download'])->name('resident.files.download');
-        Route::delete('/{fileId}', [FileController::class, 'destroy'])->name('resident.files.destroy');
-    });
+
+    Route::resource('documents', DocumentController::class);
+    Route::get('documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
 
     Route::resource('purok', PurokController::class);
 

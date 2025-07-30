@@ -70,7 +70,7 @@
                         <svg class="mr-2 h-4 w-4" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                         </svg>
-                        <span>FILES MANAGEMENT</span>
+                        <span>CERTIFICATE MANAGEMENT</span>
                     </h2>
                     <ul class="mt-2 space-y-1">
                         <li class="nav-item">
@@ -129,6 +129,27 @@
                     </ul>
                 </li>
 
+                <li class="mt-4">
+                    <h2 class="menu-section-header flex items-center uppercase text-xs font-bold tracking-wider text-gray-500 dark:text-gray-400">
+                        <svg class="mr-2 h-4 w-4" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        <span>FILES MANAGEMENT</span>
+                    </h2>
+                    <ul class="mt-2 space-y-1">
+                        <li class="nav-item">
+                            <a href="{{ route('documents.index') }}" class="nav-link {{ request()->routeIs('documents.index') ? 'active' : '' }}">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 50 50">
+                                        <path d="M 6 4 C 4.3545455 4 3 5.3545455 3 7 L 3 16 L 3 43 C 3 44.645455 4.3545455 46 6 46 L 44 46 C 45.645455 46 47 44.645455 47 43 L 47 16 L 47 11 C 47 9.3545455 45.645455 8 44 8 L 19 8 C 19.06944 8 18.95032 7.99708 18.705078 7.7167969 C 18.459833 7.4365165 18.160156 6.9707031 17.847656 6.4707031 C 17.535156 5.9707031 17.209833 5.4365165 16.798828 4.9667969 C 16.387823 4.4970773 15.819444 4 15 4 L 6 4 z M 6 6 L 15 6 C 14.93056 6 15.04968 6.00292 15.294922 6.2832031 C 15.540167 6.5634835 15.839844 7.0292969 16.152344 7.5292969 C 16.464844 8.0292969 16.790167 8.5634835 17.201172 9.0332031 C 17.612177 9.5029227 18.180556 10 19 10 L 44 10 C 44.554545 10 45 10.445455 45 11 L 45 13.1875 C 44.685079 13.07397 44.351946 13 44 13 L 6 13 C 5.6480538 13 5.3149207 13.07397 5 13.1875 L 5 7 C 5 6.4454545 5.4454545 6 6 6 z M 6 15 L 44 15 C 44.554545 15 45 15.445455 45 16 L 45 43 C 45 43.554545 44.554545 44 44 44 L 6 44 C 5.4454545 44 5 43.554545 5 43 L 5 16 C 5 15.445455 5.4454545 15 6 15 z"></path>
+                                        </svg>
+                                    <span class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Upload Document</span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
                 <!-- User and Settings Section -->
                 <li class="mt-4">
                     <h2 class="menu-section-header flex items-center uppercase text-xs font-bold tracking-wider text-gray-500 dark:text-gray-400">
@@ -176,6 +197,9 @@
                                 </li>
                                 <li>
                                     <a href="{{ route('barangayid.index') }}" class="nav-link {{ request()->routeIs('barangayid.index') ? 'active' : '' }}">Barangay ID details</a>
+                                </li>
+                                  <li>
+                                    <a href="{{ route('users.list') }}" class="nav-link {{ request()->routeIs('users.list') ? 'active' : '' }}">User List</a>
                                 </li>
                             </ul>
                         </li>

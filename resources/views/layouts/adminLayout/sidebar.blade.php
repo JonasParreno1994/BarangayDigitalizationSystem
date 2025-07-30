@@ -177,6 +177,9 @@
                                 <li>
                                     <a href="{{ route('barangayid.index') }}" class="nav-link {{ request()->routeIs('barangayid.index') ? 'active' : '' }}">Barangay ID details</a>
                                 </li>
+                                  <li>
+                                    <a href="{{ route('users.list') }}" class="nav-link {{ request()->routeIs('users.list') ? 'active' : '' }}">User List</a>
+                                </li>
                             </ul>
                         </li>
                     </ul>

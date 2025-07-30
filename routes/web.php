@@ -26,7 +26,20 @@ Route::get('/dashboard', [DashboardItemController::class, 'overview'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+
+
+
 Route::middleware('auth')->group(function () {
+
+    Route::prefix('users')->group(function () {
+    Route::get('/', [UsersController::class, 'index'])->name('users.list');
+    Route::get('/create', [UsersController::class, 'create'])->name('users.create');
+    Route::post('/', [UsersController::class, 'store'])->name('users.store');
+    Route::get('/users/{user}', [UsersController::class, 'show'])->name('users.show');
+    Route::get('/{user}/edit', [UsersController::class, 'edit'])->name('users.edit');
+    Route::put('/{user}', [UsersController::class, 'update'])->name('users.update');
+    Route::delete('/{user}', [UsersController::class, 'destroy'])->name('users.destroy');
+    });
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

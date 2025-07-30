@@ -154,16 +154,18 @@
                 <div class="form-input bg-gray-100">{{ $resident->household_number ?? 'N/A' }}</div>
             </div>
         </div>
-        <div class="flex justify-end px-5 py-3 border-t">
+        <div class="flex justify-end px-5 py-3 border-t space-x-2">
             <button onclick="window.open('{{ route('resident.print', $resident->id) }}', '_blank')" 
-                    class="btn btn-primary ltr:mr-2 rtl:ml-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ltr:mr-1 rtl:ml-1" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
-                </svg>
-                Print
+                class="btn btn-primary ltr:mr-2 rtl:ml-2">
+            <i class="fas fa-print ltr:mr-1 rtl:ml-1"></i>
+            Print
             </button>
-            <button type="button" class="btn btn-outline-danger" onclick="closeViewModal()">Close</button>
+            <button type="button" class="btn btn-outline-danger" onclick="closeViewModal()">
+            <i class="fas fa-times ltr:mr-1 rtl:ml-1"></i>
+            Close
+            </button>
+            <a href="{{ route('resident.files.index', $resident->id) }}" class="btn btn-primary">
+            <i class="fas fa-file"></i> Manage Files
+            </a>
         </div>
-            </div>
-</div>
- 
+    </div>

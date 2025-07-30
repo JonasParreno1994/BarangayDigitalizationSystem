@@ -6,6 +6,7 @@ use App\Http\Controllers\ComelecController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\officialController;
 use App\Http\Controllers\FilesCategoryController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\BrangayidDetailsController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\BrgyclearanceController;
@@ -79,6 +80,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/filesCategory/edit/{id}', [FilesCategoryController::class, 'edit'])->name('filescategory.edit');
     Route::post('/filesCategory/update/{id}', [FilesCategoryController::class, 'update'])->name('filescategory.update');
     Route::delete('/filesCategory/{id}', [FilesCategoryController::class, 'destroy'])->name('filescategory.destroy');
+
+    Route::resource('documents', DocumentController::class);
+    Route::get('documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
 
     Route::resource('purok', PurokController::class);
 

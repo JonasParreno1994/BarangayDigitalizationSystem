@@ -13,6 +13,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\BrgyclearanceController;
 use App\Http\Controllers\ResidentController;
 use App\Http\Controllers\DocumentController; 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardItemController;
 use App\Http\Controllers\PurokController;
 use App\Http\Controllers\CertificateOfIndigencyController;

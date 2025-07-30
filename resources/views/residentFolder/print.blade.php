@@ -164,7 +164,6 @@
 </head>
 <body>
     <div class="header">
-        <div class="logo">LOGO</div>
         <h1>INDIVIDUAL RECORDS OF BARANGAY INHABITANT</h1>
     </div>
 

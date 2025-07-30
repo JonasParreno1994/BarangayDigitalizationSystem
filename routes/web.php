@@ -6,11 +6,13 @@ use App\Http\Controllers\ComelecController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\officialController;
 use App\Http\Controllers\FilesCategoryController;
+use APP\Http\Controllers\filesController;
+use App\Http\Controllers\FileController; // Add this import
 use App\Http\Controllers\BrangayidDetailsController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\BrgyclearanceController;
 use App\Http\Controllers\ResidentController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DocumentController; 
 use App\Http\Controllers\DashboardItemController;
 use App\Http\Controllers\PurokController;
 use App\Http\Controllers\CertificateOfIndigencyController;
@@ -25,9 +27,6 @@ Route::get('/', function () {
 Route::get('/dashboard', [DashboardItemController::class, 'overview'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
-
-
-
 
 Route::middleware('auth')->group(function () {
 
@@ -80,7 +79,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/filesCategory/update/{id}', [FilesCategoryController::class, 'update'])->name('filescategory.update');
     Route::delete('/filesCategory/{id}', [FilesCategoryController::class, 'destroy'])->name('filescategory.destroy');
 
-
     Route::resource('documents', DocumentController::class);
     Route::get('documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
 
@@ -106,6 +104,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/residentFolder/printAll', [ResidentController::class, 'printAll'])->name('resident.printAll');
     Route::get('/residentFolder/printAllPDF', [ResidentController::class, 'printAllPDF'])->name('resident.printAllPDF');
     Route::get('/residentFolder/printAllPDF', [ResidentController::class, 'printAllPDF'])->name('resident.printAllPDF');
+
+    // Add File Management Routes for Residents
+    Route::prefix('resident/{resident}')->group(function () {
+        Route::get('/files', [FileController::class, 'index'])->name('resident.files.index');
+        Route::get('/files/create', [FileController::class, 'create'])->name('resident.files.create');
+        Route::post('/files', [FileController::class, 'store'])->name('resident.files.store');
+        Route::get('/files/{file}', [FileController::class, 'show'])->name('resident.files.show');
+        Route::get('/files/{file}/download', [FileController::class, 'download'])->name('resident.files.download');
+        Route::delete('/files/{file}', [FileController::class, 'destroy'])->name('resident.files.destroy');
+    });
 
     Route::get('/barangayclearance', [BrgyclearanceController::class, 'index'])->name('barangayclearance.index');
     Route::post('/barangayclearance', [BrgyclearanceController::class, 'store'])->name('barangayclearance.store');

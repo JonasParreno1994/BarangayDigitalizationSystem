@@ -10,13 +10,16 @@
             <small class="text-light">Filter and generate customized certificate reports instantly</small>
         </div>
 
+        
+
         <div class="card-body bg-light p-4">
             <form action="{{ route('reports.generate') }}" method="POST" target="_blank">
                 @csrf
-                <div class="row g-4">
-                    
+                
+                <!-- Certificate Type and Status Row -->
+                <div class="row g-3 mb-4 align-items-end">
                     <!-- Certificate Type -->
-                    <div class="col-md-6">
+                    <div class="col-md-6 col-sm-12">
                         <label for="certificate_type" class="form-label fw-semibold">Certificate Type</label>
                         <select class="form-select shadow-sm" id="certificate_type" name="certificate_type" required>
                             <option value="all">📑 All Certificates</option>
@@ -25,10 +28,7 @@
                             <option value="moral">✅ Certification of Good Moral</option>
                             <option value="residency">🏠 Certification of Residency</option>
                         </select>
-                    </div>
-
-                    <!-- Status -->
-                    <div class="col-md-6">
+                  
                         <label for="status" class="form-label fw-semibold">Status</label>
                         <select class="form-select shadow-sm" id="status" name="status">
                             <option value="all">📋 All Statuses</option>
@@ -37,28 +37,26 @@
                             <option value="rejected">❌ Rejected</option>
                         </select>
                     </div>
-
+                </div>
+        
+                <!-- Date From and Date To Row -->
+                <div class="row g-3 mb-4 align-items-end">
                     <!-- Date From -->
-                    <div class="col-md-6">
-                        <label for="date_from" class="form-label fw-semibold">Date From</label>
+                    <div class="col-md-6 col-sm-12">
+                        <label for="date_from" class="form-label fw-semibold">Date From:
                         <input type="date" class="form-control shadow-sm" id="date_from" name="date_from" required>
-                    </div>
-
-                    <!-- Date To -->
-                    <div class="col-md-6">
-                        <label for="date_to" class="form-label fw-semibold">Date To</label>
-                        <input type="date" class="form-control shadow-sm" id="date_to" name="date_to" required>
+                     Date To:<input type="date" class="form-control shadow-sm" id="date_to" name="date_to" required>
                     </div>
                 </div>
-
+        
                 <!-- Submit Button -->
-                <div class="d-flex justify-content-end mt-5">
+                <div class="d-flex justify-content-end mt-4">
                     <button type="submit" class="btn btn-success px-5 py-2 shadow-sm fw-semibold">
                         <i class="bi bi-file-earmark-text me-2"></i> Generate Report
                     </button>
                 </div>
             </form>
-
+        
             {{-- Optional Hidden Form (For JS/Vue Integration) --}}
             <form id="print-form" action="{{ route('reports.print') }}" method="POST" target="_blank" style="display: none;">
                 @csrf
@@ -68,6 +66,7 @@
                 <input type="hidden" name="date_to" :value="date_to">
             </form>
         </div>
+        
     </div>
 </div>
 

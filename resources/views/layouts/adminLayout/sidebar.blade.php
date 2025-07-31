@@ -202,6 +202,24 @@
                                     <a href="{{ route('users.list') }}" class="nav-link {{ request()->routeIs('users.list') ? 'active' : '' }}">User List</a>
                                 </li>
                             </ul>
+                            
+                            <li class="mt-4">
+                                <h2 class="menu-section-header flex items-center uppercase text-xs font-bold tracking-wider text-gray-500 dark:text-gray-400">
+                                    <svg class="mr-2 h-4 w-4" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                    <span>REPORTS MANAGEMENT</span>
+                                </h2>
+                                <ul class="mt-2 space-y-1">
+                                    <li class="nav-item">
+                                        <a href="{{ route('reports.index') }}" class="nav-link {{ request()->routeIs('documents.index') ? 'active' : '' }}">
+                                            <div class="flex items-center">
+                                                <span class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Generate Reports</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                         </li>
                     </ul>
                 </li>

@@ -19,6 +19,7 @@ use App\Http\Controllers\PurokController;
 use App\Http\Controllers\CertificateOfIndigencyController;
 use App\Http\Controllers\BarangayGoodMoralCertificateController;
 use App\Http\Controllers\CertificateOfResidencyController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -143,6 +144,12 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('dashboard-items', DashboardItemController::class)->except(['show']);
     Route::get('/dashboard-items/overview', [DashboardItemController::class, 'overview'])->name('dashboard.overview');
+
+    Route::prefix('reports')->group(function () {
+        Route::get('/', [ReportController::class, 'index'])->name('reports.index');
+        Route::post('/generate', [ReportController::class, 'generate'])->name('reports.generate');
+        Route::get('/print', [ReportController::class, 'print'])->name('reports.print');
+    });
 });
 
 require __DIR__.'/auth.php';

@@ -3,7 +3,7 @@
         <div class="h-full bg-white dark:bg-[#0e1726] flex flex-col">
             <!-- Logo and Collapse Button -->
             <div class="flex flex-col items-center justify-center px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-                <a href="index.html" class="main-logo flex items-center justify-center">
+                <a href="{{ route('dashboard.residentsgraph')}}" class="main-logo flex items-center justify-center">
                     <img class="w-20" src="{{ asset('/newlogo.jfif') }}" alt="iBarangay Logo">
                 </a>
             </div>

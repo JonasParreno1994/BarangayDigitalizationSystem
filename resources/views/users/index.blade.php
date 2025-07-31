@@ -100,7 +100,7 @@
         <!-- Add User Modal -->
         <div class="fixed inset-0 z-[999] hidden overflow-y-auto bg-[black]/60" :class="open && '!block'">
             <div class="flex min-h-screen items-start justify-center px-4" @click.self="open = false">
-                <div x-show="open" x-transition x-transition.duration.300 class="panel my-8 w-full max-w-2xl overflow-hidden rounded-lg border-0 p-0">
+                <div x-show="open" x-transition x-transition.duration.300 class="panel my-8 max-w-2xl overflow-hidden rounded-lg border-0 p-0">
                     <div class="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
                         <div class="text-lg font-bold">CREATE NEW USER</div>
                         <button type="button" class="text-white-dark hover:text-dark" @click="toggle">

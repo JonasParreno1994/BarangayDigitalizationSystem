@@ -1,52 +1,65 @@
 @extends('layouts.adminLayout.index')
 
 @section('content')
-<div class="container mt-4">
-    <div class="card shadow-lg border-0">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">📄 Generate Certificate Reports</h4>
+<div class="container py-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-gradient-primary text-white rounded-top-4 py-3 text-center">
+            <h3 class="mb-0 fw-bold">
+                📄 Generate Certificate Reports
+            </h3>
+            <small class="text-light">Filter and generate customized certificate reports instantly</small>
         </div>
-        <div class="card-body">
+
+        <div class="card-body bg-light p-4">
             <form action="{{ route('reports.generate') }}" method="POST" target="_blank">
                 @csrf
-                <div class="row g-3">
+                <div class="row g-4">
+                    
+                    <!-- Certificate Type -->
                     <div class="col-md-6">
-                        <label for="certificate_type" class="form-label">Certificate Type</label>
-                        <select class="form-select" id="certificate_type" name="certificate_type" required>
-                            <option value="all">All Certificates</option>
-                            <option value="clearance">Barangay Clearance</option>
-                            <option value="indigency">Barangay Indigency</option>
-                            <option value="moral">Certification of Good Moral</option>
-                            <option value="residency">Certification of Residency</option>
+                        <label for="certificate_type" class="form-label fw-semibold">Certificate Type</label>
+                        <select class="form-select shadow-sm" id="certificate_type" name="certificate_type" required>
+                            <option value="all">📑 All Certificates</option>
+                            <option value="clearance">📝 Barangay Clearance</option>
+                            <option value="indigency">🤝 Barangay Indigency</option>
+                            <option value="moral">✅ Certification of Good Moral</option>
+                            <option value="residency">🏠 Certification of Residency</option>
                         </select>
                     </div>
+
+                    <!-- Status -->
                     <div class="col-md-6">
-                        <label for="status" class="form-label">Status</label>
-                        <select class="form-select" id="status" name="status">
-                            <option value="all">All Statuses</option>
-                            <option value="issued">Issued</option>
-                            <option value="pending">Pending</option>
-                            <option value="rejected">Rejected</option>
+                        <label for="status" class="form-label fw-semibold">Status</label>
+                        <select class="form-select shadow-sm" id="status" name="status">
+                            <option value="all">📋 All Statuses</option>
+                            <option value="issued">✅ Issued</option>
+                            <option value="pending">⏳ Pending</option>
+                            <option value="rejected">❌ Rejected</option>
                         </select>
                     </div>
+
+                    <!-- Date From -->
                     <div class="col-md-6">
-                        <label for="date_from" class="form-label">Date From</label>
-                        <input type="date" class="form-control" id="date_from" name="date_from">
+                        <label for="date_from" class="form-label fw-semibold">Date From</label>
+                        <input type="date" class="form-control shadow-sm" id="date_from" name="date_from" required>
                     </div>
+
+                    <!-- Date To -->
                     <div class="col-md-6">
-                        <label for="date_to" class="form-label">Date To</label>
-                        <input type="date" class="form-control" id="date_to" name="date_to">
+                        <label for="date_to" class="form-label fw-semibold">Date To</label>
+                        <input type="date" class="form-control shadow-sm" id="date_to" name="date_to" required>
                     </div>
                 </div>
 
-                <div class="d-flex justify-content-end mt-4">
-                    <button type="submit" class="btn btn-success px-4">
-                        <i class="bi bi-file-earmark-text"></i> Generate Report
+                <!-- Submit Button -->
+                <div class="d-flex justify-content-end mt-5">
+                    <button type="submit" class="btn btn-success px-5 py-2 shadow-sm fw-semibold">
+                        <i class="bi bi-file-earmark-text me-2"></i> Generate Report
                     </button>
                 </div>
             </form>
 
-            {{-- Hidden print form (if used via Vue or JS binding later) --}}
+            {{-- Optional Hidden Form (For JS/Vue Integration) --}}
             <form id="print-form" action="{{ route('reports.print') }}" method="POST" target="_blank" style="display: none;">
                 @csrf
                 <input type="hidden" name="certificate_type" :value="certificate_type">
@@ -57,4 +70,24 @@
         </div>
     </div>
 </div>
+
+{{-- Optional Styling for a More Polished Look --}}
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+    }
+    .card {
+        border-radius: 1rem;
+    }
+    .form-label {
+        color: #333;
+    }
+    select.form-select, input.form-control {
+        border-radius: 0.5rem;
+    }
+    button.btn-success {
+        border-radius: 0.5rem;
+        font-size: 1.1rem;
+    }
+</style>
 @endsection

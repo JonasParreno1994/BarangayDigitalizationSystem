@@ -29,11 +29,11 @@ class DashboardController extends Controller
 
        
         $purokCounts = Purok::withCount('residents')
-            ->orderBy('purok_name')
-            ->get()
-            ->mapWithKeys(function ($purok) {
-                return [$purok->purok_name => $purok->residents_count];
-            });
+        ->get()
+        ->mapWithKeys(function ($purok) {
+            return [$purok->purok_name => $purok->residents_count];
+        });
+    
 
         return view('dashboard.residentsgraph', compact(
             'maleCount', 

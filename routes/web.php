@@ -26,7 +26,7 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::get('/dashboard', [DashboardItemController::class, 'overview'])
+Route::get('/dashboard', [DashboardController::class, 'residentsgraph'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 

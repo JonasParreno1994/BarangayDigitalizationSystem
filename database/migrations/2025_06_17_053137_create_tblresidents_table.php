@@ -34,6 +34,14 @@ return new class extends Migration
             $table->string('city_municipality');
             $table->string('barangay');
             $table->string('census_no')->nullable();
+            $table->boolean('is_senior_citizen')->default(false);
+            $table->string('senior_citizen_id')->nullable();
+            $table->boolean('is_pwd')->default(false);
+            $table->string('pwd_id')->nullable();
+            $table->string('pwd_type')->nullable();
+            $table->boolean('is_solo_parent')->default(false);
+            $table->string('solo_parent_id')->nullable();
+            
             $table->timestamps();
         });
     }

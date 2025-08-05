@@ -136,6 +136,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Resident Name</th>
+                    <th>Age</th>
                     <th>Purpose</th>
                     <th>Status</th>
                     <th>Date Issued</th>
@@ -146,6 +147,7 @@
                 <tr>
                     <td>{{ $clearance->id }}</td>
                     <td>{{ $clearance->resident->full_name }}</td>
+                    <td>{{ $clearance->resident->birth_date->age }}</td>
                     <td>{{ $clearance->purpose }}</td>
                     <td>{{ ucfirst($clearance->status) }}</td>
                     <td>{{ $clearance->created_at->format('M d, Y') }}</td>
@@ -164,6 +166,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Resident Name</th>
+                    <th>Age</th>
                     <th>Purpose</th>
                     <th>Status</th>
                     <th>Date Issued</th>
@@ -174,6 +177,7 @@
                 <tr>
                     <td>{{ $indigency->id }}</td>
                     <td>{{ $indigency->resident->full_name }}</td>
+                    <td>{{ $indigency->resident->birth_date->age }}</td>
                     <td>{{ $indigency->purpose }}</td>
                     <td>{{ ucfirst($indigency->status) }}</td>
                     <td>{{ $indigency->created_at->format('M d, Y') }}</td>
@@ -192,6 +196,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Resident Name</th>
+                    <th>Age</th>
                     <th>Purpose</th>
                     <th>Status</th>
                     <th>Date Issued</th>
@@ -202,6 +207,7 @@
                 <tr>
                     <td>{{ $moral->id }}</td>
                     <td>{{ $moral->resident->full_name }}</td>
+                    <td>{{ $moral->resident->birth_date->age }}</td>
                     <td>{{ $moral->purpose }}</td>
                     <td>{{ ucfirst($moral->status) }}</td>
                     <td>{{ $moral->created_at->format('M d, Y') }}</td>
@@ -220,6 +226,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Resident Name</th>
+                    <th>Age</th>
                     <th>Purpose</th>
                     <th>Status</th>
                     <th>Date Issued</th>
@@ -230,6 +237,7 @@
                 <tr>
                     <td>{{ $residency->id }}</td>
                     <td>{{ $residency->resident->full_name }}</td>
+                    <td>{{ $residency->resident->birth_date->age }}</td>
                     <td>{{ $residency->purpose }}</td>
                     <td>{{ ucfirst($residency->status) }}</td>
                     <td>{{ $residency->created_at->format('M d, Y') }}</td>

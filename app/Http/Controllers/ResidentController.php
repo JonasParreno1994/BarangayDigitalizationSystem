@@ -58,6 +58,13 @@ class ResidentController extends Controller
             'city_municipality' => 'required|string|max:255',
             'barangay' => 'required|string|max:255',
             'census_no' => 'nullable|string|max:255',
+            'is_senior_citizen' => 'nullable|boolean',
+            'senior_citizen_id' => 'nullable|string|max:50',
+            'is_pwd' => 'nullable|boolean',
+            'pwd_id' => 'nullable|string|max:50',
+            'pwd_type' => 'nullable|string|max:50',
+            'is_solo_parent' => 'nullable|boolean',
+            'solo_parent_id' => 'nullable|string|max:50',
         ]);
 
         try {
@@ -161,6 +168,13 @@ class ResidentController extends Controller
             'city_municipality' => 'required|string|max:255',
             'barangay' => 'required|string|max:255',
             'census_no' => 'nullable|string|max:255',
+            'is_senior_citizen' => 'nullable|boolean',
+            'senior_citizen_id' => 'nullable|string|max:50',
+            'is_pwd' => 'nullable|boolean',
+            'pwd_id' => 'nullable|string|max:50',
+            'pwd_type' => 'nullable|string|max:50',
+            'is_solo_parent' => 'nullable|boolean',
+            'solo_parent_id' => 'nullable|string|max:50',
         ]);
 
         try {

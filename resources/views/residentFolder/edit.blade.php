@@ -425,6 +425,90 @@
                 </div>
             </div>
             
+            <!-- Special Population Section -->
+            <h2 class="text-2xl font-bold mb-6 text-primary flex items-center gap-2">
+                <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+                Special Population Information
+            </h2>
+
+            <!-- Senior Citizen -->
+            <div class="mb-6">
+                <div class="flex items-center mb-2">
+                    <input type="checkbox" id="is_senior_citizen" name="is_senior_citizen" value="1" 
+                        class="form-checkbox h-5 w-5 text-blue-600" x-model="isSenior"
+                        {{ old('is_senior_citizen', $resident->is_senior_citizen) ? 'checked' : '' }}>
+                    <label for="is_senior_citizen" class="ml-2 block text-sm font-medium text-gray-700">
+                        Senior Citizen (60 years old and above)
+                    </label>
+                </div>
+                
+                <div x-show="isSenior" x-transition class="ml-7 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="form-label">Senior Citizen ID</label>
+                        <input type="text" class="form-input" name="senior_citizen_id" 
+                            value="{{ old('senior_citizen_id', $resident->senior_citizen_id) }}" 
+                            placeholder="Enter ID number">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Person with Disability -->
+            <div class="mb-6">
+                <div class="flex items-center mb-2">
+                    <input type="checkbox" id="is_pwd" name="is_pwd" value="1" 
+                        class="form-checkbox h-5 w-5 text-blue-600" x-model="isPwd"
+                        {{ old('is_pwd', $resident->is_pwd) ? 'checked' : '' }}>
+                    <label for="is_pwd" class="ml-2 block text-sm font-medium text-gray-700">
+                        Person with Disability (PWD)
+                    </label>
+                </div>
+                
+                <div x-show="isPwd" x-transition class="ml-7 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="form-label">PWD ID</label>
+                        <input type="text" class="form-input" name="pwd_id" 
+                            value="{{ old('pwd_id', $resident->pwd_id) }}" 
+                            placeholder="Enter ID number">
+                    </div>
+                    <div>
+                        <label class="form-label">Disability Type</label>
+                        <select class="form-select" name="pwd_type">
+                            <option value="">Select Type</option>
+                            <option value="Physical" {{ old('pwd_type', $resident->pwd_type) == 'Physical' ? 'selected' : '' }}>Physical Disability</option>
+                            <option value="Visual" {{ old('pwd_type', $resident->pwd_type) == 'Visual' ? 'selected' : '' }}>Visual Impairment</option>
+                            <option value="Hearing" {{ old('pwd_type', $resident->pwd_type) == 'Hearing' ? 'selected' : '' }}>Hearing Impairment</option>
+                            <option value="Intellectual" {{ old('pwd_type', $resident->pwd_type) == 'Intellectual' ? 'selected' : '' }}>Intellectual Disability</option>
+                            <option value="Psychosocial" {{ old('pwd_type', $resident->pwd_type) == 'Psychosocial' ? 'selected' : '' }}>Psychosocial Disability</option>
+                            <option value="Other" {{ old('pwd_type', $resident->pwd_type) == 'Other' ? 'selected' : '' }}>Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Solo Parent -->
+            <div class="mb-6">
+                <div class="flex items-center mb-2">
+                    <input type="checkbox" id="is_solo_parent" name="is_solo_parent" value="1" 
+                        class="form-checkbox h-5 w-5 text-blue-600" x-model="isSoloParent"
+                        {{ old('is_solo_parent', $resident->is_solo_parent) ? 'checked' : '' }}>
+                    <label for="is_solo_parent" class="ml-2 block text-sm font-medium text-gray-700">
+                        Solo Parent
+                    </label>
+                </div>
+                
+                <div x-show="isSoloParent" x-transition class="ml-7 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="form-label">Solo Parent ID</label>
+                        <input type="text" class="form-input" name="solo_parent_id" 
+                            value="{{ old('solo_parent_id', $resident->solo_parent_id) }}" 
+                            placeholder="Enter ID number">
+                    </div>
+                </div>
+            </div>
+
+
             <!-- Educational Attainment Section -->
             <h3 class="font-bold mb-2">HIGHEST EDUCATIONAL ATTAINMENT</h3>
             <hr>
@@ -502,6 +586,22 @@
         </form>
     </div>
 </div>
+
+<script>
+document.addEventListener('alpine:init', () => {
+    Alpine.data('specialPopulation', () => ({
+        isSenior: {{ $resident->is_senior_citizen ? 'true' : 'false' }},
+        isPwd: {{ $resident->is_pwd ? 'true' : 'false' }},
+        isSoloParent: {{ $resident->is_solo_parent ? 'true' : 'false' }},
+        init() {
+            // Initialize with any existing values
+            this.isSenior = document.querySelector('[name="is_senior_citizen"]').checked;
+            this.isPwd = document.querySelector('[name="is_pwd"]').checked;
+            this.isSoloParent = document.querySelector('[name="is_solo_parent"]').checked;
+        }
+    }));
+});
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

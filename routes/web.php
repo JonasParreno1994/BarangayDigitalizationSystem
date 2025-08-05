@@ -20,6 +20,7 @@ use App\Http\Controllers\CertificateOfIndigencyController;
 use App\Http\Controllers\BarangayGoodMoralCertificateController;
 use App\Http\Controllers\CertificateOfResidencyController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SpecialReportController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -107,7 +108,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/residentFolder/printAllPDF', [ResidentController::class, 'printAllPDF'])->name('resident.printAllPDF');
     Route::get('/residentFolder/printAllPDF', [ResidentController::class, 'printAllPDF'])->name('resident.printAllPDF');
 
-    // Add File Management Routes for Residents
     Route::prefix('resident/{resident}')->group(function () {
         Route::get('/files', [FileController::class, 'index'])->name('resident.files.index');
         Route::get('/files/create', [FileController::class, 'create'])->name('resident.files.create');
@@ -149,6 +149,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [ReportController::class, 'index'])->name('reports.index');
         Route::post('/generate', [ReportController::class, 'generate'])->name('reports.generate');
         Route::get('/print', [ReportController::class, 'print'])->name('reports.print');
+    });
+
+    
+    Route::prefix('special-reports')->group(function () {
+    Route::get('/', [SpecialReportController::class, 'index'])->name('special-reports.index');
+    Route::post('/generate', [SpecialReportController::class, 'generate'])->name('special-reports.generate');
+    Route::get('/print', [SpecialReportController::class, 'print'])->name('special-reports.print');
     });
 });
 

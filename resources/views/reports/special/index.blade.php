@@ -1,6 +1,9 @@
 @extends('layouts.adminLayout.index')
 
 @section('content')
+@php
+    $puroks = \App\Models\Purok::all();
+@endphp
 <div class="container py-5">
     <div class="card shadow-lg border-0 rounded-4">
         <div class="card-header bg-gradient-primary text-white rounded-top-4 py-3 text-center">
@@ -78,6 +81,76 @@
     </div>
 </div>
 
+
+<div class="container py-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-gradient-primary text-white rounded-top-4 py-3 text-center">
+            <h3 class="mb-0 fw-bold">🏘️ Purok Population Reports</h3>
+            <small class="text-light">Generate reports filtered by purok and population characteristics</small>
+        </div>
+
+        <div class="card-body bg-light p-4">
+            <form action="{{ route('special-reports.generate-purok') }}" method="POST" target="_blank">
+                @csrf
+
+                <div class="row g-3 mb-4">
+                    <!-- Purok Selection -->
+                    <div class="col-md-6 col-sm-12">
+                        <label for="purok_id" class="form-label fw-semibold">Select Purok</label>
+                        <select class="form-select shadow-sm" id="purok_id" name="purok_id" required>
+                            <option value="">-- Select Purok --</option>
+                            @foreach($puroks as $purok)
+                                <option value="{{ $purok->id }}">{{ $purok->purok_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Population Type -->
+                    <div class="col-md-6 col-sm-12">
+                        <label for="report_type" class="form-label fw-semibold">Population Type</label>
+                        <select class="form-select shadow-sm" id="report_type" name="report_type">
+                            <option value="all">👥 All Residents</option>
+                            <option value="seniors">👴 Senior Citizens</option>
+                            <option value="pwds">♿ Persons with Disabilities</option>
+                            <option value="solo_parents">👩‍👧 Solo Parents</option>
+                        </select>
+                    </div>
+
+                    <!-- Gender Filter -->
+                    <div class="col-md-4 col-sm-12">
+                        <label for="gender" class="form-label fw-semibold">Gender</label>
+                        <select class="form-select shadow-sm" id="gender" name="gender">
+                            <option value="all">👫 All Genders</option>
+                            <option value="Male">👨 Male</option>
+                            <option value="Female">👩 Female</option>
+                        </select>
+                    </div>
+
+                    <!-- Civil Status Filter -->
+                    <div class="col-md-4 col-sm-12">
+                        <label for="civil_status" class="form-label fw-semibold">Civil Status</label>
+                        <select class="form-select shadow-sm" id="civil_status" name="civil_status">
+                            <option value="all">💑 All Statuses</option>
+                            <option value="Single">👤 Single</option>
+                            <option value="Married">💍 Married</option>
+                            <option value="Widowed">⚰️ Widowed</option>
+                            <option value="Separated">💔 Separated</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-flex justify-content-end mt-4">
+                    <button type="submit" class="btn btn-primary px-5 py-2 shadow-sm fw-semibold">
+                        <i class="bi bi-file-earmark-text me-2"></i> Generate Purok Report
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 {{-- Optional Styling --}}
 <style>
     .bg-gradient-primary {
@@ -96,6 +169,44 @@
 </style>
 
 {{-- JavaScript Logic --}}
+<script>
+    // Purok Report Form Validation
+    document.querySelector('form[action="{{ route('special-reports.generate-purok') }}"]').addEventListener('submit', function(e) {
+        const purokSelect = document.getElementById('purok_id');
+        if (!purokSelect.value) {
+            e.preventDefault();
+            alert('Please select a purok');
+            purokSelect.focus();
+        }
+    });
+
+    // Dynamic filter options based on report type
+    document.getElementById('report_type').addEventListener('change', function() {
+        const reportType = this.value;
+        const genderSelect = document.getElementById('gender');
+        const civilStatusSelect = document.getElementById('civil_status');
+
+        // Reset to default options
+        genderSelect.value = 'all';
+        civilStatusSelect.value = 'all';
+
+        // Enable all options by default
+        Array.from(genderSelect.options).forEach(option => option.disabled = false);
+        Array.from(civilStatusSelect.options).forEach(option => option.disabled = false);
+
+        // Customize options based on report type
+        if (reportType === 'seniors') {
+            // For seniors, you might want to disable certain civil status options
+            // Example:
+            // civilStatusSelect.querySelector('option[value="Single"]').disabled = true;
+        } else if (reportType === 'solo_parents') {
+            // For solo parents, you might want to disable "Single" if not applicable
+            // civilStatusSelect.querySelector('option[value="Single"]').disabled = true;
+        }
+    });
+</script>
+
+
 <script>
     document.getElementById('report_type').addEventListener('change', function () {
         const value = this.value;

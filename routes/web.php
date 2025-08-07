@@ -156,6 +156,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [SpecialReportController::class, 'index'])->name('special-reports.index');
     Route::post('/generate', [SpecialReportController::class, 'generate'])->name('special-reports.generate');
     Route::get('/print', [SpecialReportController::class, 'print'])->name('special-reports.print');
+
+    Route::post('/generate-purok', [SpecialReportController::class, 'generatePurokReport'])->name('special-reports.generate-purok');
+    Route::get('/print-purok', [SpecialReportController::class, 'printPurokReport'])->name('special-reports.print-purok');
     });
 });
 

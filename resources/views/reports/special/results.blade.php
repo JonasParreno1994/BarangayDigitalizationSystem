@@ -3,7 +3,7 @@
 @section('content')
 <div class="panel">
     <div class="panel-heading">
-        <h3 class="panel-title">Special Population Report Results</h3>
+        <h1 class="panel-title">Special Population Report Results</h1>
         <div class="text-right">
             <a href="{{ route('special-reports.print', [
                 'report_type' => $reportType,
@@ -87,5 +87,7 @@
             </table>
         </div>
     </div>
+    
 </div>
+
 @endsection

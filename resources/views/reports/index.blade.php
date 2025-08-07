@@ -4,14 +4,11 @@
 <div class="container py-5">
     <div class="card shadow-lg border-0 rounded-4">
         <div class="card-header bg-gradient-primary text-white rounded-top-4 py-3 text-center">
-            <h3 class="mb-0 fw-bold">
+            <h1 class="mb-0 fw-bold">
                 📄 Generate Certificate Reports
-            </h3>
+            </h1>
             <small class="text-light">Filter and generate customized certificate reports instantly</small>
         </div>
-
-        
-
         <div class="card-body bg-light p-4">
             <form action="{{ route('reports.generate') }}" method="POST" target="_blank">
                 @csrf

@@ -31,7 +31,7 @@
 
           
             <div class="relative z-10 flex flex-col items-center mb-4">
-                <img src="{{ asset('1.jfif') }}" alt="Logo" class="h-16 w-16 rounded-full shadow-lg mb-2 border-4 border-white/80 dark:border-gray-800/80">
+                <img src="{{ asset('newlogo.jfif') }}" alt="Logo" class="h-16 w-16 rounded-full shadow-lg mb-2 border-4 border-white/80 dark:border-gray-800/80">
                 <h1 class="text-2xl font-bold text-gray-800 dark:text-white tracking-wide drop-shadow">Welcome to {{ config('app.name', 'Laravel') }}</h1>
             </div>
 

@@ -1,15 +1,25 @@
 @extends('layouts.adminLayout.index')
 
 @section('content')
+<style>
+    .custom-title {
+  font-size: 28px;
+  font-weight: 600;
+  font-family:  'Times New Roman', Times, serif;
+  color: #343a40; /* dark gray */
+  margin-bottom: 1.5rem;
+}
+    </style>
 <div class="container-fluid">
-    <h1 class="h3 mb-4 text-gray-800">Residents Statistics</h1>
+<center><h1 class="custom-title">📊 Data Visualization Graph</h1>
+  </center>
     
     <!-- Full width chart for Purok distribution -->
     <div class="row mb-4">
         <div class="col-12">
             <div class="card shadow">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Resident Distribution by Purok</h6>
+                    <center><h6 class="m-0 font-weight-bold text-primary">Resident Distribution by Purok</h6></center>
                 </div>
                 <div class="card-body">
                     <div class="chart-bar">
@@ -25,7 +35,7 @@
         <div class="card-wrapper">
             <div class="card shadow h-100">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Gender Distribution</h6>
+                <center>    <h6 class="m-0 font-weight-bold text-primary">Gender Distribution</h6></center>
                 </div>
                 <div class="card-body">
                     <div class="chart-bar">
@@ -38,7 +48,7 @@
         <div class="card-wrapper">
             <div class="card shadow h-100">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Civil Status Distribution</h6>
+                <center>  <h6 class="m-0 font-weight-bold text-primary">Civil Status Distribution</h6></center>
                 </div>
                 <div class="card-body">
                     <div class="chart-bar">
@@ -54,7 +64,7 @@
         <div class="col-12">
             <div class="card shadow">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Age Group Distribution</h6>
+                <center>   <h6 class="m-0 font-weight-bold text-primary">Age Group Distribution</h6></center>
                 </div>
                 <div class="card-body">
                     <div class="chart-bar">

@@ -137,19 +137,19 @@
         
         <!-- Add Resident Modal -->
         <div class="fixed inset-0 z-[999] hidden overflow-y-auto bg-[black]/60" :class="open && '!block'">
-            <div class="flex min-h-screen items-start justify-center px-4" @click.self="open = false">
-                <div x-show="open" x-transition x-transition.duration.300 class="panel my-8 w-full max-w-4xl overflow-hidden rounded-lg border-0 p-0">
+            <div class="flex min-h-screen items-start justify-center px-12" @click.self="open = false">
+                <div x-show="open" x-transition x-transition.duration.300 class="panel my-8 w-full max-w-[70vw] h-[90vh] overflow-auto rounded-lg border-0 p-0">
                     <div class="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
                         <div class="text-lg font-bold">INDIVIDUAL RECORDS OF BARANGAY INHABITANT</div>
                         <button type="button" class="text-white-dark hover:text-dark" @click="toggle">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                            <svg xmlns="" width="24px" height="24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
                                 <line x1="18" y1="6" x2="6" y2="18"></line>
                                 <line x1="6" y1="6" x2="18" y2="18"></line>
                             </svg>
                         </button>
                     </div>
                     
-                    <div class="p-5">
+                    <div class="p-7">
                         <form id="residentForm" action="{{ route('resident.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
@@ -301,15 +301,11 @@
                                         <input type="radio" class="form-radio accent-blue-600" name="voter_status" value="Non-Voter" x-model="isVoter" :checked="!isVoter" @click="isVoter = false">
                                         <span class="ml-3 font-medium text-gray-700">Non-Voter</span>
                                     </label>
-                                </div>
-                                <div x-show="isVoter" x-transition>
-                                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-                                        <div>
-                                            <label class="form-label">Precinct Number</label>
-                                            <input type="text" class="form-input" name="precinct_number" placeholder="Enter Precinct Number">
-                                        </div>
+                                    <div>
+                                        <input type="text" class="form-input" name="precinct_number" placeholder="Enter Precinct Number">
                                     </div>
                                 </div>
+                                
                             </div>
                             <script>
                                 document.addEventListener('alpine:init', () => {
@@ -327,27 +323,21 @@
                                 });
                             </script>
 
-                            <!-- REGION/PROVINCE SECTION -->
-                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                                <div>
-                                    <label class="form-label">Region <span class="text-red-500">*</span></label>
-                                    <input type="text" class="form-input" name="region" value="NEGROS ISLAND REGION" required>
-                                </div>
-                                <div>
-                                    <label class="form-label">Province <span class="text-red-500">*</span></label>
-                                    <input type="text" class="form-input" name="province" value="NEGROS OCCIDENTAL" required>
-                                </div>
-                                <div>
-                                    <label class="form-label">City/Municipality <span class="text-red-500">*</span></label>
-                                    <input type="text" class="form-input" name="city_municipality" value="HINOBA-AN" required>
-                                </div>
-                                <div>
-                                    <label class="form-label">Barangay <span class="text-red-500">*</span></label>
-                                    <input type="text" class="form-input" name="barangay" required placeholder="Enter Barangay">
-                                </div>
-                                <div class="mb-4">
+                          
+                             <!-- Address Information Section -->
+                             <h2 class="text-2xl font-bold mb-6 text-primary flex items-center gap-2">
+                                <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 11c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-6.5 8-13a8 8 0 10-16 0c0 6.5 8 13 8 13z" />
+                                </svg>
+                                Resident Address
+                            </h2>
+                            
+
+                            <div class="flex gap-4 mb-6">
+                                <div class="flex-1">
                                     <label class="form-label">Purok <span class="text-red-500">*</span></label>
-                                    <select class="form-select" name="purok_id" required>
+                                    <select class="form-select w-full" name="purok_id" required>
                                         <option value="">-Select Purok-</option>
                                         @foreach(\App\Models\Purok::all() as $purok)
                                             <option value="{{ $purok->id }}">
@@ -355,6 +345,22 @@
                                             </option>
                                         @endforeach
                                     </select>
+                                </div>
+                                <div class="flex-1">
+                                    <label class="form-label">Barangay <span class="text-red-500">*</span></label>
+                                    <input type="text" class="form-input w-full" name="barangay" required placeholder="Enter Barangay">
+                                </div>
+                                <div class="flex-1">
+                                    <label class="form-label">City/Municipality <span class="text-red-500">*</span></label>
+                                    <input type="text" class="form-input w-full" name="city_municipality" value="HINOBA-AN" required>
+                                </div>
+                                <div class="flex-1">
+                                    <label class="form-label">Province <span class="text-red-500">*</span></label>
+                                    <input type="text" class="form-input w-full" name="province" value="NEGROS OCCIDENTAL" required>
+                                </div>
+                                <div class="flex-1">
+                                    <label class="form-label">Region <span class="text-red-500">*</span></label>
+                                    <input type="text" class="form-input w-full" name="region" value="NEGROS ISLAND REGION" required>
                                 </div>
                             </div>
                             
@@ -368,8 +374,8 @@
                                 Personal Information
                             </h2>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-                                <div>
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-5">
+                                <div >
                                     <label class="form-label">Philsys Card Number</label>
                                     <input type="text" class="form-input" name="census_no" placeholder="Enter Philsys Card Number">
                                 </div>
@@ -469,29 +475,33 @@
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
-                                <div>
+                            <div class="flex gap-4 mb-4 items-start">
+                                <!-- Birth Date -->
+                                <div class="w-1/5">
                                     <label class="form-label">Birth Date <span class="text-red-500">*</span></label>
-                                    <input type="date" class="form-input" name="birth_date" required>
+                                    <input type="date" class="form-input w-full" name="birth_date" required>
                                 </div>
-                                <div>
+                            
+                                <!-- Birth Place -->
+                                <div class="w-1/5">
                                     <label class="form-label">Birth Place <span class="text-red-500">*</span></label>
-                                    <input type="text" class="form-input" name="birth_place" required placeholder="Birth Place">
+                                    <input type="text" class="form-input w-full" name="birth_place" required placeholder="Birth Place">
                                 </div>
-                                <div>
+                            
+                                <!-- Sex -->
+                                <div class="w-1/5">
                                     <label class="form-label">Sex <span class="text-red-500">*</span></label>
-                                    <select class="form-select" name="sex" required>
+                                    <select class="form-select w-full" name="sex" required>
                                         <option value="">-Select-</option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
                                     </select>
                                 </div>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
-                                <div>
+                            
+                                <!-- Civil Status -->
+                                <div class="w-1/5">
                                     <label class="form-label">Civil Status <span class="text-red-500">*</span></label>
-                                    <select class="form-select" name="civil_status" required>
+                                    <select class="form-select w-full" name="civil_status" required>
                                         <option value="">-Select-</option>
                                         <option value="Single">Single</option>
                                         <option value="Married">Married</option>
@@ -499,92 +509,21 @@
                                         <option value="Separated">Separated</option>
                                     </select>
                                 </div>
-                                <div>
+                            
+                                <!-- Religion -->
+                                <div class="w-1/5">
                                     <label class="form-label">Religion</label>
-                                    <input type="text" class="form-input" name="religion" placeholder="Religion">
+                                    <input type="text" class="form-input w-full" name="religion" placeholder="Religion">
                                 </div>
+                            </div>
+                            
+
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-4">
+                               
                                 <div>
                                     <label class="form-label">Citizenship <span class="text-red-500">*</span></label>
                                     <input type="text" class="form-input" name="citizenship" required placeholder="Citizenship">
                                 </div>
-                            </div>
-
-                            <!-- Special Population Section -->
-                                <h2 class="text-2xl font-bold mb-6 text-primary flex items-center gap-2">
-                                    <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                                    </svg>
-                                    Special Population Information
-                                </h2>
-
-                                <!-- Senior Citizen -->
-                                <div class="mb-6">
-                                    <div class="flex items-center mb-2">
-                                        <input type="checkbox" id="is_senior_citizen" name="is_senior_citizen" value="1" 
-                                            class="form-checkbox h-5 w-5 text-blue-600" x-model="isSenior">
-                                        <label for="is_senior_citizen" class="ml-2 block text-sm font-medium text-gray-700">
-                                            Senior Citizen (60 years old and above)
-                                        </label>
-                                    </div>
-                                    
-                                    <div x-show="isSenior" x-transition class="ml-7 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div>
-                                            <label class="form-label">Senior Citizen ID</label>
-                                            <input type="text" class="form-input" name="senior_citizen_id" placeholder="Enter ID number">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Person with Disability -->
-                                <div class="mb-6">
-                                    <div class="flex items-center mb-2">
-                                        <input type="checkbox" id="is_pwd" name="is_pwd" value="1" 
-                                            class="form-checkbox h-5 w-5 text-blue-600" x-model="isPwd">
-                                        <label for="is_pwd" class="ml-2 block text-sm font-medium text-gray-700">
-                                            Person with Disability (PWD)
-                                        </label>
-                                    </div>
-                                    
-                                    <div x-show="isPwd" x-transition class="ml-7 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div>
-                                            <label class="form-label">PWD ID</label>
-                                            <input type="text" class="form-input" name="pwd_id" placeholder="Enter ID number">
-                                        </div>
-                                        <div>
-                                            <label class="form-label">Disability Type</label>
-                                            <select class="form-select" name="pwd_type">
-                                                <option value="">Select Type</option>
-                                                <option value="Physical">Physical Disability</option>
-                                                <option value="Visual">Visual Impairment</option>
-                                                <option value="Hearing">Hearing Impairment</option>
-                                                <option value="Intellectual">Intellectual Disability</option>
-                                                <option value="Psychosocial">Psychosocial Disability</option>
-                                                <option value="Other">Other</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Solo Parent -->
-                                <div class="mb-6">
-                                    <div class="flex items-center mb-2">
-                                        <input type="checkbox" id="is_solo_parent" name="is_solo_parent" value="1" 
-                                            class="form-checkbox h-5 w-5 text-blue-600" x-model="isSoloParent">
-                                        <label for="is_solo_parent" class="ml-2 block text-sm font-medium text-gray-700">
-                                            Solo Parent
-                                        </label>
-                                    </div>
-                                    
-                                    <div x-show="isSoloParent" x-transition class="ml-7 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div>
-                                            <label class="form-label">Solo Parent ID</label>
-                                            <input type="text" class="form-input" name="solo_parent_id" placeholder="Enter ID number">
-                                        </div>
-                                    </div>
-                                </div>
-
-                           
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
                                 <div>
                                     <label class="form-label">Profession/Occupation</label>
                                     <input type="text" class="form-input" name="occupation" placeholder="Occupation">
@@ -601,9 +540,8 @@
                             
                             <!-- Educational Attainment Section -->
                             <h3 class="font-bold mb-2">HIGHEST EDUCATIONAL ATTAINMENT</h3>
-                            <hr>
-                            <br>
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+                            <hr class="my-6 border-gray-200">
+                            <div class="flex gap-4 mb-2 items-start">
                                 <label class="flex items-center p-3 bg-white rounded-lg shadow-sm border hover:border-blue-400 transition cursor-pointer">
                                     <input type="radio" class="form-radio accent-blue-600" name="education" value="Elementary">
                                     <span class="ml-3 font-medium text-gray-700">Elementary</span>
@@ -660,15 +598,88 @@
                                     </label>
                                 </div>
                             </div>
-                            
-                            <!-- Signature Section -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                <div>
-                                    <label class="form-label">Household Number</label>
-                                    <input type="text" class="form-input" name="household_number" value="H#-{{ str_pad(mt_rand(1, 9999999), 7, '0', STR_PAD_LEFT) }}" readonly>
+                            <hr class="my-6 border-gray-200">
+                             <!-- Special Population Section -->
+                             <h2 class="text-2xl font-bold mb-6 text-primary flex items-center gap-2">
+                                <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                </svg>
+                                Special Population Information
+                            </h2>
+
+                            <!-- Senior Citizen -->
+                            <div class="mb-6">
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" id="is_senior_citizen" name="is_senior_citizen" value="1" 
+                                        class="form-checkbox h-5 w-5 text-blue-600" x-model="isSenior">
+                                    <label for="is_senior_citizen" class="ml-2 block text-sm font-medium text-gray-700">
+                                        Senior Citizen (60 years old and above)
+                                    </label>
+                                </div>
+                                
+                                <div x-show="isSenior" x-transition class="ml-7 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="form-label">Senior Citizen ID</label>
+                                        <input type="text" class="form-input" name="senior_citizen_id" placeholder="Enter ID number">
+                                    </div>
                                 </div>
                             </div>
-                            
+
+                            <!-- Person with Disability -->
+                            <div class="mb-6">
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" id="is_pwd" name="is_pwd" value="1" 
+                                        class="form-checkbox h-5 w-5 text-blue-600" x-model="isPwd">
+                                    <label for="is_pwd" class="ml-2 block text-sm font-medium text-gray-700">
+                                        Person with Disability (PWD)
+                                    </label>
+                                </div>
+                                
+                                <div x-show="isPwd" x-transition class="ml-7 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="form-label">PWD ID</label>
+                                        <input type="text" class="form-input" name="pwd_id" placeholder="Enter ID number">
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Disability Type</label>
+                                        <select class="form-select" name="pwd_type">
+                                            <option value="">Select Type</option>
+                                            <option value="Physical">Physical Disability</option>
+                                            <option value="Visual">Visual Impairment</option>
+                                            <option value="Hearing">Hearing Impairment</option>
+                                            <option value="Intellectual">Intellectual Disability</option>
+                                            <option value="Psychosocial">Psychosocial Disability</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Solo Parent -->
+                            <div class="mb-6">
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" id="is_solo_parent" name="is_solo_parent" value="1" 
+                                        class="form-checkbox h-5 w-5 text-blue-600" x-model="isSoloParent">
+                                    <label for="is_solo_parent" class="ml-2 block text-sm font-medium text-gray-700">
+                                        Solo Parent
+                                    </label>
+                                </div>
+                                
+                                <div x-show="isSoloParent" x-transition class="ml-7 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="form-label">Solo Parent ID</label>
+                                        <input type="text" class="form-input" name="solo_parent_id" placeholder="Enter ID number">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Signature Section -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div>
+                                    <label class="form-label">Household Number</label>
+                                    <input type="text" class="form-input" name="household_number">
+                                </div>
+                            </div>
                             <div class="mt-8 flex items-center justify-end">
                                 <button type="button" class="btn btn-outline-danger" @click="toggle">Cancel</button>
                                 <button type="submit" class="btn btn-primary ltr:ml-4 rtl:mr-4">Save Resident</button>

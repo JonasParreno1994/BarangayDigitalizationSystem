@@ -131,7 +131,7 @@
                 <h1>REPUBLIC OF THE PHILIPPINES</h1>
                 <h1>PROVINCE OF {{ strtoupper($clearance->resident->province) }}</h1>
                 <h1>MUNICIPALITY OF {{ strtoupper($clearance->resident->city_municipality) }}</h1>
-                <p>{{ strtoupper($clearance->resident->barangay) }}</p>
+                <h1>{{ strtoupper($clearance->resident->barangay) }}</h1>
                 <p>E-mail: __________ * Tel/CP No.  __________</p>
             </div>
         </div>

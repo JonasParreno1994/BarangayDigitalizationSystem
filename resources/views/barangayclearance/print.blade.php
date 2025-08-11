@@ -61,7 +61,6 @@
         .content {
             margin: 1px 0;
             font-size: 13px;
-           
         }
         .content p { margin: 8px 0; }
         .signature {
@@ -77,7 +76,6 @@
             margin-top: -8px;
             font-style: italic;
         }
-       
         .checkbox {
             display: inline-block;
             width: 12px;
@@ -89,7 +87,13 @@
         }
         .checked { background-color: #000; }
         .underline { text-decoration: underline; }
+
+        /* Force background colors to print */
         @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
             body, html {
                 width: 800px;
                 height: 950px;
@@ -131,7 +135,7 @@
                 <p style="font-size: 14px; font-weight: bold;">REPUBLIC OF THE PHILIPPINES</p>
                 <p style="font-size: 14px; font-weight: bold;">PROVINCE OF {{ strtoupper($clearance->resident->province) }}</p>
                 <p style="font-size: 14px; font-weight: bold;">MUNICIPALITY OF {{ strtoupper($clearance->resident->city_municipality) }}</p>
-                <p style="font-size: 18px; font-weight: bold;">{{ strtoupper($clearance->resident->barangay) }}</p>
+                <p style="font-size: 18px; font-weight: bold;">BARANGAY BACUYANGAN</p>
                 <p style="font-size: 14px; font-weight: bold; font-style: italic;">Office of the Punong Barangay</p>
                 <p>E-mail: __________ * Tel/CP No.  __________</p>
             </div>
@@ -153,91 +157,91 @@
             );
         @endphp
 
-       
         <br>
         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
             <!-- Left: Officials Column -->
             <div class="official" style="width: 30%; text-align: left;"><strong style="font-size: 12px;">BARANGAY COUNCIL MEMBERS:</strong>
-                <div class="official">
-                <br>
+                <div class="official" style="font-size: 12px;">
+                    <br>
                     @php
                         $official_pos3 = $officials->first(fn($official) => $official->position_id == 3);
                     @endphp
                     @if($official_pos3)
-                        <strong>{{ strtoupper($official_pos3->name) }}</strong><br>
-                        <span>Punong Barangay</span><br>
+                        <strong style="font-size: 18px;">{{ strtoupper($official_pos3->name) }}</strong><br>
+                        <span style="font-size: 15px;">Punong Barangay</span><br>
                         @if($official_pos3->position)
-                            <span>{{ $official_pos3->committee }}</span>
+                            <span style="font-size: 15px;">{{ $official_pos3->committee }}</span>
                         @endif
                     @endif
                     <br>
                 </div>
-           
                 <div class="official"></div>
                 @foreach($kagawads as $kagawad)
-                    <div class="official">
-                        @if(in_array($kagawad->position_id, [12]))
+                    @if(in_array($kagawad->position_id, [12]))
+                        <div class="official">
                             <strong>{{ strtoupper($kagawad->name) }}</strong><br>
                             <span>Barangay Kagawad</span><br>
                             @if($kagawad->committee)
                                 {{ $kagawad->committee }}
                             @endif
-                        @endif
-                    </div>
+                        </div>
+                    @endif
                 @endforeach
                 @foreach($kagawads as $kagawad)
-                    <div class="official">
-                        @if(in_array($kagawad->position_id, [11]))
+                    @if(in_array($kagawad->position_id, [11]))
+                        <div class="official">
                             <strong>{{ strtoupper($kagawad->name) }}</strong><br>
                             <span>IPM Representative</span><br>
                             @if($kagawad->committee)
                                 {{ $kagawad->committee }}
                             @endif
-                        @endif
-                    </div>
+                        </div>
+                    @endif
                 @endforeach
                 @foreach($kagawads as $kagawad)
-                    <div class="official">
-                        @if(in_array($kagawad->position_id, [10]))
+                    @if(in_array($kagawad->position_id, [10]))
+                        <div class="official">
                             <strong>{{ strtoupper($kagawad->name) }}</strong><br>
                             <span>SKC -EX -Officio Member</span><br>
                             @if($kagawad->committee)
                                 {{ $kagawad->committee }}
                             @endif
-                        @endif
-                    </div>
+                        </div>
+                    @endif
                 @endforeach
                 <hr>
-                @foreach($kagawads as $kagawad)
+                @php
+                $order = [4 => 1, 5 => 2, 9 => 3, 8 => 4];
+                $sortedKagawads = $kagawads->sortBy(function($item) use ($order) {
+                    return $order[$item->position_id] ?? 999;
+                });
+                @endphp
+                @foreach($sortedKagawads as $kagawad)
                     <div class="official">
-                        @if($kagawad->position_id == 4)
-                            <strong>{{ strtoupper($kagawad->name) }}</strong><br>
-                            <span>Barangay Secretary</span><br>
-                            @if($kagawad->committee)
-                                {{ $kagawad->committee }}
-                            @endif
-                        @elseif($kagawad->position_id == 5)
-                            <strong>{{ strtoupper($kagawad->name) }}</strong><br>
-                            <span>Barangay Treasurer</span><br>
-                            @if($kagawad->committee)
-                                {{ $kagawad->committee }}
-                            @endif
-                        @elseif($kagawad->position_id == 9)
-                            <strong>{{ strtoupper($kagawad->name) }}</strong><br>
-                            <span>Barangay Record Keeper</span><br>
-                            @if($kagawad->committee)
-                                {{ $kagawad->committee }}
-                            @endif
-                        @elseif($kagawad->position_id == 8)
-                            <strong>{{ strtoupper($kagawad->name) }}</strong><br>
-                            <span>Assistant BRGY. Secretary</span><br>
-                            @if($kagawad->committee)
-                                {{ $kagawad->committee }}
-                            @endif
+                        @switch($kagawad->position_id)
+                            @case(4)
+                                <strong>{{ strtoupper($kagawad->name) }}</strong><br>
+                                <span>Barangay Secretary</span><br>
+                                @break
+                            @case(5)
+                                <strong>{{ strtoupper($kagawad->name) }}</strong><br>
+                                <span>Barangay Treasurer</span><br>
+                                @break
+                            @case(9)
+                                <strong>{{ strtoupper($kagawad->name) }}</strong><br>
+                                <span>Barangay Record Keeper</span><br>
+                                @break
+                            @case(8)
+                                <strong>{{ strtoupper($kagawad->name) }}</strong><br>
+                                <span>Assistant BRGY. Secretary</span><br>
+                                @break
+                        @endswitch
+                        @if($kagawad->committee)
+                            {{ $kagawad->committee }}
                         @endif
                     </div>
                 @endforeach
-                <br><br>   <br><br>
+                <br><br><br><br>
                 <div style="text-align: left; width: 100%; align-self: flex-start; line-height:5px; font-size: 10px;">
                     <div style="margin-bottom: 6px;">
                         Clearance No.: {{ $clearance->id ?? '__________' }}
@@ -257,35 +261,39 @@
                 </div>
                 <br><br>
             </div>
-            <div style="width: 2px; margin: 0 10px; align-self: stretch; display: flex;">
-                <div style="background: #000; width: 100%; height: 100%;"></div>
-            </div>
+
+            <!-- Divider -->
+            <div style="background: #000; width: 2px; margin: 0 1px 0 0; align-self: stretch;"></div>
+
             <!-- Right: Clearance Content -->
             <div style="width: 58%; display: flex; flex-direction: column; align-items: center; font-size: 15px; font-family: 'Times New Roman', Times, serif;">
-                <div class="clearance-title" style="font-family: 'Bookman Old Style', serif;">BARANGAY CLEARANCE</div>
-               
+                <div class="clearance-title" style="font-family: 'Bookman Old Style', serif; color: blue;">BARANGAY CERTIFICATE</div>
                 <div class="content" style="text-align: justify; font-size: 15px;">
                     <h4 style="text-align: left; font-family: 'Times New Roman', Times, serif;"><i>TO WHOM IT MAY CONCERN:</i></h4>
                     <p style="text-indent: 0.5in;">
                         This is to certify that Mr./Ms./Mrs. <strong><u>{{ strtoupper($clearance->resident->full_name) }}</u></strong>,
                         <strong><u>{{ \Carbon\Carbon::parse($clearance->resident->birth_date)->age }}</u> </strong> years old,
                         <strong>{{($clearance->resident->civil_status) }},</strong> and whose signature below is a 
-                        Filipino Citizen, a bonafide resident of this Barangay and personally known to be a law abiding citizen and has 
-                        Good Moral Character. That of my own knowledge, he/she has not committed / been involved in any kind 
-                        of unlawful activities in this Barangay. 
+                        Filipino Citizen, a bonafide resident of Barangay Bacuyangan, Hinoba-an, Negros Occidental.
                     </p>
-                   
                     <p style="text-indent: 0.5in;">
-                        Issued this {{ $clearance->date_of_issuance->format('jS') }} day of 
-                        {{ $clearance->date_of_issuance->format('F') }}, {{ $clearance->date_of_issuance->format('Y') }} for   <strong>{{ $clearance->purpose }}</strong>.
+                        He/She has established residence in Barangay Bacuyangan, Hinoba-an, Negros Occidental for a period of (__)months/(__) years now,
+                        and is known to me to be a person of good moral character.
                     </p>
-                   
-                    
-                   
+
+                    <p style="text-indent: 0.5in;">
+                       <strong>He/She has not been engaged in any unlawful activity as per Barangay File.</strong>
+                    </p>
+                    <p style="text-indent: 0.5in;">
+                        Issued and signed this <strong> {{ $clearance->date_of_issuance->format('jS') }} </strong> day of 
+                        <strong>{{ $clearance->date_of_issuance->format('F') }}, {{ $clearance->date_of_issuance->format('Y') }} </strong> at Barangay Bacuyangan
+                        Administration Center for the purpose of <u> <strong>{{ $clearance->purpose }}</strong></u>.
+                    </p>
                 </div>
                 <div class="signature" style="margin-top: 80px; font-size: 17px; margin-left: 160px;">
                     @if($official_pos3)
-                        <strong>{{ strtoupper($official_pos3->name) }}</strong><br>
+                        <u><strong>{{ strtoupper($official_pos3->name) }}</strong></u><br>
+                        <span style="font-size: 15px;">Punong Barangay</span><br>
                         @if($official_pos3->committee)
                             <span>{{ $official_pos3->committee }}</span>
                         @endif
@@ -296,13 +304,11 @@
                     <div style="border-top: 1px solid #000; width: 200px; margin: 0 auto;"></div>
                     <span>Signature of Applicant</span>
                     <div style="margin-top: 20px; display: flex; flex-direction: column; align-items: center;">
-                       
                         <div style="width: 100px; height: 100px; border: 1px solid #000; margin-top: 5px;"></div>
                         <span>Right Thumb Mark</span>
                     </div>
                 </div>
             </div>
-        
         </div>
     </div>
     <script>

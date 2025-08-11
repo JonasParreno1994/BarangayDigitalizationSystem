@@ -608,7 +608,7 @@
                             </h2>
 
                             <!-- Senior Citizen -->
-                            <div class="mb-6">
+                            <div class="mb-6" x-data="{ isSenior: false }">
                                 <div class="flex items-center mb-2">
                                     <input type="checkbox" id="is_senior_citizen" name="is_senior_citizen" value="1" 
                                         class="form-checkbox h-5 w-5 text-blue-600" x-model="isSenior">
@@ -626,7 +626,7 @@
                             </div>
 
                             <!-- Person with Disability -->
-                            <div class="mb-6">
+                            <div class="mb-6" x-data="{ isPwd: false }">
                                 <div class="flex items-center mb-2">
                                     <input type="checkbox" id="is_pwd" name="is_pwd" value="1" 
                                         class="form-checkbox h-5 w-5 text-blue-600" x-model="isPwd">
@@ -656,19 +656,24 @@
                             </div>
 
                             <!-- Solo Parent -->
-                            <div class="mb-6">
+                            <div class="mb-6" x-data x-init="$watch('$store.specialPopulation.isSoloParent', value => isSoloParent = value)" x-effect="isSoloParent = $store.specialPopulation.isSoloParent" x-modelable="isSoloParent" :isSoloParent="$store.specialPopulation.isSoloParent">
                                 <div class="flex items-center mb-2">
                                     <input type="checkbox" id="is_solo_parent" name="is_solo_parent" value="1" 
-                                        class="form-checkbox h-5 w-5 text-blue-600" x-model="isSoloParent">
+                                        class="form-checkbox h-5 w-5 text-blue-600" x-model="$store.specialPopulation.isSoloParent">
                                     <label for="is_solo_parent" class="ml-2 block text-sm font-medium text-gray-700">
                                         Solo Parent
                                     </label>
                                 </div>
                                 
-                                <div x-show="isSoloParent" x-transition class="ml-7 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div x-show="$store.specialPopulation.isSoloParent" x-transition class="ml-7 grid grid-cols-1 md:grid-cols-3 gap-4">
                                     <div>
                                         <label class="form-label">Solo Parent ID</label>
                                         <input type="text" class="form-input" name="solo_parent_id" placeholder="Enter ID number">
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Number of Children</label>
+                                        <input type="number" class="form-input" name="number_of_children" 
+                                            min="0" max="20" placeholder="Enter number of children">
                                     </div>
                                 </div>
                             </div>
@@ -722,15 +727,16 @@
 
 <script>
 document.addEventListener('alpine:init', () => {
-    Alpine.data('specialPopulation', () => ({
+    Alpine.store('specialPopulation', {
         isSenior: false,
         isPwd: false,
         isSoloParent: false,
+    });
+    Alpine.data('specialPopulation', () => ({
         init() {
-            // Initialize with any existing values (for edit forms)
-            this.isSenior = document.querySelector('[name="is_senior_citizen"]').checked;
-            this.isPwd = document.querySelector('[name="is_pwd"]').checked;
-            this.isSoloParent = document.querySelector('[name="is_solo_parent"]').checked;
+            this.$store.specialPopulation.isSenior = document.querySelector('[name="is_senior_citizen"]').checked;
+            this.$store.specialPopulation.isPwd = document.querySelector('[name="is_pwd"]').checked;
+            this.$store.specialPopulation.isSoloParent = document.querySelector('[name="is_solo_parent"]').checked;
         }
     }));
 });

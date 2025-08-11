@@ -196,7 +196,7 @@
             </script>
 
             <!-- Voter Status Section -->
-            <div x-data="{ isVoter: {{ $resident->voter_status === 'Voter' ? 'true' : 'false' }} }" class="mb-6">
+            <div x-data="{ isVoter: '{{ old('voter_status', $resident->voter_status) }}' }" class="mb-6">
                 <h3 class="font-bold mb-2 flex items-center gap-2">
                     <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
@@ -206,15 +206,17 @@
                 </h3>
                 <div class="flex flex-col md:flex-row gap-4 mb-4">
                     <label class="flex items-center p-3 bg-white rounded-lg shadow-sm border border-gray-200 hover:border-blue-400 transition cursor-pointer w-full md:w-auto">
-                        <input type="radio" class="form-radio accent-blue-600" name="voter_status" value="Voter" x-model="isVoter" @click="isVoter = true">
+                        <input type="radio" class="form-radio accent-blue-600" name="voter_status" value="Voter" x-model="isVoter"
+                            {{ old('voter_status', $resident->voter_status) === 'Voter' ? 'checked' : '' }}>
                         <span class="ml-3 font-medium text-gray-700">Registered Voter</span>
                     </label>
                     <label class="flex items-center p-3 bg-white rounded-lg shadow-sm border border-gray-200 hover:border-blue-400 transition cursor-pointer w-full md:w-auto">
-                        <input type="radio" class="form-radio accent-blue-600" name="voter_status" value="Non-Voter" x-model="isVoter" @click="isVoter = false">
+                        <input type="radio" class="form-radio accent-blue-600" name="voter_status" value="Non-Voter" x-model="isVoter"
+                            {{ old('voter_status', $resident->voter_status) === 'Non-Voter' ? 'checked' : '' }}>
                         <span class="ml-3 font-medium text-gray-700">Non-Voter</span>
                     </label>
                 </div>
-                <div x-show="isVoter" x-transition>
+                <div x-show="isVoter === 'Voter'" x-transition>
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
                         <div>
                             <label class="form-label">Precinct Number</label>
@@ -433,77 +435,86 @@
                 Special Population Information
             </h2>
 
-            <!-- Senior Citizen -->
-            <div class="mb-6">
-                <div class="flex items-center mb-2">
-                    <input type="checkbox" id="is_senior_citizen" name="is_senior_citizen" value="1" 
-                        class="form-checkbox h-5 w-5 text-blue-600" x-model="isSenior"
-                        {{ old('is_senior_citizen', $resident->is_senior_citizen) ? 'checked' : '' }}>
-                    <label for="is_senior_citizen" class="ml-2 block text-sm font-medium text-gray-700">
-                        Senior Citizen (60 years old and above)
-                    </label>
-                </div>
-                
-                <div x-show="isSenior" x-transition class="ml-7 grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="form-label">Senior Citizen ID</label>
-                        <input type="text" class="form-input" name="senior_citizen_id" 
-                            value="{{ old('senior_citizen_id', $resident->senior_citizen_id) }}" 
-                            placeholder="Enter ID number">
+            <!-- Special Population Section (Alpine.js root) -->
+            <div x-data="specialPopulation()" x-init="init">
+                <!-- Senior Citizen -->
+                <div class="mb-6">
+                    <div class="flex items-center mb-2">
+                        <input type="checkbox" id="is_senior_citizen" name="is_senior_citizen" value="1" 
+                            class="form-checkbox h-5 w-5 text-blue-600" x-model="isSenior"
+                            {{ old('is_senior_citizen', $resident->is_senior_citizen) ? 'checked' : '' }}>
+                        <label for="is_senior_citizen" class="ml-2 block text-sm font-medium text-gray-700">
+                            Senior Citizen (60 years old and above)
+                        </label>
+                    </div>
+                    
+                    <div x-show="isSenior" x-transition class="ml-7 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="form-label">Senior Citizen ID</label>
+                            <input type="text" class="form-input" name="senior_citizen_id" 
+                                value="{{ old('senior_citizen_id', $resident->senior_citizen_id) }}" 
+                                placeholder="Enter ID number">
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Person with Disability -->
-            <div class="mb-6">
-                <div class="flex items-center mb-2">
-                    <input type="checkbox" id="is_pwd" name="is_pwd" value="1" 
-                        class="form-checkbox h-5 w-5 text-blue-600" x-model="isPwd"
-                        {{ old('is_pwd', $resident->is_pwd) ? 'checked' : '' }}>
-                    <label for="is_pwd" class="ml-2 block text-sm font-medium text-gray-700">
-                        Person with Disability (PWD)
-                    </label>
-                </div>
-                
-                <div x-show="isPwd" x-transition class="ml-7 grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="form-label">PWD ID</label>
-                        <input type="text" class="form-input" name="pwd_id" 
-                            value="{{ old('pwd_id', $resident->pwd_id) }}" 
-                            placeholder="Enter ID number">
+                <!-- Person with Disability -->
+                <div class="mb-6">
+                    <div class="flex items-center mb-2">
+                        <input type="checkbox" id="is_pwd" name="is_pwd" value="1" 
+                            class="form-checkbox h-5 w-5 text-blue-600" x-model="isPwd"
+                            {{ old('is_pwd', $resident->is_pwd) ? 'checked' : '' }}>
+                        <label for="is_pwd" class="ml-2 block text-sm font-medium text-gray-700">
+                            Person with Disability (PWD)
+                        </label>
                     </div>
-                    <div>
-                        <label class="form-label">Disability Type</label>
-                        <select class="form-select" name="pwd_type">
-                            <option value="">Select Type</option>
-                            <option value="Physical" {{ old('pwd_type', $resident->pwd_type) == 'Physical' ? 'selected' : '' }}>Physical Disability</option>
-                            <option value="Visual" {{ old('pwd_type', $resident->pwd_type) == 'Visual' ? 'selected' : '' }}>Visual Impairment</option>
-                            <option value="Hearing" {{ old('pwd_type', $resident->pwd_type) == 'Hearing' ? 'selected' : '' }}>Hearing Impairment</option>
-                            <option value="Intellectual" {{ old('pwd_type', $resident->pwd_type) == 'Intellectual' ? 'selected' : '' }}>Intellectual Disability</option>
-                            <option value="Psychosocial" {{ old('pwd_type', $resident->pwd_type) == 'Psychosocial' ? 'selected' : '' }}>Psychosocial Disability</option>
-                            <option value="Other" {{ old('pwd_type', $resident->pwd_type) == 'Other' ? 'selected' : '' }}>Other</option>
-                        </select>
+                    
+                    <div x-show="isPwd" x-transition class="ml-7 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="form-label">PWD ID</label>
+                            <input type="text" class="form-input" name="pwd_id" 
+                                value="{{ old('pwd_id', $resident->pwd_id) }}" 
+                                placeholder="Enter ID number">
+                        </div>
+                        <div>
+                            <label class="form-label">Disability Type</label>
+                            <select class="form-select" name="pwd_type">
+                                <option value="">Select Type</option>
+                                <option value="Physical" {{ old('pwd_type', $resident->pwd_type) == 'Physical' ? 'selected' : '' }}>Physical Disability</option>
+                                <option value="Visual" {{ old('pwd_type', $resident->pwd_type) == 'Visual' ? 'selected' : '' }}>Visual Impairment</option>
+                                <option value="Hearing" {{ old('pwd_type', $resident->pwd_type) == 'Hearing' ? 'selected' : '' }}>Hearing Impairment</option>
+                                <option value="Intellectual" {{ old('pwd_type', $resident->pwd_type) == 'Intellectual' ? 'selected' : '' }}>Intellectual Disability</option>
+                                <option value="Psychosocial" {{ old('pwd_type', $resident->pwd_type) == 'Psychosocial' ? 'selected' : '' }}>Psychosocial Disability</option>
+                                <option value="Other" {{ old('pwd_type', $resident->pwd_type) == 'Other' ? 'selected' : '' }}>Other</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Solo Parent -->
-            <div class="mb-6">
-                <div class="flex items-center mb-2">
-                    <input type="checkbox" id="is_solo_parent" name="is_solo_parent" value="1" 
-                        class="form-checkbox h-5 w-5 text-blue-600" x-model="isSoloParent"
-                        {{ old('is_solo_parent', $resident->is_solo_parent) ? 'checked' : '' }}>
-                    <label for="is_solo_parent" class="ml-2 block text-sm font-medium text-gray-700">
-                        Solo Parent
-                    </label>
-                </div>
-                
-                <div x-show="isSoloParent" x-transition class="ml-7 grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="form-label">Solo Parent ID</label>
-                        <input type="text" class="form-input" name="solo_parent_id" 
-                            value="{{ old('solo_parent_id', $resident->solo_parent_id) }}" 
-                            placeholder="Enter ID number">
+                <!-- Solo Parent -->
+                <div class="mb-6">
+                    <div class="flex items-center mb-2">
+                        <input type="checkbox" id="is_solo_parent" name="is_solo_parent" value="1" 
+                            class="form-checkbox h-5 w-5 text-blue-600" x-model="isSoloParent"
+                            {{ old('is_solo_parent', $resident->is_solo_parent) ? 'checked' : '' }}>
+                        <label for="is_solo_parent" class="ml-2 block text-sm font-medium text-gray-700">
+                            Solo Parent
+                        </label>
+                    </div>
+                    
+                    <div x-show="isSoloParent" x-transition class="ml-7 grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="form-label">Solo Parent ID</label>
+                            <input type="text" class="form-input" name="solo_parent_id" 
+                                value="{{ old('solo_parent_id', $resident->solo_parent_id) }}" 
+                                placeholder="Enter ID number">
+                        </div>
+                        <div>
+                            <label class="form-label">Number of Children</label>
+                            <input type="number" class="form-input" name="number_of_children" 
+                                value="{{ old('number_of_children', $resident->number_of_children) }}"
+                                min="0" max="20" placeholder="Enter number of children">
+                        </div>
                     </div>
                 </div>
             </div>

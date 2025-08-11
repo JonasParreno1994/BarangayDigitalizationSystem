@@ -65,6 +65,7 @@ class ResidentController extends Controller
             'pwd_type' => 'nullable|string|max:50',
             'is_solo_parent' => 'nullable|boolean',
             'solo_parent_id' => 'nullable|string|max:50',
+            'number_of_children' => 'nullable|integer|min:0|max:20',
         ]);
 
         try {
@@ -175,6 +176,7 @@ class ResidentController extends Controller
             'pwd_type' => 'nullable|string|max:50',
             'is_solo_parent' => 'nullable|boolean',
             'solo_parent_id' => 'nullable|string|max:50',
+            'number_of_children' => 'nullable|integer|min:0|max:20',
         ]);
 
         try {

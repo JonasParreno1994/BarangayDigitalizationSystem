@@ -50,7 +50,8 @@ class ResidentModel extends Model
         'pwd_id',
         'pwd_type',
         'is_solo_parent',
-        'solo_parent_id'
+        'solo_parent_id',
+        'number_of_children',
     ];
 
     protected $casts = [

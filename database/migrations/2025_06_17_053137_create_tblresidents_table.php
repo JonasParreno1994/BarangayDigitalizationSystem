@@ -41,6 +41,7 @@ return new class extends Migration
             $table->string('pwd_type')->nullable();
             $table->boolean('is_solo_parent')->default(false);
             $table->string('solo_parent_id')->nullable();
+            $table->integer('number_of_children')->nullable()->default(0);
             
             $table->timestamps();
         });

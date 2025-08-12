@@ -426,6 +426,38 @@
                     <input type="email" class="form-input" name="email" value="{{ old('email', $resident->email) }}" placeholder="example@email.com">
                 </div>
             </div>
+
+            <!-- Unemployed Checkbox Section -->
+            <div class="mb-6" x-data="{ isUnemployed: {{ old('is_unemployed', $resident->is_unemployed ?? 0) ? 'true' : 'false' }} }">
+                <div class="flex items-center mb-2">
+                    <input type="hidden" name="is_unemployed" value="0">
+                    <input class="form-checkbox h-5 w-5 text-blue-600" type="checkbox" id="is_unemployed" name="is_unemployed" value="1"
+                        x-model="isUnemployed"
+                        {{ old('is_unemployed', $resident->is_unemployed ?? 0) ? 'checked' : '' }}>
+                    <label class="ml-2 block text-sm font-medium text-gray-700" for="is_unemployed">
+                        Unemployed
+                    </label>
+                </div>
+            </div>
+
+            <!-- Overseas Filipino Worker (OFW) -->
+            <div class="mb-6" x-data="{ isOFW: {{ old('is_ofw', $resident->is_ofw) ? 'true' : 'false' }} }">
+                <div class="flex items-center mb-2">
+                    <input type="hidden" name="is_ofw" value="0">
+                    <input class="form-checkbox h-5 w-5 text-blue-600" type="checkbox" id="is_ofw" name="is_ofw" value="1"
+                        x-model="isOFW" {{ old('is_ofw', $resident->is_ofw) ? 'checked' : '' }}>
+                    <label class="ml-2 block text-sm font-medium text-gray-700" for="is_ofw">
+                        Are you an Overseas Filipino Worker (OFW)?
+                    </label>
+                </div>
+                <div x-show="isOFW" x-transition class="ml-7 mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="form-label">Country of Work</label>
+                        <input type="text" class="form-input" name="ofw_country" value="{{ old('ofw_country', $resident->ofw_country) }}" 
+                            placeholder="Enter country where working">
+                    </div>
+                </div>
+            </div>
             
             <!-- Special Population Section -->
             <h2 class="text-2xl font-bold mb-6 text-primary flex items-center gap-2">
@@ -515,6 +547,18 @@
                                 value="{{ old('number_of_children', $resident->number_of_children) }}"
                                 min="0" max="20" placeholder="Enter number of children">
                         </div>
+                    </div>
+                </div>
+
+                <!-- Indigenous People (IP) -->
+                <div class="mb-6">
+                    <div class="flex items-center mb-2">
+                        <input type="hidden" name="is_indigenous" value="0">
+                        <input class="form-checkbox h-5 w-5 text-blue-600" type="checkbox" id="is_indigenous" name="is_indigenous" value="1"
+                            {{ old('is_indigenous', $resident->is_indigenous ?? false) ? 'checked' : '' }}>
+                        <label class="ml-2 block text-sm font-medium text-gray-700" for="is_indigenous">
+                            Indigenous People (IP)
+                        </label>
                     </div>
                 </div>
             </div>

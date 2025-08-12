@@ -52,6 +52,10 @@ class ResidentModel extends Model
         'is_solo_parent',
         'solo_parent_id',
         'number_of_children',
+        'is_indigenous',
+        'is_ofw',
+        'ofw_country',
+        'is_unemployed',
     ];
 
     protected $casts = [

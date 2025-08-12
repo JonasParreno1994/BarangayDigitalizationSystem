@@ -66,6 +66,10 @@ class ResidentController extends Controller
             'is_solo_parent' => 'nullable|boolean',
             'solo_parent_id' => 'nullable|string|max:50',
             'number_of_children' => 'nullable|integer|min:0|max:20',
+            'is_indigenous' => 'nullable|boolean',
+            'is_ofw' => 'nullable|boolean',
+            'ofw_country' => 'nullable|string|max:255',
+            'is_unemployed' => 'nullable|boolean',
         ]);
 
         try {
@@ -177,6 +181,10 @@ class ResidentController extends Controller
             'is_solo_parent' => 'nullable|boolean',
             'solo_parent_id' => 'nullable|string|max:50',
             'number_of_children' => 'nullable|integer|min:0|max:20',
+            'is_indigenous' => 'nullable|boolean',
+            'is_ofw' => 'nullable|boolean',
+            'ofw_country' => 'nullable|string|max:255',
+            'is_unemployed' => 'nullable|boolean',
         ]);
 
         try {

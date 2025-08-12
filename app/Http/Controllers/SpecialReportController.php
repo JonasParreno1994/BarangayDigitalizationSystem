@@ -241,4 +241,191 @@ class SpecialReportController extends Controller
             'barangayDetails'
         ));
     }
+
+    public function generateAgeBracketReport(Request $request)
+    {
+        $request->validate([
+            'age_bracket' => 'required|in:5-9,10-14,15-19,20-24,25-29,30-34,35-39,40-44,45-49,50-59,60-64,65-69,70-74,75-79,80+,all',
+        ]);
+
+        $ageBracket = $request->age_bracket;
+        $today = Carbon::today();
+
+        $query = ResidentModel::query();
+
+        if ($ageBracket !== 'all') {
+            list($minAge, $maxAge) = $this->parseAgeBracket($ageBracket);
+            
+            if ($maxAge !== null) {
+                $query->whereRaw("TIMESTAMPDIFF(YEAR, birth_date, ?) BETWEEN ? AND ?", 
+                    [$today, $minAge, $maxAge]);
+            } else {
+                $query->whereRaw("TIMESTAMPDIFF(YEAR, birth_date, ?) >= ?", 
+                    [$today, $minAge]);
+            }
+        }
+
+        $residents = $query->orderBy('last_name')->get();
+        $barangayDetails = BarangayIdDetail::latest()->first();
+
+        return view('reports.special.age-bracket-results', compact(
+            'residents', 
+            'ageBracket',
+            'barangayDetails'
+        ));
+    }
+
+    public function generateSectorReport(Request $request)
+    {
+        $request->validate([
+            'sector_type' => 'required|in:labor_force,unemployed,out_of_school_children,out_of_school_youth,ofw,indigenous',
+        ]);
+
+        $sectorType = $request->sector_type;
+        $today = Carbon::today();
+
+        $query = ResidentModel::query();
+
+        switch ($sectorType) {
+            case 'labor_force':
+                // Assuming labor force is anyone employed (occupation not empty)
+                $query->whereNotNull('occupation')->where('occupation', '!=', '');
+                break;
+                
+            case 'unemployed':
+                $query->where('is_unemployed', true);
+                break;
+                
+            case 'out_of_school_children':
+                // Children aged 6-14 not in school
+                $query->whereRaw("TIMESTAMPDIFF(YEAR, birth_date, ?) BETWEEN 6 AND 14", [$today])
+                     ->where(function($q) {
+                         $q->whereNull('education_status')
+                           ->orWhere('education_status', '!=', 'Currently Enrolled');
+                     });
+                break;
+                
+            case 'out_of_school_youth':
+                // Youth aged 15-24 not in school
+                $query->whereRaw("TIMESTAMPDIFF(YEAR, birth_date, ?) BETWEEN 15 AND 24", [$today])
+                     ->where(function($q) {
+                         $q->whereNull('education_status')
+                           ->orWhere('education_status', '!=', 'Currently Enrolled');
+                     });
+                break;
+                
+            case 'ofw':
+                $query->where('is_ofw', true);
+                break;
+                
+            case 'indigenous':
+                // Assuming IP status is stored in a custom field (you may need to add this)
+                $query->where('is_indigenous', true);
+                break;
+        }
+
+        $residents = $query->orderBy('last_name')->get();
+        $barangayDetails = BarangayIdDetail::latest()->first();
+
+        return view('reports.special.sector-results', compact(
+            'residents', 
+            'sectorType',
+            'barangayDetails'
+        ));
+    }
+
+    public function printAgeBracketReport(Request $request)
+    {
+        // Similar to generateAgeBracketReport but returns printable view
+        $ageBracket = $request->age_bracket;
+        $today = Carbon::today();
+
+        $query = ResidentModel::query();
+
+        if ($ageBracket !== 'all') {
+            list($minAge, $maxAge) = $this->parseAgeBracket($ageBracket);
+            
+            if ($maxAge !== null) {
+                $query->whereRaw("TIMESTAMPDIFF(YEAR, birth_date, ?) BETWEEN ? AND ?", 
+                    [$today, $minAge, $maxAge]);
+            } else {
+                $query->whereRaw("TIMESTAMPDIFF(YEAR, birth_date, ?) >= ?", 
+                    [$today, $minAge]);
+            }
+        }
+
+        $residents = $query->orderBy('last_name')->get();
+        $barangayDetails = BarangayIdDetail::latest()->first();
+
+        return view('reports.special.age-bracket-print', compact(
+            'residents', 
+            'ageBracket',
+            'barangayDetails'
+        ));
+    }
+
+    public function printSectorReport(Request $request)
+    {
+        // Similar to generateSectorReport but returns printable view
+        $sectorType = $request->sector_type;
+        $today = Carbon::today();
+
+        $query = ResidentModel::query();
+
+        switch ($sectorType) {
+            case 'labor_force':
+                $query->whereNotNull('occupation')->where('occupation', '!=', '');
+                break;
+                
+            case 'unemployed':
+                $query->where(function($q) {
+                    $q->whereNull('occupation')->orWhere('occupation', '');
+                });
+                break;
+                
+            case 'out_of_school_children':
+                $query->whereRaw("TIMESTAMPDIFF(YEAR, birth_date, ?) BETWEEN 6 AND 14", [$today])
+                     ->where(function($q) {
+                         $q->whereNull('education_status')
+                           ->orWhere('education_status', '!=', 'Currently Enrolled');
+                     });
+                break;
+                
+            case 'out_of_school_youth':
+                $query->whereRaw("TIMESTAMPDIFF(YEAR, birth_date, ?) BETWEEN 15 AND 24", [$today])
+                     ->where(function($q) {
+                         $q->whereNull('education_status')
+                           ->orWhere('education_status', '!=', 'Currently Enrolled');
+                     });
+                break;
+                
+            case 'ofw':
+                $query->where('occupation', 'like', '%OFW%')
+                     ->orWhere('occupation', 'like', '%Overseas%');
+                break;
+                
+            case 'indigenous':
+                $query->where('is_indigenous', true);
+                break;
+        }
+
+        $residents = $query->orderBy('last_name')->get();
+        $barangayDetails = BarangayIdDetail::latest()->first();
+
+        return view('reports.special.sector-print', compact(
+            'residents', 
+            'sectorType',
+            'barangayDetails'
+        ));
+    }
+
+    private function parseAgeBracket($bracket)
+    {
+        if ($bracket === '80+') {
+            return [80, null];
+        }
+
+        $parts = explode('-', $bracket);
+        return [intval($parts[0]), intval($parts[1])];
+    }
 }

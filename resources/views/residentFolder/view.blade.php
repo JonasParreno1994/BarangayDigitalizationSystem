@@ -68,6 +68,44 @@
                 <div class="form-input bg-gray-100">{{ $resident->religion ?? 'N/A' }}</div>
             </div>
         </div>
+
+        <!-- Unemployed Status -->
+        <div class="mb-4">
+            <label class="form-label">Employment Status</label>
+            <div class="form-input bg-gray-100 flex items-center gap-2">
+                @if($resident->is_unemployed)
+                    <span class="inline-flex items-center px-2 py-1 rounded bg-blue-100 text-blue-700 text-sm font-semibold">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2a4 4 0 018 0v2M9 17H7a2 2 0 01-2-2v-2a2 2 0 012-2h2m0 0V7a4 4 0 118 0v4m-8 0h8" />
+                        </svg>
+                        Unemployed
+                    </span>
+                @else
+                    <span class="text-gray-500">Employed</span>
+                @endif
+            </div>
+        </div>
+
+        <!-- OFW Status -->
+        <div class="mb-4">
+            <label class="form-label">Overseas Filipino Worker (OFW)</label>
+            <div class="form-input bg-gray-100 flex flex-col gap-2">
+                @if($resident->is_ofw)
+                    <span class="inline-flex items-center px-2 py-1 rounded bg-blue-100 text-blue-700 text-sm font-semibold">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2h5" />
+                        </svg>
+                        OFW
+                    </span>
+                    <div class="mt-1">
+                        <label class="form-label">Country of Work</label>
+                        <div class="form-input bg-gray-50">{{ $resident->ofw_country ?? 'Not specified' }}</div>
+                    </div>
+                @else
+                    <span class="text-gray-500">Not an OFW</span>
+                @endif
+            </div>
+        </div>
     </div>
 
     <!-- Special Population Information Section -->

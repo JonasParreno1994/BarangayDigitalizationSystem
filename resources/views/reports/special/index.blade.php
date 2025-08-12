@@ -150,6 +150,103 @@
     </div>
 </div>
 
+<div class="container py-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-gradient-primary text-white rounded-top-4 py-3 text-center">
+            <h3 class="mb-0 fw-bold">👶👧🧒 Age Bracket Reports</h3>
+            <small class="text-light">Generate reports by age brackets</small>
+        </div>
+
+        <div class="card-body bg-light p-4">
+            <form action="{{ route('special-reports.generate-age-bracket') }}" method="POST" target="_blank">
+                @csrf
+
+                <div class="row g-3 mb-4 align-items-end">
+                    <div class="col-md-6 col-sm-12">
+                        <label for="age_bracket" class="form-label fw-semibold">Age Bracket</label>
+                        <select class="form-select shadow-sm" id="age_bracket" name="age_bracket" required>
+                            <option value="all">👶 All Ages</option>
+                            <option value="5-9">5-9 years old</option>
+                            <option value="10-14">10-14 years old</option>
+                            <option value="15-19">15-19 years old</option>
+                            <option value="20-24">20-24 years old</option>
+                            <option value="25-29">25-29 years old</option>
+                            <option value="30-34">30-34 years old</option>
+                            <option value="35-39">35-39 years old</option>
+                            <option value="40-44">40-44 years old</option>
+                            <option value="45-49">45-49 years old</option>
+                            <option value="50-59">50-59 years old</option>
+                            <option value="60-64">60-64 years old</option>
+                            <option value="65-69">65-69 years old</option>
+                            <option value="70-74">70-74 years old</option>
+                            <option value="75-79">75-79 years old</option>
+                            <option value="80+">80+ years old</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end mt-4">
+                    <button type="submit" class="btn btn-success px-5 py-2 shadow-sm fw-semibold">
+                        <i class="bi bi-bar-chart-fill me-2"></i> Generate Report
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-gradient-primary text-white rounded-top-4 py-3 text-center">
+            <h3 class="mb-0 fw-bold">👥 Sector Population Reports</h3>
+            <small class="text-light">Generate reports by population sectors</small>
+        </div>
+
+        <div class="card-body bg-light p-4">
+            <form action="{{ route('special-reports.generate-sector') }}" method="POST" target="_blank">
+                @csrf
+
+                <div class="row g-3 mb-4 align-items-end">
+                    <div class="col-md-6 col-sm-12">
+                        <label for="sector_type" class="form-label fw-semibold">Sector Type</label>
+                        <select class="form-select shadow-sm" id="sector_type" name="sector_type" required>
+                            <option value="labor_force">💼 Labor Force</option>
+                            <option value="unemployed">🚫 Unemployed</option>
+                            <option value="out_of_school_children">📚 Out of School Children (6-14 years old)</option>
+                            <option value="out_of_school_youth">🎓 Out of School Youth (15-24 years old)</option>
+                            <option value="ofw">✈️ Overseas Filipino Workers (OFW)</option>
+                            <option value="indigenous">🌿 Indigenous People (IPs)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end mt-4">
+                    <button type="submit" class="btn btn-success px-5 py-2 shadow-sm fw-semibold">
+                        <i class="bi bi-bar-chart-fill me-2"></i> Generate Report
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{-- Optional Styling --}}
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+    }
+    .form-label {
+        color: #333;
+    }
+    select.form-select, input.form-control {
+        border-radius: 0.5rem;
+    }
+    button.btn-success {
+        border-radius: 0.5rem;
+        font-size: 1.1rem;
+    }
+</style>
+
 
 {{-- Optional Styling --}}
 <style>

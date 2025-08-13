@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>{{ env('APP_NAME', 'Laravel') }} </title>
-      @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="icon" type="image/x-icon" href="{{ asset('/1.jfif') }}">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,28 +19,17 @@
         <script defer="" src="{{ asset('/admin/assets/js/sweetalert.min.js') }}"></script>
         <script src="{{ asset('/admin/assets/js/axios.min.js') }}"></script>
           <!-- Select2 -->
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-        <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css" rel="stylesheet" />
+        <link href="{{ asset('/design/dist/css/select2.min.css') }}" rel="stylesheet" />
+        <link href="{{ asset('/design/dist/css/select2-bootstrap4.min.css') }}" rel="stylesheet" />
         <link rel="stylesheet" href="{{ asset('/design/plugins/select2/css/select2.min.css') }}">
         <link rel="stylesheet" href="{{ asset('/design/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Select2 -->
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<!-- Select2 Bootstrap4 Theme -->
-<link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css" rel="stylesheet" />
-
-     <!-- SweetAlert2 -->
-  <link rel="stylesheet" href="{{ asset('design/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
-  <!-- Toastr -->
-  <link rel="stylesheet" href="{{ asset('design/plugins/toastr/toastr.min.css') }}">
-        <!-- jQuery (required) -->
-<script src="{{ asset('/admin/assets/js/jquery-3.6.0.min.js') }}"></script>
-
-
-<!-- Select2 Bootstrap 4 theme (optional if you're using bootstrap4) -->
-<link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css" rel="stylesheet" />
+        <!-- jQuery -->
+        <script src="{{ asset('/design/dist/js/jquery-3.6.0.min.js') }}"></script>
+        <script src="{{ asset('/design/dist/js/select2.min.js') }}"></script>
+        <!-- SweetAlert2 -->
+        <link rel="stylesheet" href="{{ asset('design/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+        <!-- Toastr -->
+        <link rel="stylesheet" href="{{ asset('design/plugins/toastr/toastr.min.css') }}">
     </head>
 
     <body x-data="main" class="relative overflow-x-hidden font-nunito text-sm font-normal antialiased" :class="[ $store.app.sidebar ? 'toggle-sidebar' : '', $store.app.theme === 'dark' || $store.app.isDarkMode ?  'dark' : '', $store.app.menu, $store.app.layout,$store.app.rtlClass]">

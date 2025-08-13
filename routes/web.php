@@ -22,6 +22,7 @@ use App\Http\Controllers\BarangayGoodMoralCertificateController;
 use App\Http\Controllers\CertificateOfResidencyController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SpecialReportController;
+use App\Http\Controllers\CertIndigencyMinorController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -118,12 +119,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/residentFolder/printAllPDF', [ResidentController::class, 'printAllPDF'])->name('resident.printAllPDF');
 
     Route::prefix('resident/{resident}')->group(function () {
-        Route::get('/files', [FileController::class, 'index'])->name('resident.files.index');
-        Route::get('/files/create', [FileController::class, 'create'])->name('resident.files.create');
-        Route::post('/files', [FileController::class, 'store'])->name('resident.files.store');
-        Route::get('/files/{file}', [FileController::class, 'show'])->name('resident.files.show');
-        Route::get('/files/{file}/download', [FileController::class, 'download'])->name('resident.files.download');
-        Route::delete('/files/{file}', [FileController::class, 'destroy'])->name('resident.files.destroy');
+    Route::get('/files', [FileController::class, 'index'])->name('resident.files.index');
+    Route::get('/files/create', [FileController::class, 'create'])->name('resident.files.create');
+    Route::post('/files', [FileController::class, 'store'])->name('resident.files.store');
+    Route::get('/files/{file}', [FileController::class, 'show'])->name('resident.files.show');
+    Route::get('/files/{file}/download', [FileController::class, 'download'])->name('resident.files.download');
+    Route::delete('/files/{file}', [FileController::class, 'destroy'])->name('resident.files.destroy');
     });
 
     Route::get('/barangayclearance', [BrgyclearanceController::class, 'index'])->name('barangayclearance.index');
@@ -143,6 +144,16 @@ Route::middleware('auth')->group(function () {
     Route::put('/certificate_of_indigency/{id}', [CertificateOfIndigencyController::class, 'update'])->name('certificate_of_indigency.update');
     Route::delete('/certificate_of_indigency/{id}', [CertificateOfIndigencyController::class, 'destroy'])->name('certificate_of_indigency.destroy');
     Route::get('/certificate_of_indigency/{id}/print', [CertificateOfIndigencyController::class, 'print'])->name('certificate_of_indigency.print');
+
+
+    Route::get('/cert_indigency_minor', [CertIndigencyMinorController::class, 'index'])->name('cert_indigency_minor.index');
+    Route::post('/cert_indigency_minor', [CertIndigencyMinorController::class, 'store'])->name('cert_indigency_minor.store');
+    Route::get('/cert_indigency_minor/{id}', [CertIndigencyMinorController::class, 'show'])->name('cert_indigency_minor.show');
+    Route::get('/cert_indigency_minor/{id}/edit', [CertIndigencyMinorController::class, 'edit'])->name('cert_indigency_minor.edit');
+    Route::put('/cert_indigency_minor/{id}', [CertIndigencyMinorController::class, 'update'])->name('cert_indigency_minor.update');
+    Route::delete('/cert_indigency_minor/{id}', [CertIndigencyMinorController::class, 'destroy'])->name('cert_indigency_minor.destroy');
+    Route::get('/cert_indigency_minor/{id}/print', [CertIndigencyMinorController::class, 'print'])->name('cert_indigency_minor.print');
+    
 
     Route::resource('barangaygoodmoral', BarangayGoodMoralCertificateController::class);
     Route::get('barangaygoodmoral/{id}/print', [BarangayGoodMoralCertificateController::class, 'print'])

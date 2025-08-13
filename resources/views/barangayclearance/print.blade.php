@@ -107,20 +107,6 @@
 </head>
 <body>
     <div class="container">
-        <div style="display: none;">
-            <h3>Debug Information:</h3>
-            <h4>All Officials:</h4>
-            <ul>
-                @foreach($officials as $official)
-                    <li>
-                        {{ $official->name }} - 
-                        {{ $official->position->name }} - 
-                        Committee: {{ $official->committee ?? 'None' }} - 
-                        Status: {{ $official->status }}
-                    </li>
-                @endforeach
-            </ul>
-        </div>
 
         <div class="header" style="margin-bottom: 10px; padding-bottom: 5px;">
             <div class="header-content" style="padding: 0 90px;">
@@ -160,7 +146,8 @@
         <br>
         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
             <!-- Left: Officials Column -->
-            <div class="official" style="width: 30%; text-align: left;"><strong style="font-size: 12px;">BARANGAY COUNCIL MEMBERS:</strong>
+            <div class="official" style="width: 25%; text-align: left;">
+                <strong style="font-size: 12px;">BARANGAY COUNCIL MEMBERS:</strong>
                 <div class="official" style="font-size: 12px;">
                     <br>
                     @php
@@ -176,17 +163,18 @@
                     <br>
                 </div>
                 <div class="official"></div>
+                <span style="font-size: 18px;">Barangay Kagawad</span><br>
                 @foreach($kagawads as $kagawad)
                     @if(in_array($kagawad->position_id, [12]))
                         <div class="official">
                             <strong>{{ strtoupper($kagawad->name) }}</strong><br>
-                            <span>Barangay Kagawad</span><br>
                             @if($kagawad->committee)
                                 {{ $kagawad->committee }}
                             @endif
                         </div>
                     @endif
                 @endforeach
+                <br>
                 @foreach($kagawads as $kagawad)
                     @if(in_array($kagawad->position_id, [11]))
                         <div class="official">
@@ -241,7 +229,7 @@
                         @endif
                     </div>
                 @endforeach
-                <br><br><br><br>
+                <br><br>
                 <div style="text-align: left; width: 100%; align-self: flex-start; line-height:5px; font-size: 10px;">
                     <div style="margin-bottom: 6px;">
                         Clearance No.: {{ $clearance->id ?? '__________' }}
@@ -263,11 +251,12 @@
             </div>
 
             <!-- Divider -->
-            <div style="background: #000; width: 2px; margin: 0 1px 0 0; align-self: stretch;"></div>
+            <div style="background: #000; width: 2px; margin: 0 15px 0 0; align-self: stretch;"></div>
 
             <!-- Right: Clearance Content -->
-            <div style="width: 58%; display: flex; flex-direction: column; align-items: center; font-size: 15px; font-family: 'Times New Roman', Times, serif;">
+            <div style="width: 70%; display: flex; flex-direction: column; align-items: center; font-size: 15px; font-family: 'Times New Roman', Times, serif;">
                 <div class="clearance-title" style="font-family: 'Bookman Old Style', serif; color: blue;">BARANGAY CERTIFICATE</div>
+               
                 <div class="content" style="text-align: justify; font-size: 15px;">
                     <h4 style="text-align: left; font-family: 'Times New Roman', Times, serif;"><i>TO WHOM IT MAY CONCERN:</i></h4>
                     <p style="text-indent: 0.5in;">
@@ -290,7 +279,7 @@
                         Administration Center for the purpose of <u> <strong>{{ $clearance->purpose }}</strong></u>.
                     </p>
                 </div>
-                <div class="signature" style="margin-top: 80px; font-size: 17px; margin-left: 160px;">
+                <div class="signature" style="margin-top: 80px; font-size: 17px; margin-left: 250px;">
                     @if($official_pos3)
                         <u><strong>{{ strtoupper($official_pos3->name) }}</strong></u><br>
                         <span style="font-size: 15px;">Punong Barangay</span><br>
@@ -300,7 +289,7 @@
                     @endif
                     <br>
                 </div>
-                <div style="margin-top: 50px; margin-right: 300px; font-size: 13px; text-align: center;">
+                <div style="margin-top: 5px; margin-right: 300px; font-size: 13px; text-align: center;">
                     <div style="border-top: 1px solid #000; width: 200px; margin: 0 auto;"></div>
                     <span>Signature of Applicant</span>
                     <div style="margin-top: 20px; display: flex; flex-direction: column; align-items: center;">

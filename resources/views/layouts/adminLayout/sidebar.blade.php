@@ -210,6 +210,9 @@
                                 <li>
                                     <a href="{{ route('barangayid.index') }}" class="nav-link {{ request()->routeIs('barangayid.index') ? 'active' : '' }}">Barangay ID details</a>
                                 </li>
+                               <li>
+                                    <a href="{{ route('certification-footer.index') }}" class="nav-link {{ request()->routeIs('certification-footer.index') ? 'active' : '' }}">Certification Footer</a>
+                                </li>
                                   <li>
                                     <a href="{{ route('users.list') }}" class="nav-link {{ request()->routeIs('users.list') ? 'active' : '' }}">User List</a>
                                 </li>

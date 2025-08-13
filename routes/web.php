@@ -15,6 +15,7 @@ use App\Http\Controllers\ResidentController;
 use App\Http\Controllers\DocumentController; 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardItemController;
+use App\Http\Controllers\CertificationFooterController;
 use App\Http\Controllers\PurokController;
 use App\Http\Controllers\CertificateOfIndigencyController;
 use App\Http\Controllers\BarangayGoodMoralCertificateController;
@@ -94,6 +95,14 @@ Route::middleware('auth')->group(function () {
     Route::put('/barangayiddetails/{id}/update', [BrangayidDetailsController::class, 'update'])->name('barangayid.update');
     Route::delete('/barangayiddetails/{id}', [BrangayidDetailsController::class, 'destroy'])->name('barangayid.destroy');
 
+    Route::prefix('certification-footer')->group(function () {
+    Route::get('/', [CertificationFooterController::class, 'index'])->name('certification-footer.index');
+    Route::get('/create', [CertificationFooterController::class, 'create'])->name('certification-footer.create');
+    Route::post('/', [CertificationFooterController::class, 'store'])->name('certification-footer.store');
+    Route::get('/{id}/edit', [CertificationFooterController::class, 'edit'])->name('certification-footer.edit');
+    Route::put('/{id}', [CertificationFooterController::class, 'update'])->name('certification-footer.update');
+});
+
     Route::get('/residentFolder', [ResidentController::class, 'index'])->name('resident.index');
     Route::get('/residentFolder/create', [ResidentController::class, 'create'])->name('resident.create');
     Route::post('/residentFolder/store', [ResidentController::class, 'store'])->name('resident.store');
@@ -159,6 +168,18 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/generate-purok', [SpecialReportController::class, 'generatePurokReport'])->name('special-reports.generate-purok');
     Route::get('/print-purok', [SpecialReportController::class, 'printPurokReport'])->name('special-reports.print-purok');
+    
+    // Age bracket reports
+    Route::post('/generate-age-bracket', [SpecialReportController::class, 'generateAgeBracketReport'])
+        ->name('special-reports.generate-age-bracket');
+    Route::get('/print-age-bracket', [SpecialReportController::class, 'printAgeBracketReport'])
+        ->name('special-reports.print-age-bracket');
+        
+    // Sector reports
+    Route::post('/generate-sector', [SpecialReportController::class, 'generateSectorReport'])
+        ->name('special-reports.generate-sector');
+    Route::get('/print-sector', [SpecialReportController::class, 'printSectorReport'])
+        ->name('special-reports.print-sector');
     });
 });
 

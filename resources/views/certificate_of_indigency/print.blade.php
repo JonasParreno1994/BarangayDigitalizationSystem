@@ -256,16 +256,20 @@
                         This is to certify that Mr./Ms./Mrs. <strong><u>{{ strtoupper($certificate->resident->full_name) }}</u></strong>,
                         <strong><u>{{ \Carbon\Carbon::parse($certificate->resident->birth_date)->age }}</u> </strong> years old,
                         <strong>{{($certificate->resident->civil_status) }},</strong> and whose signature below is a 
-                        bonafide resident of this Barangay and is considered as an indigent based on the assessment of this office.
+                        bonafide resident of this Barangay.
                     </p>
-                   
                     <p style="text-indent: 0.5in;">
-                        This certification is being issued upon the request of the above-named person for <strong>{{ $certificate->purpose }}</strong>.
+                        Further certifies that the above-named person is a low income and considered as an indigent family which could hardly meet 
+                        family basic needs.
+                    </p>
+
+                    <p style="text-indent: 0.5in;">
+                        This certification is being issued upon the request of the above-named person for whatever legal purposed it may serve best.
                     </p>
                     
                     <p style="text-indent: 0.5in;">
                         Issued this {{ $certificate->date_of_issuance->format('jS') }} day of 
-                        {{ $certificate->date_of_issuance->format('F') }}, {{ $certificate->date_of_issuance->format('Y') }} at Barangay {{ $certificate->resident->barangay }}, {{ $certificate->resident->city_municipality }}.
+                        {{ $certificate->date_of_issuance->format('F') }}, {{ $certificate->date_of_issuance->format('Y') }} at {{ $certificate->resident->barangay }}, {{ $certificate->resident->city_municipality }}.
                     </p>
                 </div>
                 <div class="signature" style="margin-top: 80px; font-size: 17px; margin-left: 250px;">

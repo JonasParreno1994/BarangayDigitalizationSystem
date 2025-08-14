@@ -153,6 +153,9 @@ Route::middleware('auth')->group(function () {
     Route::put('/cert_indigency_minor/{id}', [CertIndigencyMinorController::class, 'update'])->name('cert_indigency_minor.update');
     Route::delete('/cert_indigency_minor/{id}', [CertIndigencyMinorController::class, 'destroy'])->name('cert_indigency_minor.destroy');
     Route::get('/cert_indigency_minor/{id}/print', [CertIndigencyMinorController::class, 'print'])->name('cert_indigency_minor.print');
+    Route::get('/cert-indigency-minor/report', [CertIndigencyMinorController::class, 'report'])->name('cert_indigency_minor.report');
+
+    
     
 
     Route::resource('barangaygoodmoral', BarangayGoodMoralCertificateController::class);

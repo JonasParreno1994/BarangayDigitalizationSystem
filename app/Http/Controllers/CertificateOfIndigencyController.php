@@ -6,16 +6,27 @@ use App\Models\CertificateOfIndigency;
 use App\Models\ResidentModel;
 use App\Models\BarangayIdDetail;
 use App\Models\Official;
+use Carbon\Carbon;
+use App\Models\CertIndigencyMinor;
 use Illuminate\Http\Request;
 
 class CertificateOfIndigencyController extends Controller
 {
-    public function index()
-    {
-        $certificates = CertificateOfIndigency::with('resident')->get();
-        $residents = ResidentModel::all();
-        return view('certificate_of_indigency.index', compact('certificates', 'residents'));
-    }
+    use Carbon\Carbon;
+
+public function index()
+{
+    $certificates = CertificateOfIndigency::with('resident')->get();
+    $residents = ResidentModel::all();
+
+    // Count certificates created this month
+    $certsThisMonth = CertificateOfIndigency::whereMonth('created_at', Carbon::now()->month)
+        ->whereYear('created_at', Carbon::now()->year)
+        ->count();
+
+    return view('certificate_of_indigency.index', compact('certificates', 'residents', 'certsThisMonth'));
+}
+
 
     public function store(Request $request)
     {

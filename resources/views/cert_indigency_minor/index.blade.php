@@ -101,6 +101,34 @@
                 <button type="button" class="btn btn-success" @click="toggle">Issue Certificate</button>
                 <h1 class="ltr:mr-4 rtl:ml-3 text-center w-full">List of Certificate of Indigency for Minor</h1>
             </div>
+            <div class="panel mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <h2 class="text-lg font-bold mb-4">Monthly Data Count</h2>
+                    <canvas id="monthlyBarChart" height="50"></canvas> {{-- Increased height --}}
+                </div>
+                <div>
+                    <h2 class="text-lg font-bold mb-4">Generate Report</h2>
+                    <form action="{{ route('cert_indigency_minor.report') }}" method="GET" target="_blank" class="mt-4">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label for="date_from" class="form-label">From:</label>
+                                <input type="date" id="date_from" name="date_from" class="form-input" required>
+                            </div>
+                            <div>
+                                <label for="date_to" class="form-label">To:</label>
+                                <input type="date" id="date_to" name="date_to" class="form-input" required>
+                            </div>
+                            <div class="flex items-end">
+                                <button type="submit" class="btn btn-primary w-full">Generate Report</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            
+            
+            
             <div class="panel mt-6">
                 <table id="clearanceTable" class="whitespace-nowrap"></table>
             </div>
@@ -176,7 +204,7 @@
                                 <select class="form-select" name="childsGender">
                                     <option value="" selected>-Select-</option>
                                     <option value="Son">Son</option>
-                                    <option value="Daugther">Daugther</option>
+                                    <option value="Daughter">Daughter</option>
                                 </select>
                             </div>
                             </div>
@@ -273,7 +301,6 @@ document.addEventListener('alpine:init', () => {
                                 `<div class="flex space-x-2">
                                     <a href="{{ route('cert_indigency_minor.show', $certMinor->id) }}" class="btn btn-sm btn-info">View</a>
                                     <a href="{{ route('cert_indigency_minor.print', $certMinor->id) }}" target="_blank" class="btn btn-sm btn-success">Print</a>
-                                    <a href="{{ route('cert_indigency_minor.edit', $certMinor->id) }}" class="btn btn-sm btn-primary">Edit</a>
                                     <form action="{{ route('cert_indigency_minor.destroy', $certMinor->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
@@ -458,6 +485,48 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            
+<script>
+    const ctx = document.getElementById('monthlyBarChart').getContext('2d');
 
+    const monthlyLabels = @json(array_keys($monthlyCounts));
+    const monthlyData = @json(array_values($monthlyCounts));
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: monthlyLabels,
+            datasets: [{
+                label: 'Certificates Issued',
+                data: monthlyData,
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1,
+                borderRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.parsed.y + ' issued';
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    stepSize: 1
+                }
+            }
+        }
+    });
+</script>
 <script src="{{ asset('admin/assets/js/simple-datatables.js') }}"></script>
 @endsection

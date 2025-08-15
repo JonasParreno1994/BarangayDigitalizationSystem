@@ -22,6 +22,13 @@
         font-weight: 500;
         color: #374151;
     }
+    select.form-select:not(.select2-hidden-accessible) {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    background-color: #fff;
+}
 
     .select2-container--default .select2-selection--single {
         height: 42px;
@@ -53,6 +60,10 @@
         border-color: #3b82f6;
         box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     }
+    .select2-hidden-accessible {
+    display: none !important;
+}
+
 </style>
 
 @if(session('print_success'))
@@ -102,19 +113,47 @@
         <div x-data="multipleTable">
             <div class="panel flex items-center overflow-x-auto whitespace-nowrap p-3 text-primary text-2xl font-bold">
                 <button type="button" class="btn btn-success" @click="toggle">Issue Certificate</button>
-                <h1 class="ltr:mr-4 rtl:ml-3 text-center w-full">List of Certificates of Residency</h1>
+                <h1 class="ltr:mr-4 rtl:ml-3 text-center w-full">List of Certificate of Indigency for Minor</h1>
             </div>
+            <div class="panel mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <h2 class="text-lg font-bold mb-4">Monthly Data Count</h2>
+                    <canvas id="monthlyBarChart" height="50"></canvas> {{-- Increased height --}}
+                </div>
+                <div>
+                    <h2 class="text-lg font-bold mb-4">Generate Report</h2>
+                    <form action="{{ route('cert_indigency_minor.report') }}" method="GET" class="mt-4">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label for="date_from" class="form-label">From:</label>
+                                <input type="date" id="date_from" name="date_from" class="form-input" required>
+                            </div>
+                            <div>
+                                <label for="date_to" class="form-label">To:</label>
+                                <input type="date" id="date_to" name="date_to" class="form-input" required>
+                            </div>
+                            <div class="flex items-end">
+                                <button type="submit" class="btn btn-primary w-full">Generate Report</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            
+            
+            
             <div class="panel mt-6">
-                <table id="certificateTable" class="whitespace-nowrap"></table>
+                <table id="clearanceTable" class="whitespace-nowrap"></table>
             </div>
         </div>
         
-        <!-- Add Certificate Modal -->
+        <!-- Add Clearance Modal -->
         <div class="fixed inset-0 z-[999] hidden overflow-y-auto bg-[black]/60" :class="open && '!block'">
             <div class="flex min-h-screen items-start justify-center px-4" @click.self="open = false">
                 <div x-show="open" x-transition x-transition.duration.300 class="panel my-8 w-full max-w-4xl overflow-hidden rounded-lg border-0 p-0">
                     <div class="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
-                        <div class="text-lg font-bold">ISSUE CERTIFICATE OF RESIDENCY</div>
+                        <div class="text-lg font-bold">ISSUE CERTIFICATE OF INDIGENCY FOR MINOR</div>
                         <button type="button" class="text-white-dark hover:text-dark" @click="toggle">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
                                 <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -124,42 +163,71 @@
                     </div>
                     
                     <div class="p-5">
-                       <form id="certificateForm" action="{{ route('certificate-of-residency.store') }}" method="POST">
+                       <form id="clearanceForm" action="{{ route('cert_indigency_minor.store') }}" method="POST">
                             @csrf
                             
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
                                 <div>
-                                    <label class="form-label">Resident <span class="text-red-500">*</span></label>
+                                    <label class="form-label">Parent's Name <span class="text-red-500">*</span></label>
                                     <select class="form-select resident-search" name="resident_id" id="residentSelect" required>
-                                    <option value="">Select Resident</option>
+                                        <option value="">Select Resident</option>
                                         @foreach($residents as $resident)
-                                            <option value="{{ $resident->id }}">
+                                            <option value="{{ $resident->id }}" data-purok="{{ $resident->purok }}">
                                                 {{ $resident->last_name }}, {{ $resident->first_name }} {{ $resident->middle_name }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    <script>
-                                        $(document).ready(function() {
-                                            $('#residentSelect').select2({
-                                                theme: 'bootstrap4',
-                                                placeholder: 'Select Resident',
-                                                allowClear: true,
-                                                width: '100%'
-                                            });
-                                        });
-                                    </script>
                                 </div>
+                                
+                                <div>
+                                    <label class="form-label">Purok <span class="text-red-500">*</span></label>
+                                    <select class="form-select" name="purok" id="purokField" required>
+                                        <option value="">Select Purok</option>
+                                        @foreach($puroks as $purok)
+                                            <option value="{{ $purok->purok_name }}">{{ $purok->purok_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <script>
+                                    $(document).ready(function() {
+                                        $('#residentSelect').select2({
+                                            theme: 'bootstrap4',
+                                            placeholder: 'Select Resident',
+                                            allowClear: true,
+                                            width: '100%'
+                                        });
+                                    
+                                        $('#residentSelect').on('change', function() {
+                                            let purok = $(this).find(':selected').data('purok');
+                                            $('#purokField').val(purok || '');
+                                        });
+                                    });
+                                    </script>
+                                    
                                 <div>
                                     <label class="form-label">Purpose <span class="text-red-500">*</span></label>
-                                    <input type="text" class="form-input" name="purpose" required placeholder="Purpose of certificate">
+                                    <input type="text" class="form-input" name="purpose" required placeholder="Purpose of clearance">
                                 </div>
                             </div>
-                            
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
-                                <div>
-                                    <label class="form-label">Cedula Number</label>
-                                    <input type="text" class="form-input" name="cedula_number" placeholder="Cedula Number">
-                                </div>
+                            <div>
+                                <label class="form-label">Child's Name <span class="text-red-500">*</span></label>
+                                <input type="text" class="form-input" name="childsName" required placeholder="Child's Name">
+                            </div>
+                            <div>
+                                <label class="form-label">Child's Age <span class="text-red-500">*</span></label>
+                                <input type="text" class="form-input" name="childsAge" required placeholder="Child's Age">
+                            </div>
+                            <div>
+                                <label class="form-label">Child's Identity</label>
+                                <select class="form-select" name="childsGender">
+                                    <option value="" selected>-Select-</option>
+                                    <option value="Son">Son</option>
+                                    <option value="Daughter">Daughter</option>
+                                </select>
+                            </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
                                 <div>
                                     <label class="form-label">Date of Issuance <span class="text-red-500">*</span></label>
                                     <input type="date" class="form-input" name="date_of_issuance" required value="{{ date('Y-m-d') }}">
@@ -168,31 +236,29 @@
                                     <label class="form-label">OR Number</label>
                                     <input type="text" class="form-input" name="or_number" placeholder="OR Number">
                                 </div>
-                            </div>
-                            
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                                 <div>
                                     <label class="form-label">Amount Paid</label>
                                     <input type="number" step="0.01" class="form-input" name="amount_paid" placeholder="0.00">
                                 </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <div class="mb-6">
+                                    <label class="form-label">Remarks</label>
+                                    <textarea class="form-textarea" name="remarks" rows="3" placeholder="Additional notes"></textarea>
+                                </div>
                                 <div>
                                     <label class="form-label">Status</label>
-                                    <select class="form-select" name="status">
+                                    <select class="form-select" name="status" required>
                                         <option value="Issued" selected>Issued</option>
                                         <option value="Pending">Pending</option>
                                         <option value="Cancelled">Cancelled</option>
                                     </select>
                                 </div>
                             </div>
-                            
-                            <div class="mb-4">
-                                <label class="form-label">Remarks</label>
-                                <textarea class="form-textarea" name="remarks" rows="2" placeholder="Additional notes"></textarea>
-                            </div>
-                            
                             <div class="mt-8 flex items-center justify-end">
                                 <button type="button" class="btn btn-outline-danger" @click="toggle">Cancel</button>
-                                <button type="submit" class="btn btn-primary ltr:ml-4 rtl:mr-4">Issue Certificate</button>
+                                <button type="submit" class="btn btn-primary ltr:ml-4 rtl:mr-4">Issue Clearance</button>
                             </div>
                         </form>
                     </div>
@@ -200,8 +266,8 @@
             </div>
         </div>
         
-        <!-- View Certificate Modal -->
-        <div class="fixed inset-0 z-[999] hidden overflow-y-auto bg-[black]/60" id="viewCertificateModal">
+        <!-- View Clearance Modal -->
+        <div class="fixed inset-0 z-[999] hidden overflow-y-auto bg-[black]/60" id="viewClearanceModal">
             <div class="flex min-h-screen items-start justify-center px-4">
                 <div class="panel my-8 w-full max-w-4xl overflow-hidden rounded-lg border-0 p-0">
                     <div class="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
@@ -214,14 +280,14 @@
                         </button>
                     </div>
                     
-                    <div class="p-5" id="certificateDetailsContent">
+                    <div class="p-5" id="clearanceDetailsContent">
                         <!-- Content will be loaded here via AJAX -->
                         <div class="text-center py-10">
                             <svg class="animate-spin h-8 w-8 text-blue-500 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
-                            <p class="mt-3">Loading certificate details...</p>
+                            <p class="mt-3">Loading clearance details...</p>
                         </div>
                     </div>
                 </div>
@@ -236,27 +302,28 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('multipleTable', () => ({
         datatable: null,
         init() {
-            this.datatable = new simpleDatatables.DataTable('#certificateTable', {
+            this.datatable = new simpleDatatables.DataTable('#clearanceTable', {
+                // In the DataTable initialization part
                 data: {
-                    headings: ['ID', 'Resident', 'Purpose', 'Date of Issuance', 'Status', 'Actions'],
+                    headings: ['ID', 'Parents name', 'Childs Name','Purpose', 'Date of Issuance','Status','Actions'],
                     data: [
-                        @foreach ($certificates as $certificate)
+                        @foreach ($certs as $certMinor)
                             [
-                                '{{ $certificate->id }}',
-                                '{{ $certificate->resident->last_name }}, {{ $certificate->resident->first_name }}',
-                                '{{ $certificate->purpose }}',
-                                '{{ $certificate->date_of_issuance->format('m/d/Y') }}',
-                                `<span class="badge ${getStatusBadgeClass('{{ $certificate->status }}')}">
-                                    {{ $certificate->status }}
+                                '{{ $certMinor->id }}',
+                                '{{ $certMinor->resident->last_name }}, {{ $certMinor->resident->first_name }}',
+                                '{{ $certMinor->childsName }}',
+                                '{{ $certMinor->purpose}}',
+                                '{{ $certMinor->date_of_issuance->format('m/d/Y') }}',
+                                `<span class="badge ${getStatusBadgeClass('{{ $certMinor->status }}')}">
+                                    {{ $certMinor->status }}
                                 </span>`,
                                 `<div class="flex space-x-2">
-                                    <a href="{{ route('certificate-of-residency.show', $certificate->id) }}" class="btn btn-sm btn-info">View</a>
-                                    <a href="{{ route('certificate-of-residency.print', $certificate->id) }}" target="_blank" class="btn btn-sm btn-success">Print</a>
-                                    <a href="{{ route('certificate-of-residency.edit', $certificate->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                    <form action="{{ route('certificate-of-residency.destroy', $certificate->id) }}" method="POST" class="d-inline">
+                                    <a href="{{ route('cert_indigency_minor.show', $certMinor->id) }}" class="btn btn-sm btn-info">View</a>
+                                    <a href="{{ route('cert_indigency_minor.print', $certMinor->id) }}" target="_blank" class="btn btn-sm btn-success">Print</a>
+                                    <form action="{{ route('cert_indigency_minor.destroy', $certMinor->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="button" class="btn btn-sm btn-danger delete-certificate">
+                                        <button type="button" class="btn btn-sm btn-danger delete-clearance">
                                             Delete
                                         </button>
                                     </form>
@@ -290,31 +357,31 @@ function getStatusBadgeClass(status) {
     }
 }
 
-// Certificate Modal Functions
-function showCertificateModal(certificateId) {
-    document.getElementById('viewCertificateModal').classList.remove('hidden');
+// Clearance Modal Functions
+function showClearanceModal(clearanceId) {
+    document.getElementById('viewClearanceModal').classList.remove('hidden');
     
-    fetch(`/certificate-of-residency/${certificateId}`)
+    fetch(`/barangayClearance/${clearanceId}`)
         .then(response => response.text())
         .then(html => {
-            document.getElementById('certificateDetailsContent').innerHTML = html;
+            document.getElementById('clearanceDetailsContent').innerHTML = html;
         })
         .catch(error => {
-            console.error('Error loading certificate details:', error);
-            document.getElementById('certificateDetailsContent').innerHTML = `
+            console.error('Error loading clearance details:', error);
+            document.getElementById('clearanceDetailsContent').innerHTML = `
                 <div class="text-center py-10 text-red-500">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                     </svg>
-                    <p class="mt-3">Failed to load certificate details. Please try again.</p>
+                    <p class="mt-3">Failed to load clearance details. Please try again.</p>
                 </div>
             `;
         });
 }
 
-function printCertificate(certificateId) {
+function printClearance(clearanceId) {
     const printWindow = window.open(
-        `/certificate-of-residency/${certificateId}/print`, 
+        `/barangayClearance/${clearanceId}/print`, 
         '_blank',
         'toolbar=0,location=0,menubar=0,scrollbars=1,resizable=1'
     );
@@ -326,11 +393,11 @@ function printCertificate(certificateId) {
 }
 
 function closeViewModal() {
-    document.getElementById('viewCertificateModal').classList.add('hidden');
+    document.getElementById('viewClearanceModal').classList.add('hidden');
 }
 
 // Close modal when clicking outside
-document.getElementById('viewCertificateModal').addEventListener('click', function(e) {
+document.getElementById('viewClearanceModal').addEventListener('click', function(e) {
     if (e.target === this) {
         closeViewModal();
     }
@@ -338,7 +405,7 @@ document.getElementById('viewCertificateModal').addEventListener('click', functi
 
 // Delete Confirmation
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.delete-certificate').forEach(button => {
+    document.querySelectorAll('.delete-clearance').forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();
             const form = this.closest('form');
@@ -362,7 +429,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Form Validation
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('certificateForm');
+    const form = document.getElementById('clearanceForm');
     
     form.addEventListener('submit', function(e) {
         const requiredFields = form.querySelectorAll('[required]');
@@ -414,6 +481,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+
     $('#residentSelect').select2({
         width: '100%',
         placeholder: 'Search for a resident...',
@@ -421,6 +489,7 @@ document.addEventListener('DOMContentLoaded', function() {
         dropdownParent: $('#residentSelect').parent() 
     });
     
+   
     document.querySelector('[x-data="modal"]').addEventListener('toggle', function(e) {
         if (e.detail.open) {
             setTimeout(() => {
@@ -435,6 +504,47 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            
+<script>
+    const ctx = document.getElementById('monthlyBarChart').getContext('2d');
 
+    const monthlyLabels = @json(array_keys($monthlyCounts));
+    const monthlyData = @json(array_values($monthlyCounts));
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: monthlyLabels,
+            datasets: [{
+                label: 'Certificates Issued',
+                data: monthlyData,
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1,
+                borderRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.parsed.y + ' issued';
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    stepSize: 1
+                }
+            }
+        }
+    });
+</script>
 <script src="{{ asset('admin/assets/js/simple-datatables.js') }}"></script>
 @endsection

@@ -33,8 +33,13 @@ class BrgyclearanceController extends Controller
 
         BarangayClearance::create($validated);
 
-        return redirect()->route('barangayclearance.index')
-                         ->with('success', 'Barangay Clearance issued successfully!');
+        session()->flash('print_success', 'Barangay Clearance issued and printed successfully!');
+
+        $clearance = BarangayClearance::with('resident')->latest()->first();
+        $barangayDetails = BarangayIdDetail::first();
+        $officials = Official::with('position')->get();
+
+        return view('barangayclearance.print', compact('clearance', 'barangayDetails', 'officials'));
     }
 
     public function show($id)

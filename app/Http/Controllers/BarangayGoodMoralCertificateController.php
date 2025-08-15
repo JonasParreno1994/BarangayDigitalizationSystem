@@ -38,8 +38,13 @@ class BarangayGoodMoralCertificateController extends Controller
 
         $certificate = BarangayGoodMoralCertificate::create($validated);
 
-        return redirect()->route('barangaygoodmoral.index')
-            ->with('success', 'Good Moral Certificate issued successfully!');
+        session()->flash('print_success', 'Good Moral Certificate issued and printed successfully!');
+
+        $certificate = BarangayGoodMoralCertificate::with('resident')->latest()->first();
+        $barangayDetails = BarangayIdDetail::first();
+        $officials = Official::with('position')->get();
+
+        return view('barangay_good_moral.print', compact('certificate', 'barangayDetails', 'officials'));
     }
 
     public function show($id)

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=794px">
-    <title>Certificate of Indigency - {{ $certificate->resident->full_name }}</title>
+    <title>Certificate of Indigency - {{ $cert->resident->full_name }}</title>
     <style>
         body {
             font-family: 'Times New Roman', Times, serif;
@@ -112,9 +112,9 @@
                     @endif
                 @endif
                 <p style="font-size: 14px; font-weight: bold;">REPUBLIC OF THE PHILIPPINES</p>
-                <p style="font-size: 14px; font-weight: bold;">PROVINCE OF {{ strtoupper($certificate->resident->province) }}</p>
-                <p style="font-size: 14px; font-weight: bold;">MUNICIPALITY OF {{ strtoupper($certificate->resident->city_municipality) }}</p>
-                <p style="font-size: 18px; font-weight: bold;">BARANGAY {{ strtoupper($certificate->resident->barangay) }}</p>
+                <p style="font-size: 14px; font-weight: bold;">PROVINCE OF {{ strtoupper($cert->resident->province) }}</p>
+                <p style="font-size: 14px; font-weight: bold;">MUNICIPALITY OF {{ strtoupper($cert->resident->city_municipality) }}</p>
+                <p style="font-size: 18px; font-weight: bold;">BARANGAY {{ strtoupper($cert->resident->barangay) }}</p>
                 <p style="font-size: 14px; font-weight: bold; font-style: italic;">Office of the Punong Barangay</p>
                 <p>E-mail: __________ * Tel/CP No.  __________</p>
             </div>
@@ -225,19 +225,19 @@
                 <br><br>
                 <div style="text-align: left; width: 100%; align-self: flex-start; line-height:5px; font-size: 10px;">
                     <div style="margin-bottom: 6px;">
-                        Certificate No.: {{ $certificate->id ?? '__________' }}
+                        Certificate No.: {{ $cert->id ?? '__________' }}
                     </div>
                     <div style="margin-bottom: 6px;">
                         <em>(Revised {{ date('F j, Y') }})</em>
                     </div>
                     <div style="margin-bottom: 6px;">
-                        OR No.: {{ $certificate->or_number ?? '__________' }} | Amount Paid: {{ $certificate->amount_paid ? '₱' . number_format($certificate->amount_paid, 2) : '__________' }}
+                        OR No.: {{ $cert->or_number ?? '__________' }} | Amount Paid: {{ $cert->amount_paid ? '₱' . number_format($cert->amount_paid, 2) : '__________' }}
                     </div>
                     <div>
-                        Date Issued: {{ $certificate->date_of_issuance->format('m/d/Y') }}
+                        Date Issued: {{ $cert->date_of_issuance->format('m/d/Y') }}
                     </div>
                     <div style="margin-top: 8px;">
-                        VALID UNTIL {{ $certificate->date_of_issuance->addYear()->format('F j, Y') }}
+                        VALID UNTIL {{ $cert->date_of_issuance->addYear()->format('F j, Y') }}
                     </div>
                 </div>
                 <br><br>
@@ -253,23 +253,27 @@
                 <div class="content" style="text-align: justify; font-size: 15px;">
                     <h4 style="text-align: left; font-family: 'Times New Roman', Times, serif;"><i>TO WHOM IT MAY CONCERN:</i></h4>
                     <p style="text-indent: 0.5in;">
-                        This is to certify that Mr./Ms./Mrs. <strong><u>{{ strtoupper($certificate->resident->full_name) }}</u></strong>,
-                        <strong><u>{{ \Carbon\Carbon::parse($certificate->resident->birth_date)->age }}</u> </strong> years old,
-                        <strong>{{($certificate->resident->civil_status) }},</strong> and whose signature below is a 
-                        bonafide resident of this Barangay.
+                        This is to certify that Mr./Ms./Mrs. <strong><u>{{ strtoupper($cert->resident->full_name) }}</u></strong>,
+                        <strong><u>{{ \Carbon\Carbon::parse($cert->resident->birth_date)->age }}</u> </strong> years old,
+                        <strong>{{($cert->resident->civil_status) }}, Filipino</strong> and whose signature below is a 
+                        bonafide resident of <strong>{{ $cert->purok }}</strong>, Barangay Bacuyangan, Hinoba-an, Negros Occidental.
                     </p>
                     <p style="text-indent: 0.5in;">
                         Further certifies that the above-named person is a low income and considered as an indigent family which could hardly meet 
                         family basic needs.
                     </p>
-
+                    <p style="text-indent: 0.5in;">
+                        That he/she needs assistance for the <strong>{{ $cert->purpose }}</strong> of his/her <strong>{{ $cert->childsAge }}</strong> years old, 
+                        <strong>{{ $cert->childsGender }}</strong> named, <strong>{{ $cert->childsName }}</strong>.
+                    </p>
                     <p style="text-indent: 0.5in;">
                         This certification is being issued upon the request of the above-named person for whatever legal purposed it may serve best.
                     </p>
                     
                     <p style="text-indent: 0.5in;">
-                        Issued this {{ $certificate->date_of_issuance->format('jS') }} day of 
-                        {{ $certificate->date_of_issuance->format('F') }}, {{ $certificate->date_of_issuance->format('Y') }} at {{ $certificate->resident->barangay }}, {{ $certificate->resident->city_municipality }}.
+                        Isued and signed this <strong> {{ $cert->date_of_issuance->format('jS') }} </strong> of 
+                       <strong> {{ $cert->date_of_issuance->format('F') }}</strong>, <strong>{{ $cert->date_of_issuance->format('Y') }}</strong>
+                        at {{ $cert->resident->barangay }}, {{ $cert->resident->city_municipality }}.
                     </p>
                 </div>
                 <div class="signature" style="margin-top: 80px; font-size: 17px; margin-left: 250px;">
@@ -293,13 +297,12 @@
             </div>
         </div>
     </div>
-     <script>
+    <script>
         window.onload = function() {
             window.print();
         }
         window.onafterprint = function() {
-            window.close();
-            window.history.back();
+            window.history.back(); 
         };
     </script>
 </body>

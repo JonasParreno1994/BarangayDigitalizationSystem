@@ -6,16 +6,26 @@ use App\Models\CertificateOfIndigency;
 use App\Models\ResidentModel;
 use App\Models\BarangayIdDetail;
 use App\Models\Official;
+use Carbon\Carbon;
+use App\Models\CertIndigencyMinor;
 use Illuminate\Http\Request;
 
 class CertificateOfIndigencyController extends Controller
 {
-    public function index()
-    {
-        $certificates = CertificateOfIndigency::with('resident')->get();
-        $residents = ResidentModel::all();
-        return view('certificate_of_indigency.index', compact('certificates', 'residents'));
-    }
+
+public function index()
+{
+    $certificates = CertificateOfIndigency::with('resident')->get();
+    $residents = ResidentModel::all();
+
+    // Count certificates created this month
+    $certsThisMonth = CertificateOfIndigency::whereMonth('created_at', Carbon::now()->month)
+        ->whereYear('created_at', Carbon::now()->year)
+        ->count();
+
+    return view('certificate_of_indigency.index', compact('certificates', 'residents', 'certsThisMonth'));
+}
+
 
     public function store(Request $request)
     {
@@ -31,8 +41,13 @@ class CertificateOfIndigencyController extends Controller
 
         $certificate = CertificateOfIndigency::create($validated);
 
-        return redirect()->route('certificate_of_indigency.index')
-            ->with('success', 'Certificate of Indigency created successfully.');
+        session()->flash('print_success', 'Certificate of Indigency issued and printed successfully!');
+
+        $certificate = CertificateOfIndigency::with('resident')->latest()->first();
+        $barangayDetails = BarangayIdDetail::first();
+        $officials = Official::with('position')->get();
+
+        return view('certificate_of_indigency.print', compact('certificate', 'barangayDetails', 'officials'));
     }
 
     public function show($id)

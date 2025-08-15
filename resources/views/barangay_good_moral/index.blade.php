@@ -55,6 +55,20 @@
     }
 </style>
 
+@if(session('print_success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: '{{ session('print_success') }}',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        });
+    </script>
+@endif
+
 @if(session('success'))
     <script>
         document.addEventListener('DOMContentLoaded', function() {

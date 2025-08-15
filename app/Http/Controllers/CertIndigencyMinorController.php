@@ -15,7 +15,7 @@ class CertIndigencyMinorController extends Controller
     public function index(Request $request)
     {
         $certs = CertIndigencyMinor::with('resident')->latest()->get();
-        $residents = ResidentModel::all();
+        $residents = ResidentModel::with('purok')->get();
         $puroks = Purok::all();
         $barangayDetails = BarangayIdDetail::first(); 
 

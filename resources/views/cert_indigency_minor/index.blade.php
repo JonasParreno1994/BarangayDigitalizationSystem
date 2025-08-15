@@ -172,7 +172,8 @@
                                     <select class="form-select resident-search" name="resident_id" id="residentSelect" required>
                                         <option value="">Select Resident</option>
                                         @foreach($residents as $resident)
-                                            <option value="{{ $resident->id }}" data-purok="{{ $resident->purok }}">
+                                            <option value="{{ $resident->id }}" 
+                                                    data-purok="{{ $resident->purok ? $resident->purok->purok_name : '' }}">
                                                 {{ $resident->last_name }}, {{ $resident->first_name }} {{ $resident->middle_name }}
                                             </option>
                                         @endforeach
@@ -190,19 +191,42 @@
                                 </div>
                                 <script>
                                     $(document).ready(function() {
+                                        // Initialize Select2 for resident search
                                         $('#residentSelect').select2({
                                             theme: 'bootstrap4',
                                             placeholder: 'Select Resident',
                                             allowClear: true,
                                             width: '100%'
                                         });
-                                    
+
+                                        // Handle change event to auto-fill purok
                                         $('#residentSelect').on('change', function() {
-                                            let purok = $(this).find(':selected').data('purok');
-                                            $('#purokField').val(purok || '');
+                                            let selectedOption = $(this).find(':selected');
+                                            let purok = selectedOption.data('purok');
+                                            
+                                            // Set the purok field value
+                                            $('#purokField').val(purok || '').trigger('change');
+                                            
+                                            // If you want to disable the purok field after auto-filling:
+                                            // $('#purokField').prop('disabled', !!purok);
+                                        });
+
+                                        // Reinitialize Select2 when modal opens (if needed)
+                                        document.querySelector('[x-data="modal"]').addEventListener('toggle', function(e) {
+                                            if (e.detail.open) {
+                                                setTimeout(() => {
+                                                    $('#residentSelect').select2({
+                                                        theme: 'bootstrap4',
+                                                        placeholder: 'Select Resident',
+                                                        allowClear: true,
+                                                        width: '100%',
+                                                        dropdownParent: $('#residentSelect').parent()
+                                                    });
+                                                }, 100);
+                                            }
                                         });
                                     });
-                                    </script>
+                                </script>
                                     
                                 <div>
                                     <label class="form-label">Purpose <span class="text-red-500">*</span></label>

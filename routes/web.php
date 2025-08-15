@@ -23,6 +23,7 @@ use App\Http\Controllers\CertificateOfResidencyController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SpecialReportController;
 use App\Http\Controllers\CertIndigencyMinorController;
+use App\Http\Controllers\CertFirstTimeJobseekerController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -154,6 +155,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cert_indigency_minor/{id}', [CertIndigencyMinorController::class, 'destroy'])->name('cert_indigency_minor.destroy');
     Route::get('/cert_indigency_minor/{id}/print', [CertIndigencyMinorController::class, 'print'])->name('cert_indigency_minor.print');
     Route::get('/cert-indigency-minor/report', [CertIndigencyMinorController::class, 'report'])->name('cert_indigency_minor.report');
+
+
+    Route::get('/cert_firstTime_Jobseeker', [CertFirstTimeJobseekerController::class, 'index'])->name('cert_firstTime_Jobseeker.index');
 
     
     

@@ -23,6 +23,7 @@ use App\Http\Controllers\CertificateOfResidencyController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SpecialReportController;
 use App\Http\Controllers\CertIndigencyMinorController;
+use App\Http\Controllers\CertFirstTimeJobseekerController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -154,6 +155,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cert_indigency_minor/{id}', [CertIndigencyMinorController::class, 'destroy'])->name('cert_indigency_minor.destroy');
     Route::get('/cert_indigency_minor/{id}/print', [CertIndigencyMinorController::class, 'print'])->name('cert_indigency_minor.print');
     Route::get('/cert-indigency-minor/report', [CertIndigencyMinorController::class, 'report'])->name('cert_indigency_minor.report');
+
+
+    Route::get('/cert_firstTime_Jobseeker', [CertFirstTimeJobseekerController::class, 'index'])->name('cert_firstTime_Jobseeker.index');
+    Route::post('/cert_firstTime_Jobseeker', [CertFirstTimeJobseekerController::class, 'store'])->name('cert_firstTime_Jobseeker.store');
+    Route::get('/cert_firstTime_Jobseeker/{id}', [CertFirstTimeJobseekerController::class, 'show'])->name('cert_firstTime_Jobseeker.show');
+    Route::get('/cert_firstTime_Jobseeker/{id}/edit', [CertFirstTimeJobseekerController::class, 'edit'])->name('cert_firstTime_Jobseeker.edit');
+    Route::put('/cert_firstTime_Jobseeker/{id}', [CertFirstTimeJobseekerController::class, 'update'])->name('cert_firstTime_Jobseeker.update');
+    Route::delete('/cert_firstTime_Jobseeker/{id}', [CertFirstTimeJobseekerController::class, 'destroy'])->name('cert_firstTime_Jobseeker.destroy');
+    Route::get('/cert_firstTime_Jobseeker/{id}/print', [CertFirstTimeJobseekerController::class, 'print'])->name('cert_firstTime_Jobseeker.print');
+    Route::get('/cert-firstTime-Jobseeker/report', [CertFirstTimeJobseekerController::class, 'report'])->name('cert_firstTime_Jobseeker.report');
 
     
     

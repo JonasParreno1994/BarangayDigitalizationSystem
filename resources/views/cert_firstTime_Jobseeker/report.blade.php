@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Certificate of Indigency for Minor Report</title>
+    <title>ISSUED CERTIFICATE FOR FIRST TIME JOBSEEKER</title>
     <style>
         body {
             font-family: 'Times New Roman', Times, serif;
@@ -111,19 +111,19 @@
     <div class="header">
         @if(isset($barangayDetails))
             @if($barangayDetails->logo1_path)
-                <img src="{{ asset('storage/' . $barangayDetails->logo1_path) }}" class="logo-left" style="left:0;">
+            <img src="{{ asset('storage/' . $barangayDetails->logo1_path) }}" class="logo-left" style="left: 100px;">
             @endif
             @if($barangayDetails->logo2_path)
-                <img src="{{ asset('storage/' . $barangayDetails->logo2_path) }}" class="logo-right" style="right:0;">
+            <img src="{{ asset('storage/' . $barangayDetails->logo2_path) }}" class="logo-right" style="left: 550px;">
             @endif
         @endif
-        <h1>{{ $barangayDetails->heading1 ?? 'REPUBLIC OF THE PHILIPPINES' }}</h1>
-        <h1>{{ $barangayDetails->heading2 ?? 'PROVINCE / MUNICIPALITY' }}</h1>
-        <h1>{{ $barangayDetails->heading3 ?? 'BARANGAY CERTIFICATE REPORT' }}</h1>
+        <h1 style="margin: 10px 0; line-height: 1;">{{ $barangayDetails->heading1 ?? 'REPUBLIC OF THE PHILIPPINES' }}</h1>
+        <h1 style="margin: 10px 0; line-height: 1;">{{ $barangayDetails->heading2 ?? 'PROVINCE / MUNICIPALITY' }}</h1>
+        <h1 style="margin: 10px 0; line-height: 1;">{{ $barangayDetails->heading3 ?? 'BARANGAY CERTIFICATE REPORT' }}</h1>
         <p>Generated on: {{ now()->format('F j, Y h:i A') }}</p>
     </div>
 
-    <div class="report-title">Certificate of Indigency for Minor Report</div>
+    <div class="report-title">ISSUED CERTIFICATE FOR FIRST TIME JOBSEEKER REPORT</div>
 
     <div class="filters">
         <h3 style="margin-top: 0;">Report Filters</h3>
@@ -134,16 +134,14 @@
     </div>
 
     <div class="certificate-section">
-        <h3 class="section-title">Certificate of Indigency for Minor ({{ $reportData->count() }})</h3>
+        <h3 class="section-title">Certificate for First Time Jobseeker ({{ $reportData->count() }})</h3>
         @if($reportData->count() > 0)
         <table>
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Parent's Name</th>
-                    <th>Child's Name</th>
+                    <th>Name</th>
                     <th>Purok</th>
-                    <th>Purpose</th>
                     <th>Date Issued</th>
                 </tr>
             </thead>
@@ -152,9 +150,7 @@
                 <tr>
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $cert->resident->last_name }}, {{ $cert->resident->first_name }} {{ $cert->resident->middle_name }}</td>
-                    <td>{{ $cert->childsName }}</td>
                     <td>{{ $cert->purok }}</td>
-                    <td>{{ Str::limit($cert->purpose, 25) }}</td>
                     <td>{{ $cert->date_of_issuance->format('m/d/Y') }}</td>
                 </tr>
                 @endforeach
@@ -163,7 +159,7 @@
         @else
         <div class="no-data">
             <h3>No Records Found</h3>
-            <p>No Certificate of Indigency for Minor records found for the selected date range.</p>
+            <p>No Certificate for First Time Jobseeker records found for the selected date range.</p>
         </div>
         @endif
     </div>

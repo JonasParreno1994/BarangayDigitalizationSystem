@@ -303,6 +303,7 @@
         }
         window.onafterprint = function() {
             window.history.back(); 
+            window.close();
         };
     </script>
 </body>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\CertIndigencyMinor;
 use App\Models\ResidentModel;
 use App\Models\BarangayIdDetail;
+use App\Models\Purok;
 use Carbon\Carbon;
 use App\Models\Official;
 
@@ -15,13 +16,15 @@ class CertIndigencyMinorController extends Controller
     {
         $certs = CertIndigencyMinor::with('resident')->latest()->get();
         $residents = ResidentModel::all();
-    
-        // Count issued this month
+        $puroks = Purok::all();
+        $barangayDetails = BarangayIdDetail::first(); 
+
+        
         $certsThisMonth = CertIndigencyMinor::whereYear('date_of_issuance', now()->year)
             ->whereMonth('date_of_issuance', now()->month)
             ->count();
-    
-        // Monthly counts for the current year (Jan–Dec, always include months with zero)
+
+        
         $raw = CertIndigencyMinor::selectRaw('
                 MONTH(date_of_issuance) as month_num,
                 DATE_FORMAT(date_of_issuance, "%M") as month,
@@ -33,14 +36,13 @@ class CertIndigencyMinorController extends Controller
             ->get()
             ->pluck('total', 'month')
             ->toArray();
-    
+
         $allMonths = collect(range(1, 12))
             ->mapWithKeys(fn($m) => [Carbon::create(null, $m, 1)->format('F') => 0])
             ->toArray();
-    
+
         $monthlyCounts = array_merge($allMonths, $raw);
-    
-        // 📌 Date range filter for report (optional when button clicked)
+
         $reportData = collect();
         if ($request->filled(['date_from', 'date_to'])) {
             $reportData = CertIndigencyMinor::with('resident')
@@ -51,35 +53,41 @@ class CertIndigencyMinorController extends Controller
                 ->orderBy('date_of_issuance', 'asc')
                 ->get();
         }
-    
+
         return view('cert_indigency_minor.index', compact(
             'certs',
             'residents',
+            'puroks',
             'certsThisMonth',
             'monthlyCounts',
-            'reportData'
+            'reportData',
+            'barangayDetails'
         ));
     }
 
-    public function store(Request $request)
+   public function store(Request $request)
     {
-        $validated = $request->validate([
-            'resident_id' => 'required|exists:tblresidents,id',
-            'purpose' => 'required|string|max:255',
-            'purok' => 'required|string|max:100',
-            'childsName' => 'required|string|max:100',
-            'childsAge' => 'required|string|max:10',
-            'childsGender' => 'required|string|max:10',
-            'date_of_issuance' => 'required|date',
-            'or_number' => 'nullable|string|max:50',
-            'amount_paid' => 'nullable|numeric|min:0',
-            'remarks' => 'nullable|string'
-        ]);
+    $validated = $request->validate([
+        'resident_id' => 'required|exists:tblresidents,id',
+        'purpose' => 'required|string|max:255',
+        'purok' => 'required|string|max:100',
+        'childsName' => 'required|string|max:100',
+        'childsAge' => 'required|string|max:10',
+        'childsGender' => 'required|string|in:Son,Daughter',
+        'status' => 'required|string|in:Issued,Pending,Cancelled',
+        'date_of_issuance' => 'required|date',
+        'or_number' => 'nullable|string|max:50',
+        'amount_paid' => 'nullable|numeric|min:0',
+        'remarks' => 'nullable|string'
+    ]);
 
-        CertIndigencyMinor::create($validated);
+    $cert = CertIndigencyMinor::create($validated);
+    $barangayDetails = BarangayIdDetail::first();
+    $officials = Official::with('position')->get();
 
-        return redirect()->route('cert_indigency_minor.index')
-                         ->with('success', 'Certificate of Indigency for Minor issued successfully!');
+    session()->flash('print_success', 'Certificate of Indigency for Minor issued and printed successfully!');
+
+    return view('cert_indigency_minor.print', compact('cert', 'barangayDetails', 'officials'));
     }
 
     public function show($id)
@@ -109,8 +117,8 @@ class CertIndigencyMinorController extends Controller
             'childsName' => 'required|string|max:100',
             'childsAge' => 'required|string|max:10',
             'childsGender' => 'required|string|max:10',
-            'date_of_issuance'
-            => 'required|date',
+            'status' => 'required|string|in:Issued,Pending,Cancelled',
+            'date_of_issuance' => 'required|date',
             'or_number' => 'nullable|string|max:50',
             'amount_paid' => 'nullable|numeric|min:0',
             'remarks' => 'nullable|string'
@@ -137,21 +145,26 @@ class CertIndigencyMinorController extends Controller
         return view('cert_indigency_minor.print', compact('cert', 'barangayDetails', 'officials'));
     }
     public function report(Request $request)
-{
-    $dateFrom = $request->input('date_from');
-    $dateTo = $request->input('date_to');
+    {
+        $dateFrom = $request->input('date_from');
+        $dateTo = $request->input('date_to');
+        $barangayDetails = BarangayIdDetail::first(); 
 
-    // Validate dates
-    if (!$dateFrom || !$dateTo) {
-        return redirect()->back()->with('error', 'Please select both dates.');
+        
+        if (!$dateFrom || !$dateTo) {
+            return redirect()->back()->with('error', 'Please select both dates.');
+        }
+
+        $reportData = CertIndigencyMinor::with('resident')
+            ->whereBetween('date_of_issuance', [$dateFrom, $dateTo])
+            ->orderBy('date_of_issuance', 'asc')
+            ->get();
+
+        return view('cert_indigency_minor.report', compact(
+            'reportData', 
+            'dateFrom', 
+            'dateTo',
+            'barangayDetails' 
+        ));
     }
-
-    $reportData = CertIndigencyMinor::with('resident')
-        ->whereBetween('date_of_issuance', [$dateFrom, $dateTo])
-        ->orderBy('date_of_issuance', 'asc')
-        ->get();
-
-    return view('cert_indigency_minor.report', compact('reportData', 'dateFrom', 'dateTo'));
-}
-
 }

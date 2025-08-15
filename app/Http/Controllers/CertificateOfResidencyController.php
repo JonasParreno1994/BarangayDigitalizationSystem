@@ -38,8 +38,13 @@ class CertificateOfResidencyController extends Controller
 
         $certificate = CertificateOfResidency::create($validated);
 
-        return redirect()->route('certificate-of-residency.index')
-            ->with('success', 'Certificate of Residency issued successfully!');
+         session()->flash('print_success', 'Certificate of Residency issued and printed successfully!');
+
+        $certificate = CertificateOfResidency::with('resident')->latest()->first();
+        $barangayDetails = BarangayIdDetail::first();
+        $officials = Official::with('position')->get();
+
+        return view('certificate_of_residency.print', compact('certificate', 'barangayDetails', 'officials'));
     }
 
     public function show($id)

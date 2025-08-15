@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 
 class CertificateOfIndigencyController extends Controller
 {
-    use Carbon\Carbon;
 
 public function index()
 {
@@ -42,8 +41,13 @@ public function index()
 
         $certificate = CertificateOfIndigency::create($validated);
 
-        return redirect()->route('certificate_of_indigency.index')
-            ->with('success', 'Certificate of Indigency created successfully.');
+        session()->flash('print_success', 'Certificate of Indigency issued and printed successfully!');
+
+        $certificate = CertificateOfIndigency::with('resident')->latest()->first();
+        $barangayDetails = BarangayIdDetail::first();
+        $officials = Official::with('position')->get();
+
+        return view('certificate_of_indigency.print', compact('certificate', 'barangayDetails', 'officials'));
     }
 
     public function show($id)

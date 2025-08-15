@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class CertIndigencyMinor extends Model
 {
     use HasFactory;
+    
     protected $table = 'cert__indigency__minor';
+    
     protected $fillable = [
         'resident_id',
         'purpose',
@@ -22,14 +24,19 @@ class CertIndigencyMinor extends Model
         'amount_paid',
         'remarks'
     ];
+    
     protected $casts = [
         'date_of_issuance' => 'date',
         'amount_paid' => 'decimal:2'
     ];
+    
     public function resident()
     {
         return $this->belongsTo(ResidentModel::class, 'resident_id');
     }
-   
     
+    public function purok()
+    {
+        return $this->belongsTo(Purok::class, 'purok', 'purok_name');
+    }
 }

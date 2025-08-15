@@ -158,6 +158,13 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('/cert_firstTime_Jobseeker', [CertFirstTimeJobseekerController::class, 'index'])->name('cert_firstTime_Jobseeker.index');
+    Route::post('/cert_firstTime_Jobseeker', [CertFirstTimeJobseekerController::class, 'store'])->name('cert_firstTime_Jobseeker.store');
+    Route::get('/cert_firstTime_Jobseeker/{id}', [CertFirstTimeJobseekerController::class, 'show'])->name('cert_firstTime_Jobseeker.show');
+    Route::get('/cert_firstTime_Jobseeker/{id}/edit', [CertFirstTimeJobseekerController::class, 'edit'])->name('cert_firstTime_Jobseeker.edit');
+    Route::put('/cert_firstTime_Jobseeker/{id}', [CertFirstTimeJobseekerController::class, 'update'])->name('cert_firstTime_Jobseeker.update');
+    Route::delete('/cert_firstTime_Jobseeker/{id}', [CertFirstTimeJobseekerController::class, 'destroy'])->name('cert_firstTime_Jobseeker.destroy');
+    Route::get('/cert_firstTime_Jobseeker/{id}/print', [CertFirstTimeJobseekerController::class, 'print'])->name('cert_firstTime_Jobseeker.print');
+    Route::get('/cert-firstTime-Jobseeker/report', [CertFirstTimeJobseekerController::class, 'report'])->name('cert_firstTime_Jobseeker.report');
 
     
     

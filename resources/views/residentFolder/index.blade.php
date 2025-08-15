@@ -726,7 +726,7 @@
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                                 <div>
                                     <label class="form-label">Household Number</label>
-                                    <input type="text" class="form-input" name="household_number">
+                                    <input type="text" class="form-input" name="household_number" required>
                                 </div>
                             </div>
                             <div class="mt-8 flex items-center justify-end">

@@ -293,12 +293,13 @@
             </div>
         </div>
     </div>
-    <script>
+     <script>
         window.onload = function() {
             window.print();
         }
         window.onafterprint = function() {
             window.close();
+            window.history.back();
         };
     </script>
 </body>

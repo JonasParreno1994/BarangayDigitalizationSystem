@@ -66,6 +66,20 @@
 
 </style>
 
+@if(session('print_success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: '{{ session('print_success') }}',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        });
+    </script>
+@endif
+
 @if(session('success'))
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -108,7 +122,7 @@
                 </div>
                 <div>
                     <h2 class="text-lg font-bold mb-4">Generate Report</h2>
-                    <form action="{{ route('cert_indigency_minor.report') }}" method="GET" target="_blank" class="mt-4">
+                    <form action="{{ route('cert_indigency_minor.report') }}" method="GET" class="mt-4">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div>
                                 <label for="date_from" class="form-label">From:</label>
@@ -167,7 +181,12 @@
                                 
                                 <div>
                                     <label class="form-label">Purok <span class="text-red-500">*</span></label>
-                                    <input type="text" class="form-input" name="purok" id="purokField" required placeholder="Purok" readonly>
+                                    <select class="form-select" name="purok" id="purokField" required>
+                                        <option value="">Select Purok</option>
+                                        @foreach($puroks as $purok)
+                                            <option value="{{ $purok->purok_name }}">{{ $purok->purok_name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <script>
                                     $(document).ready(function() {
@@ -230,7 +249,7 @@
                                 </div>
                                 <div>
                                     <label class="form-label">Status</label>
-                                    <select class="form-select" name="status">
+                                    <select class="form-select" name="status" required>
                                         <option value="Issued" selected>Issued</option>
                                         <option value="Pending">Pending</option>
                                         <option value="Cancelled">Cancelled</option>
@@ -485,7 +504,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-<!-- Chart.js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
             
 <script>

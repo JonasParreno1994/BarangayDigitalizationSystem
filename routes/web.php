@@ -24,6 +24,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SpecialReportController;
 use App\Http\Controllers\CertIndigencyMinorController;
 use App\Http\Controllers\CertFirstTimeJobseekerController;
+use App\Http\Controllers\CertificateOfDeathController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -114,6 +115,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/residentFolder/{id}', [ResidentController::class, 'destroy'])->name('resident.destroy');
     Route::get('/residentFolder/{id}/print', [ResidentController::class, 'print'])->name('resident.print');
     Route::get('/residentFolder/{id}/printid', [ResidentController::class, 'printid'])->name('resident.printid');
+    Route::post('/residentFolder/{id}/status', [ResidentController::class, 'updateStatus'])->name('resident.updateStatus');
+
 
     Route::get('/residentFolder/printAll', [ResidentController::class, 'printAll'])->name('resident.printAll');
     Route::get('/residentFolder/printAllPDF', [ResidentController::class, 'printAllPDF'])->name('resident.printAllPDF');
@@ -144,7 +147,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/certificate_of_indigency/{id}/edit', [CertificateOfIndigencyController::class, 'edit'])->name('certificate_of_indigency.edit');
     Route::put('/certificate_of_indigency/{id}', [CertificateOfIndigencyController::class, 'update'])->name('certificate_of_indigency.update');
     Route::delete('/certificate_of_indigency/{id}', [CertificateOfIndigencyController::class, 'destroy'])->name('certificate_of_indigency.destroy');
-    Route::get('/certificate_of_indigency/{id}/print', [CertificateOfIndigencyController::class, 'print'])->name('certificate_of_indigency.print');
+    Route::get('/certificate_of_indigency/{id}/print', [CertificateOfIndigencyController::class, 'print'])->name
+    ('certificate_of_indigency.print');
+
+    Route::prefix('certificate-of-death')->group(function () {
+    Route::get('/', [CertificateOfDeathController::class, 'index'])->name('certificate-of-death.index');
+    Route::get('/create', [CertificateOfDeathController::class, 'create'])->name('certificate-of-death.create');
+    Route::post('/', [CertificateOfDeathController::class, 'store'])->name('certificate-of-death.store');
+    Route::get('/{id}', [CertificateOfDeathController::class, 'show'])->name('certificate-of-death.show');
+    Route::get('/{id}/edit', [CertificateOfDeathController::class, 'edit'])->name('certificate-of-death.edit');
+    Route::put('/{id}', [CertificateOfDeathController::class, 'update'])->name('certificate-of-death.update');
+    Route::delete('/{id}', [CertificateOfDeathController::class, 'destroy'])->name('certificate-of-death.destroy');
+    Route::get('/{id}/print', [CertificateOfDeathController::class, 'print'])->name('certificate-of-death.print');
+});
 
 
     Route::get('/cert_indigency_minor', [CertIndigencyMinorController::class, 'index'])->name('cert_indigency_minor.index');

@@ -95,6 +95,29 @@ class ResidentController extends Controller
         }
     }
 
+    public function updateStatus(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'status' => 'required|string|in:Active,Transferred Residence,Deceased'
+        ]);
+
+        try {
+            $resident = ResidentModel::findOrFail($id);
+            $resident->update($validatedData);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Status updated successfully!',
+                'new_status' => $validatedData['status']
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating status: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function print($id)
     {
         $resident = ResidentModel::with('purok')->findOrFail($id);

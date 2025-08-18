@@ -92,6 +92,25 @@
         flex-direction: row;
     }
 }
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+.status-active {
+    background-color: #dcfce7;
+    color: #166534;
+}
+.status-transferred-residence {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+.status-deceased {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
 </style>
 
 @if(session('success'))
@@ -135,7 +154,7 @@
             </div>
         </div>
         
-        <!-- Add Resident Modal -->
+         <!-- Add Resident Modal -->
         <div class="fixed inset-0 z-[999] hidden overflow-y-auto bg-[black]/60" :class="open && '!block'">
             <div class="flex min-h-screen items-start justify-center px-12" @click.self="open = false">
                 <div x-show="open" x-transition x-transition.duration.300 class="panel my-8 w-full max-w-[70vw] h-[90vh] overflow-auto rounded-lg border-0 p-0">
@@ -537,6 +556,16 @@
                                 </div>
                             </div>
 
+                            
+                            <div class="mb-6">
+                                <label class="form-label">Initial Status</label>
+                                <select class="form-select" name="status">
+                                    <option value="Active" selected>Active</option>
+                                    <option value="Transferred Residence">Transferred Residence</option>
+                                    <option value="Deceased">Deceased</option>
+                                </select>
+                            </div>
+
                             <!-- Unemployed Checkbox Section -->
                             <div class="mb-6" x-data="{ isUnemployed: {{ old('is_unemployed', 0) ? 'true' : 'false' }} }">
                                 <div class="flex items-center mb-2">
@@ -726,7 +755,7 @@
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                                 <div>
                                     <label class="form-label">Household Number</label>
-                                    <input type="text" class="form-input" name="household_number" required>
+                                    <input type="text" class="form-input" name="household_number">
                                 </div>
                             </div>
                             <div class="mt-8 flex items-center justify-end">
@@ -739,13 +768,13 @@
             </div>
         </div>
 
-        <!-- View Resident Modal -->
-        <div class="fixed inset-0 z-[999] hidden overflow-y-auto bg-[black]/60" id="viewResidentModal">
-            <div class="flex min-h-screen items-start justify-center px-4">
-                <div class="panel my-8 w-full max-w-4xl overflow-hidden rounded-lg border-0 p-0">
+        <!-- Status Change Modal -->
+        <div class="fixed inset-0 z-[999] hidden overflow-y-auto bg-[black]/60" id="statusModal">
+            <div class="flex min-h-screen items-center justify-center px-4">
+                <div class="panel w-full max-w-md rounded-lg border-0 p-0">
                     <div class="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
-                        <div class="text-lg font-bold">RESIDENT DETAILS</div>
-                        <button type="button" class="text-white-dark hover:text-dark" onclick="closeViewModal()">
+                        <div class="text-lg font-bold">Change Status</div>
+                        <button type="button" class="text-white-dark hover:text-dark" onclick="closeStatusModal()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
                                 <line x1="18" y1="6" x2="6" y2="18"></line>
                                 <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -753,14 +782,59 @@
                         </button>
                     </div>
                     
-                    <div class="p-5" id="residentDetailsContent">
-                        <!-- Content will be loaded here via AJAX -->
-                        <div class="text-center py-10">
-                            <svg class="animate-spin h-8 w-8 text-blue-500 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                            <p class="mt-3">Loading resident details...</p>
+                    <div class="p-5">
+                        <form id="statusForm">
+                            @csrf
+                            <div class="mb-4">
+                                <label class="form-label">Select New Status <span class="text-red-500">*</span></label>
+                                <select class="form-select" name="status" required>
+                                    <option value="">Select Status</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Transferred Residence">Transferred Residence</option>
+                                    <option value="Deceased">Deceased</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-600">
+                                    Current resident: <span id="currentResidentName" class="font-medium"></span>
+                                </p>
+                                <p class="text-sm text-gray-600">
+                                    Current status: <span id="currentStatus" class="font-medium"></span>
+                                </p>
+                            </div>
+                            <div class="flex justify-end gap-3">
+                                <button type="button" class="btn btn-outline-danger" onclick="closeStatusModal()">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Update Status</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <!-- View Resident Modal -->
+            <div class="fixed inset-0 z-[999] hidden overflow-y-auto bg-[black]/60" id="viewResidentModal">
+                <div class="flex min-h-screen items-start justify-center px-4">
+                    <div class="panel my-8 w-full max-w-4xl overflow-hidden rounded-lg border-0 p-0">
+                        <div class="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
+                            <div class="text-lg font-bold">RESIDENT DETAILS</div>
+                            <button type="button" class="text-white-dark hover:text-dark" onclick="closeViewModal()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <div class="p-5" id="residentDetailsContent">
+                            <!-- Content will be loaded here via AJAX -->
+                            <div class="text-center py-10">
+                                <svg class="animate-spin h-8 w-8 text-blue-500 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <p class="mt-3">Loading resident details...</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -786,7 +860,7 @@ document.addEventListener('alpine:init', () => {
 });
 </script>
 
-<!-- Camera Integration JavaScript -->
+    <!-- Camera Integration JavaScript -->
 <script>
         document.addEventListener('DOMContentLoaded', function() {
         const profilePictureInput = document.getElementById('profile_picture_input');
@@ -940,43 +1014,193 @@ document.addEventListener('alpine:init', () => {
             }
         });
     });
-// DataTable Initialization
+</script>
+
+
+<script>
+let currentResidentId = null;
+
+// Status Modal Functions
+function showStatusModal(residentId, residentName, currentStatus) {
+    currentResidentId = residentId;
+    document.getElementById('currentResidentName').textContent = residentName;
+    document.getElementById('currentStatus').textContent = currentStatus;
+    document.getElementById('statusModal').classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+}
+function closeStatusModal() {
+    document.getElementById('statusModal').classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+    document.getElementById('statusForm').reset();
+    currentResidentId = null;
+}
+document.addEventListener('DOMContentLoaded', function() {
+    // Status form submission
+    const statusForm = document.getElementById('statusForm');
+    if (statusForm) {
+        statusForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!currentResidentId) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'No resident selected.',
+                });
+                return;
+            }
+            const formData = new FormData(this);
+            const status = formData.get('status');
+            if (!status) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Please select a status.',
+                });
+                return;
+            }
+            Swal.fire({
+                title: 'Confirm Status Change',
+                text: `Are you sure you want to change the status to "${status}"?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, update it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    updateResidentStatus(currentResidentId, status);
+                }
+            });
+        });
+    }
+});
+function updateResidentStatus(residentId, status) {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
+                      document.querySelector('input[name="_token"]')?.value;
+    if (!csrfToken) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'CSRF token not found. Please refresh the page.',
+        });
+        return;
+    }
+    fetch(`/residentFolder/${residentId}/status`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken,
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({ status: status })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: data.message,
+                timer: 2000,
+                showConfirmButton: false
+            }).then(() => {
+                window.location.reload();
+            });
+            closeStatusModal();
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: data.message || 'An error occurred while updating the status.',
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'An error occurred while updating the status. Please try again.',
+        });
+    });
+}
+
+// DataTable Initialization with Status Column
 document.addEventListener('alpine:init', () => {
     Alpine.data('multipleTable', () => ({
         datatable: null,
         init() {
             this.datatable = new simpleDatatables.DataTable('#residentTable', {
                 data: {
-                    headings: ['ID', 'Photo', 'Name', 'Voter status', 'Address', 'Contact', 'Actions'],
+                    headings: ['ID', 'Photo', 'Name', 'Voter Status', 'Status', 'Address', 'Contact', 'Actions'],
                     data: [
                         @foreach ($resident as $res)
                             [
                                 '{{ $res->id }}',
-                                `@if($res->profile_picture)
-                                    <img src="{{ asset('storage/public/profile_pictures/' . basename($res->profile_picture)) }}" alt="Profile" class="w-10 h-10 rounded-full object-cover">
-                                @else
-                                    <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
-                                        <svg xmlns="" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                        </svg>
-                                    </div>
-                                @endif`,
-                                '{{ $res->last_name }}, {{ $res->first_name }}',
-                                '{{ $res->voter_status }}',
-                                '{{ $res->address }}',
-                                '{{ $res->contact_number }}',
-                                `<div class="flex space-x-2">
-                                    <button class="btn btn-sm btn-info" onclick="showResidentModal({{ $res->id }})">View</button>
-                                    <button class="btn btn-sm btn-success" onclick="printResidentID({{ $res->id }})">Print ID</button>
-                                    <a href="{{ route('resident.edit', $res->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                    <form action="{{ route('resident.destroy', $res->id) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" class="btn btn-sm btn-danger delete-resident">
-                                            Delete
+                                    `@if($res->profile_picture)
+                                        <img src="{{ asset('storage/public/profile_pictures/' . basename($res->profile_picture)) }}" alt="Profile" class="w-10 h-10 rounded-full object-cover">
+                                    @else
+                                        <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                            </svg>
+                                        </div>
+                                    @endif`,
+                                    '{{ $res->last_name }}, {{ $res->first_name }}',
+                                    '{{ $res->voter_status }}',
+                                    `<span class="status-badge status-{{ strtolower(str_replace(' ', '-', $res->status ?? 'active')) }}">
+                                        {{ $res->status ?? 'Active' }}
+                                    </span>`,
+                                    '{{ $res->address }}',
+                                    '{{ $res->contact_number ?? 'N/A' }}',
+                                    `<div class="dropdown">
+                                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                            Actions
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                            </svg>
                                         </button>
-                                    </form>
-                                </div>`
+                                        <ul class="dropdown-menu min-w-[120px] absolute z-10 hidden bg-white shadow-lg rounded-md py-1 mt-1">
+                                            <li>
+                                                <button type="button" class="dropdown-item" onclick="showResidentModal({{ $res->id }})">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                    </svg>
+                                                    View
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button type="button" class="dropdown-item" onclick="printResidentID({{ $res->id }})">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                                    </svg>
+                                                    Print ID
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('resident.edit', $res->id) }}" class="dropdown-item">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                    </svg>
+                                                    Edit
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <button type="button" class="dropdown-item" onclick="showStatusModal({{ $res->id }}, '{{ addslashes($res->last_name . ', ' . $res->first_name) }}', '{{ $res->status ?? 'Active' }}')">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                                    </svg>
+                                                    Change Status
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>`
                             ],
                         @endforeach
                     ],
@@ -989,9 +1213,10 @@ document.addEventListener('alpine:init', () => {
                     { select: 1, sortable: false, type: 'html' },
                     { select: 2, sortable: true },
                     { select: 3, sortable: true },
-                    { select: 4, sortable: true },
-                    { select: 5, sortable: false },
-                    { select: 6, sortable: false, type: 'html' }
+                    { select: 4, sortable: true, type: 'html' },
+                    { select: 5, sortable: true },
+                    { select: 6, sortable: false },
+                    { select: 7, sortable: false, type: 'html' }
                 ],
             });
         },
@@ -1118,7 +1343,31 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-</script>
 
+// Add this to your script section
+document.addEventListener('DOMContentLoaded', function() {
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.dropdown')) {
+            document.querySelectorAll('.dropdown-menu').forEach(function(menu) {
+                menu.classList.add('hidden');
+            });
+        }
+    });
+
+    // Toggle dropdown when clicking the button
+    document.querySelectorAll('.dropdown-toggle').forEach(function(button) {
+        button.addEventListener('click', function() {
+            const menu = this.nextElementSibling;
+            document.querySelectorAll('.dropdown-menu').forEach(function(otherMenu) {
+                if (otherMenu !== menu) {
+                    otherMenu.classList.add('hidden');
+                }
+            });
+            menu.classList.toggle('hidden');
+        });
+    });
+});
+</script>
 <script src="{{ asset('admin/assets/js/simple-datatables.js') }}"></script>
 @endsection

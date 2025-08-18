@@ -56,6 +56,7 @@ class ResidentModel extends Model
         'is_ofw',
         'ofw_country',
         'is_unemployed',
+        'status',
     ];
 
     protected $casts = [

@@ -69,6 +69,14 @@
             </div>
         </div>
 
+        
+        <div class="mb-4">
+            <label class="form-label">Status</label>
+            <div class="form-input bg-gray-100">
+            {{ $resident->status ?? 'Active' }}
+            </div>
+        </div>
+
         <!-- Unemployed Status -->
         <div class="mb-4">
             <label class="form-label">Employment Status</label>

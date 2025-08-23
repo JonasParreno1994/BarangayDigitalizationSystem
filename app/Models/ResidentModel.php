@@ -120,4 +120,16 @@ class ResidentModel extends Model
     {
         return $query->where('is_solo_parent', true);
     }
+       public function deathCertificate()
+    {
+        return $this->hasOne(CertificateOfDeath::class, 'resident_id');
+    }
+     public function scopeActive($query)
+    {
+        return $query->where('status', '!=', 'Deceased');
+    }
+    public function scopeDeceased($query)
+    {
+        return $query->where('status', 'Deceased');
+    }
 }

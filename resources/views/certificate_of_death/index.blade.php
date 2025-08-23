@@ -100,7 +100,7 @@
                     </div>
                     
                     <div class="p-5">
-                       <form id="deathCertificateForm" action="{{ route('certificate-of-death.store') }}" method="POST">
+                        <form id="deathCertificateForm" action="{{ route('certificate-of-death.store') }}" method="POST">
                             @csrf
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
@@ -109,9 +109,11 @@
                                     <select class="form-select resident-search" name="resident_id" id="residentSelect" required>
                                         <option value="">Select Resident</option>
                                         @foreach($residents as $resident)
-                                            <option value="{{ $resident->id }}">
-                                                {{ $resident->last_name }}, {{ $resident->first_name }} {{ $resident->middle_name }}
-                                            </option>
+                                            @if($resident->status !== 'Deceased')
+                                                <option value="{{ $resident->id }}">
+                                                    {{ $resident->last_name }}, {{ $resident->first_name }} {{ $resident->middle_name }}
+                                                </option>
+                                            @endif
                                         @endforeach
                                     </select>
                                     <script>
@@ -129,8 +131,7 @@
                                     <label class="form-label">Certificate Number <span class="text-red-500">*</span></label>
                                     <input type="text" class="form-input" name="certificate_number" required placeholder="Certificate Number">
                                 </div>
-                            </div>
-                            
+                            </div>           
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                                 <div>
                                     <label class="form-label">Date of Death <span class="text-red-500">*</span></label>
@@ -405,6 +406,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }, 100);
         }
+    });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('deathCertificateForm');
+    
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const residentId = document.getElementById('residentSelect').value;
+        const residentName = document.getElementById('residentSelect').options[document.getElementById('residentSelect').selectedIndex].text;
+        
+        Swal.fire({
+            title: 'Confirm Death Certificate Issuance',
+            html: `You are about to issue a death certificate for <strong>${residentName}</strong>. This will also change their status to "Deceased".<br><br>Are you sure you want to proceed?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, proceed',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
     });
 });
 </script>

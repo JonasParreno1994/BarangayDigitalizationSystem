@@ -248,28 +248,28 @@
 
             <!-- Right: Certificate Content -->
             <div style="width: 70%; display: flex; flex-direction: column; align-items: center; font-size: 15px; font-family: 'Times New Roman', Times, serif;">
-                <div class="certificate-title" style="font-family: 'Bookman Old Style', serif; color: blue;">CERTIFICATE OF INDIGENCY</div>
-               
+                <div class="certificate-title" style="font-family: 'Bookman Old Style', serif; color: blue; margin-bottom: 30px;">BARANGAY CERTIFICATE
+                     <p style="font-size: 14px; margin-top: 1px;"><strong>(CERTIFICATION OF INDIGENCY)</strong></p></div>
                 <div class="content" style="text-align: justify; font-size: 15px;">
-                    <h4 style="text-align: left; font-family: 'Times New Roman', Times, serif;"><i>TO WHOM IT MAY CONCERN:</i></h4>
-                    <p style="text-indent: 0.5in;">
-                        This is to certify that Mr./Ms./Mrs. <strong><u>{{ strtoupper($certificate->resident->full_name) }}</u></strong>,
-                        <strong><u>{{ \Carbon\Carbon::parse($certificate->resident->birth_date)->age }}</u> </strong> years old,
-                        <strong>{{($certificate->resident->civil_status) }},</strong> and whose signature below is a 
-                        bonafide resident of this Barangay.
+                    <p>
+                        <i> To Whom It May Concern:</i>
                     </p>
                     <p style="text-indent: 0.5in;">
-                        Further certifies that the above-named person is a low income and considered as an indigent family which could hardly meet 
-                        family basic needs.
+                        This is to certify that Mr./Ms./Mrs. <strong><u>{{ strtoupper($certificate->resident->full_name) }}</u> of Legal Age,
+                             {{ ucfirst(strtolower($certificate->resident->sex)) }}, {{ ucfirst(strtolower($certificate->resident->citizenship)) }}</strong>, 
+                             and is a bonafide resident of Purok {{ $certificate->resident->purok->name }}, Barangay {{ strtoupper($certificate->resident->barangay) }}, {{ strtoupper($certificate->resident->city_municipality) }}, {{ strtoupper($certificate->resident->province) }},
+                        
                     </p>
-
                     <p style="text-indent: 0.5in;">
-                        This certification is being issued upon the request of the above-named person for whatever legal purposed it may serve best.
+                       I further certify that the holder/bearer was informed of his/her rights, including the duties and responsibilities accorded by RA 11261
+                       through the Oath of Undertaking he/she has assigned and executed in the presence of our barangay official.
                     </p>
                     
+                    
                     <p style="text-indent: 0.5in;">
-                        Issued this {{ $certificate->date_of_issuance->format('jS') }} day of 
-                        {{ $certificate->date_of_issuance->format('F') }}, {{ $certificate->date_of_issuance->format('Y') }} at {{ $certificate->resident->barangay }}, {{ $certificate->resident->city_municipality }}.
+                        Isued and signed this <strong> {{ $certificate->date_of_issuance->format('jS') }} </strong> of 
+                       <strong> {{ $certificate->date_of_issuance->format('F') }}</strong>, <strong>{{ $certificate->date_of_issuance->format('Y') }}</strong>
+                        at Barangay Bacuyangan Administration Center.
                     </p>
                 </div>
                 <div class="signature" style="margin-top: 80px; font-size: 17px; margin-left: 250px;">
@@ -282,9 +282,10 @@
                     @endif
                     <br>
                 </div>
-                <div style="margin-top: 5px; margin-right: 300px; font-size: 13px; text-align: center;">
-                    <div style="border-top: 1px solid #000; width: 200px; margin: 0 auto;"></div>
-                    <span>Signature of Applicant</span>
+                <div style="margin-top: 5px; margin-right: 250px; font-size: 13px; text-align: center;">
+                    <strong><u>{{ strtoupper($certificate->resident->full_name) }}</u></strong>
+                    <br>
+                    <span>Name and Signature of Applicant</span>
                     <div style="margin-top: 20px; display: flex; flex-direction: column; align-items: center;">
                         <div style="width: 100px; height: 100px; border: 1px solid #000; margin-top: 5px;"></div>
                         <span>Right Thumb Mark</span>
@@ -293,13 +294,12 @@
             </div>
         </div>
     </div>
-     <script>
+    <script>
         window.onload = function() {
             window.print();
         }
         window.onafterprint = function() {
-            window.close();
-            window.history.back();
+            window.history.back(); 
         };
     </script>
 </body>

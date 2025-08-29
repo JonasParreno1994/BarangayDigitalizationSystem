@@ -6,9 +6,9 @@
         <div class="flex items-center justify-between mb-5">
             <h1 class="text-2xl font-bold">Certificate of Indigency Details</h1>
             <div class="flex space-x-2">
-                <a href="{{ route('certificate_of_indigency.edit', $cert->id) }}" class="btn btn-primary">Edit</a>
-                <a href="{{ route('certificate_of_indigency.print', $cert->id) }}" class="btn btn-success" target="_blank">Print</a>
-                <form action="{{ route('certificate_of_indigency.destroy', $cert->id) }}" method="POST">
+              
+                <a href="{{ route('cert_indigency_minor.print', $cert->id) }}" class="btn btn-success" target="_blank">Print</a>
+                <form action="{{ route('cert_indigency_minor.destroy', $cert->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="button" class="btn btn-danger delete-certificate">Delete</button>

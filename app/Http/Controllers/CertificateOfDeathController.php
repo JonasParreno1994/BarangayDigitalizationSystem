@@ -6,6 +6,7 @@ use App\Models\ResidentModel;
 use App\Models\CertificateOfDeath;
 use App\Models\CertificationFooter;
 use App\Models\BarangayIdDetail;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -15,7 +16,39 @@ class CertificateOfDeathController extends Controller
     {
         $certificates = CertificateOfDeath::with('resident')->latest()->get();
         $residents = ResidentModel::where('status', '!=', 'Deceased')->get();
-        return view('certificate_of_death.index', compact('certificates', 'residents'));
+        $barangayDetails = BarangayIdDetail::first();
+
+        // Count certificates created this month
+        $certsThisMonth = CertificateOfDeath::whereYear('date_of_issuance', now()->year)
+            ->whereMonth('date_of_issuance', now()->month)
+            ->count();
+
+        // Monthly data for chart
+        $raw = CertificateOfDeath::selectRaw('
+                MONTH(date_of_issuance) as month_num,
+                DATE_FORMAT(date_of_issuance, "%M") as month,
+                COUNT(*) as total
+            ')
+            ->whereYear('date_of_issuance', now()->year)
+            ->groupBy('month_num', 'month')
+            ->orderBy('month_num')
+            ->get()
+            ->pluck('total', 'month')
+            ->toArray();
+
+        $allMonths = collect(range(1, 12))
+            ->mapWithKeys(fn($m) => [Carbon::create(null, $m, 1)->format('F') => 0])
+            ->toArray();
+
+        $monthlyCounts = array_merge($allMonths, $raw);
+
+        return view('certificate_of_death.index', compact(
+            'certificates', 
+            'residents', 
+            'certsThisMonth', 
+            'monthlyCounts', 
+            'barangayDetails'
+        ));
     }
 
     public function create()
@@ -117,6 +150,29 @@ class CertificateOfDeathController extends Controller
             'qrCode',
             'barangayDetails',
             'officials'
+        ));
+    }
+
+    public function report(Request $request)
+    {
+        $dateFrom = $request->input('date_from');
+        $dateTo = $request->input('date_to');
+        $barangayDetails = BarangayIdDetail::first(); 
+
+        if (!$dateFrom || !$dateTo) {
+            return redirect()->back()->with('error', 'Please select both dates.');
+        }
+
+        $reportData = CertificateOfDeath::with('resident')
+            ->whereBetween('date_of_issuance', [$dateFrom, $dateTo])
+            ->orderBy('date_of_issuance', 'asc')
+            ->get();
+
+        return view('certificate_of_death.report', compact(
+            'reportData', 
+            'dateFrom', 
+            'dateTo',
+            'barangayDetails' 
         ));
     }
 }

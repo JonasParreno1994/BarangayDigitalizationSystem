@@ -11,7 +11,10 @@ class CertFirstTimeJobseeker extends Model
     protected $table = 'tbljobseeker';
     protected $fillable = [
         'resident_id',
+        'age',
         'purok',
+        'barangay',
+        'cedula_number',
         'date_of_issuance',
         'or_number',
         'amount_paid',

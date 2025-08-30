@@ -69,6 +69,7 @@ class CertFirstTimeJobseekerController extends Controller
     {
         $validated = $request->validate([
             'resident_id' => 'required|exists:tblresidents,id',
+            'age' => 'required|integer|min:15|max:100',
             'purok' => 'required|string|max:100',
             'date_of_issuance' => 'required|date',
             'or_number' => 'nullable|string|max:50',
@@ -77,11 +78,14 @@ class CertFirstTimeJobseekerController extends Controller
             'remarks' => 'nullable|string'
         ]);
 
+        // Add barangay field (you can modify this as needed)
+        $validated['barangay'] = 'Barangay Name'; // Or get from config/settings
+
         $cert = CertFirstTimeJobseeker::create($validated);
         $barangayDetails = BarangayIdDetail::first();
         $officials = Official::with('position')->get();
 
-        session()->flash('print_success', 'Certificate of Indigency for Minor issued and printed successfully!');
+        session()->flash('print_success', 'Certificate for First Time Jobseeker issued and printed successfully!');
 
         return view('cert_firstTime_Jobseeker.print', compact('cert', 'barangayDetails', 'officials'));
     }

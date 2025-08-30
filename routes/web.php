@@ -60,12 +60,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/get-comelec-data', [OfficialController::class, 'getComelecData'])->name('getComelecData');
 
     Route::get('/auth', [RegisteredUserController::class, 'register'])->name('auth.register');
-    Route::post('/auth', [RegisteredUserController::class, 'register'])->name('auth.register'); 
-
-    Route::get('/users/list', [UsersController::class, 'index'])->name('users.list');
-    Route::get('/users/create', [UsersController::class, 'create'])->name('users.create');
-    Route::post('/users', [UsersController::class, 'store'])->name('users.store');
-    Route::delete('/users/{id}', [UsersController::class, 'destroy'])->name('users.destroy');
+    Route::post('/auth', [RegisteredUserController::class, 'store'])->name('auth.store'); 
 
     Route::get('/comelecFolder', [ComelecController::class, 'comelecData'])->name('comelec');
     Route::get('/comelec/create', [ComelecController::class, 'create'])->name('comelec.create');
@@ -132,6 +127,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('/barangayclearance', [BrgyclearanceController::class, 'index'])->name('barangayclearance.index');
+    Route::get('/barangayclearance/report', [BrgyclearanceController::class, 'report'])->name('barangayclearance.report');
     Route::post('/barangayclearance', [BrgyclearanceController::class, 'store'])->name('barangayclearance.store');
     Route::get('/barangayclearance/{id}', [BrgyclearanceController::class, 'show'])->name('barangayclearance.show');
     Route::get('/barangayclearance/{id}/edit', [BrgyclearanceController::class, 'edit'])->name('barangayclearance.edit');
@@ -149,11 +145,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/certificate_of_indigency/{id}', [CertificateOfIndigencyController::class, 'destroy'])->name('certificate_of_indigency.destroy');
     Route::get('/certificate_of_indigency/{id}/print', [CertificateOfIndigencyController::class, 'print'])->name
     ('certificate_of_indigency.print');
+    Route::get('/certificate-of-indigency/report', [CertificateOfIndigencyController::class, 'report'])->name('certificate_of_indigency.report');
 
     Route::prefix('certificate-of-death')->group(function () {
     Route::get('/', [CertificateOfDeathController::class, 'index'])->name('certificate-of-death.index');
     Route::get('/create', [CertificateOfDeathController::class, 'create'])->name('certificate-of-death.create');
     Route::post('/', [CertificateOfDeathController::class, 'store'])->name('certificate-of-death.store');
+    Route::get('/report', [CertificateOfDeathController::class, 'report'])->name('certificate_of_death.report');
     Route::get('/{id}', [CertificateOfDeathController::class, 'show'])->name('certificate-of-death.show');
     Route::get('/{id}/edit', [CertificateOfDeathController::class, 'edit'])->name('certificate-of-death.edit');
     Route::put('/{id}', [CertificateOfDeathController::class, 'update'])->name('certificate-of-death.update');
@@ -187,8 +185,15 @@ Route::middleware('auth')->group(function () {
     Route::resource('barangaygoodmoral', BarangayGoodMoralCertificateController::class);
     Route::get('barangaygoodmoral/{id}/print', [BarangayGoodMoralCertificateController::class, 'print'])
     ->name('barangaygoodmoral.print');
+    Route::get('/barangay-good-moral/report', [BarangayGoodMoralCertificateController::class, 'report'])->name('barangay-good-moral.report');
 
-    Route::resource('certificate-of-residency', CertificateOfResidencyController::class);
+    Route::get('/certificate-of-residency', [CertificateOfResidencyController::class, 'index'])->name('certificate-of-residency.index');
+    Route::post('/certificate-of-residency', [CertificateOfResidencyController::class, 'store'])->name('certificate-of-residency.store');
+    Route::get('/certificate-of-residency/report', [CertificateOfResidencyController::class, 'report'])->name('certificate-of-residency.report');
+    Route::get('/certificate-of-residency/{id}', [CertificateOfResidencyController::class, 'show'])->name('certificate-of-residency.show');
+    Route::get('/certificate-of-residency/{id}/edit', [CertificateOfResidencyController::class, 'edit'])->name('certificate-of-residency.edit');
+    Route::put('/certificate-of-residency/{id}', [CertificateOfResidencyController::class, 'update'])->name('certificate-of-residency.update');
+    Route::delete('/certificate-of-residency/{id}', [CertificateOfResidencyController::class, 'destroy'])->name('certificate-of-residency.destroy');
     Route::get('/certificate-of-residency/{id}/print', [CertificateOfResidencyController::class, 'print'])->name('certificate-of-residency.print');
 
     Route::resource('dashboard-items', DashboardItemController::class)->except(['show']);

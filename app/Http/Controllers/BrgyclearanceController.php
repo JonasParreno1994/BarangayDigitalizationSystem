@@ -7,6 +7,7 @@ use App\Models\BarangayClearance;
 use App\Models\BarangayIdDetail;
 use App\Models\ResidentModel;
 use App\Models\Official;
+use Carbon\Carbon;
 
 class BrgyclearanceController extends Controller
 {
@@ -15,7 +16,26 @@ class BrgyclearanceController extends Controller
         $clearances = BarangayClearance::with('resident')->latest()->get();
         $residents = ResidentModel::orderBy('last_name')->get();
         
-        return view('barangayclearance.index', compact('clearances', 'residents'));
+        // Generate monthly data for chart (same structure as minor's certificate)
+        $raw = BarangayClearance::selectRaw('
+                MONTH(date_of_issuance) as month_num,
+                DATE_FORMAT(date_of_issuance, "%M") as month,
+                COUNT(*) as total
+            ')
+            ->whereYear('date_of_issuance', now()->year)
+            ->groupBy('month_num', 'month')
+            ->orderBy('month_num')
+            ->get()
+            ->pluck('total', 'month')
+            ->toArray();
+
+        $allMonths = collect(range(1, 12))
+            ->mapWithKeys(fn($m) => [Carbon::create(null, $m, 1)->format('F') => 0])
+            ->toArray();
+
+        $monthlyCounts = array_merge($allMonths, $raw);
+        
+        return view('barangayclearance.index', compact('clearances', 'residents', 'monthlyCounts'));
     }
 
     public function store(Request $request)
@@ -86,26 +106,39 @@ class BrgyclearanceController extends Controller
     }
 
     public function print($id){
-    $clearance = BarangayClearance::with('resident')->findOrFail($id);
-    $barangayDetails = BarangayIdDetail::first(); 
-    
- 
-    $officials = Official::with('position')
-        ->active()
-        ->get()
-        ->sortBy(function($official) {
-         
-            if (str_contains($official->position->name, 'Punong Barangay')) {
-                return 0;
-            } elseif (str_contains($official->position->name, 'Secretary')) {
-                return 1;
-            } elseif (str_contains($official->position->name, 'Treasurer')) {
-                return 2;
-            } else {
-                return 3;
-            }
-        });
-    
-    return view('barangayclearance.print', compact('clearance', 'barangayDetails', 'officials'));
+        $clearance = BarangayClearance::with('resident')->findOrFail($id);
+        $barangayDetails = BarangayIdDetail::first(); 
+        
+        $officials = Official::with('position')
+            ->active()
+            ->get()
+            ->sortBy(function($official) {
+                if (str_contains($official->position->name, 'Punong Barangay')) {
+                    return 0;
+                } elseif (str_contains($official->position->name, 'Secretary')) {
+                    return 1;
+                } elseif (str_contains($official->position->name, 'Treasurer')) {
+                    return 2;
+                } else {
+                    return 3;
+                }
+            });
+        
+        return view('barangayclearance.print', compact('clearance', 'barangayDetails', 'officials'));
+    }
+
+    public function report(Request $request)
+    {
+        $dateFrom = $request->input('date_from', now()->startOfYear()->format('Y-m-d'));
+        $dateTo = $request->input('date_to', now()->format('Y-m-d'));
+
+        $reportData = BarangayClearance::with('resident')
+            ->whereBetween('date_of_issuance', [$dateFrom, $dateTo])
+            ->orderBy('date_of_issuance', 'desc')
+            ->get();
+
+        $barangayDetails = BarangayIdDetail::first();
+
+        return view('barangayclearance.report', compact('reportData', 'dateFrom', 'dateTo', 'barangayDetails'));
     }
 }

@@ -166,7 +166,7 @@
                        <form id="clearanceForm" action="{{ route('cert_firstTime_Jobseeker.store') }}" method="POST">
                             @csrf
                             
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
                                 <div>
                                     <label class="form-label">Name <span class="text-red-500">*</span></label>
                                     <select class="form-select resident-search" name="resident_id" id="residentSelect" required>
@@ -182,8 +182,12 @@
                                 
                                 <div>
                                     <label class="form-label">Purok <span class="text-red-500">*</span></label>
-                                    <input type="text" name="purok"  class="form-input" id="purokField">
-                                  
+                                    <input type="text" name="purok"  class="form-input" id="purokField" required>
+                                </div>
+
+                                <div>
+                                    <label class="form-label">Age <span class="text-red-500">*</span></label>
+                                    <input type="number" name="age" class="form-input" placeholder="Enter age" min="15" max="100" required>
                                 </div>
                                 <script>
                                     $(document).ready(function() {

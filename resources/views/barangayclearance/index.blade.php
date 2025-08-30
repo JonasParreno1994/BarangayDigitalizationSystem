@@ -22,6 +22,14 @@
         font-weight: 500;
         color: #374151;
     }
+    
+    select.form-select:not(.select2-hidden-accessible) {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #d1d5db;
+        border-radius: 0.375rem;
+        background-color: #fff;
+    }
 
     .select2-container--default .select2-selection--single {
         height: 42px;
@@ -53,6 +61,10 @@
         border-color: #3b82f6;
         box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     }
+    
+    .select2-hidden-accessible {
+        display: none !important;
+    }
 </style>
 
 @if(session('print_success'))
@@ -68,7 +80,6 @@
         });
     </script>
 @endif
-
 
 @if(session('success'))
     <script>
@@ -105,6 +116,31 @@
                 <button type="button" class="btn btn-success" @click="toggle">Issue Clearance</button>
                 <h1 class="ltr:mr-4 rtl:ml-3 text-center w-full">List of Barangay Clearances</h1>
             </div>
+            <div class="panel mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <h2 class="text-lg font-bold mb-4">Monthly Data Count</h2>
+                    <canvas id="monthlyBarChart" height="50"></canvas>
+                </div>
+                <div>
+                    <h2 class="text-lg font-bold mb-4">Generate Report</h2>
+                    <form action="{{ route('barangayclearance.report') }}" method="GET" class="mt-4">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label for="date_from" class="form-label">From:</label>
+                                <input type="date" id="date_from" name="date_from" class="form-input" required>
+                            </div>
+                            <div>
+                                <label for="date_to" class="form-label">To:</label>
+                                <input type="date" id="date_to" name="date_to" class="form-input" required>
+                            </div>
+                            <div class="flex items-end">
+                                <button type="submit" class="btn btn-primary w-full">Generate Report</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
             <div class="panel mt-6">
                 <table id="clearanceTable" class="whitespace-nowrap"></table>
             </div>
@@ -416,7 +452,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-
     $('#residentSelect').select2({
         width: '100%',
         placeholder: 'Search for a resident...',
@@ -424,7 +459,6 @@ document.addEventListener('DOMContentLoaded', function() {
         dropdownParent: $('#residentSelect').parent() 
     });
     
-   
     document.querySelector('[x-data="modal"]').addEventListener('toggle', function(e) {
         if (e.detail.open) {
             setTimeout(() => {
@@ -438,6 +472,49 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            
+<script>
+    const ctx = document.getElementById('monthlyBarChart').getContext('2d');
+
+    const monthlyLabels = @json(array_keys($monthlyCounts));
+    const monthlyData = @json(array_values($monthlyCounts));
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: monthlyLabels,
+            datasets: [{
+                label: 'Clearances Issued',
+                data: monthlyData,
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1,
+                borderRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.parsed.y + ' issued';
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    stepSize: 1
+                }
+            }
+        }
+    });
 </script>
 
 <script src="{{ asset('admin/assets/js/simple-datatables.js') }}"></script>

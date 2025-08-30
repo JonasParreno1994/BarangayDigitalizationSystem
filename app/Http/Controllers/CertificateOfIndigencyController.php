@@ -13,18 +13,44 @@ use Illuminate\Http\Request;
 class CertificateOfIndigencyController extends Controller
 {
 
-public function index()
-{
-    $certificates = CertificateOfIndigency::with('resident')->get();
-    $residents = ResidentModel::all();
+    public function index()
+    {
+        $certificates = CertificateOfIndigency::with('resident')->latest()->get();
+        $residents = ResidentModel::all();
+        $barangayDetails = BarangayIdDetail::first();
 
-    // Count certificates created this month
-    $certsThisMonth = CertificateOfIndigency::whereMonth('created_at', Carbon::now()->month)
-        ->whereYear('created_at', Carbon::now()->year)
-        ->count();
+        // Count certificates created this month
+        $certsThisMonth = CertificateOfIndigency::whereYear('date_of_issuance', now()->year)
+            ->whereMonth('date_of_issuance', now()->month)
+            ->count();
 
-    return view('certificate_of_indigency.index', compact('certificates', 'residents', 'certsThisMonth'));
-}
+        // Monthly data for chart
+        $raw = CertificateOfIndigency::selectRaw('
+                MONTH(date_of_issuance) as month_num,
+                DATE_FORMAT(date_of_issuance, "%M") as month,
+                COUNT(*) as total
+            ')
+            ->whereYear('date_of_issuance', now()->year)
+            ->groupBy('month_num', 'month')
+            ->orderBy('month_num')
+            ->get()
+            ->pluck('total', 'month')
+            ->toArray();
+
+        $allMonths = collect(range(1, 12))
+            ->mapWithKeys(fn($m) => [Carbon::create(null, $m, 1)->format('F') => 0])
+            ->toArray();
+
+        $monthlyCounts = array_merge($allMonths, $raw);
+
+        return view('certificate_of_indigency.index', compact(
+            'certificates', 
+            'residents', 
+            'certsThisMonth', 
+            'monthlyCounts', 
+            'barangayDetails'
+        ));
+    }
 
 
     public function store(Request $request)
@@ -101,5 +127,28 @@ public function index()
         $officials = Official::with('position')->get();
 
         return view('certificate_of_indigency.print', compact('certificate', 'barangayDetails', 'officials'));
+    }
+
+    public function report(Request $request)
+    {
+        $dateFrom = $request->input('date_from');
+        $dateTo = $request->input('date_to');
+        $barangayDetails = BarangayIdDetail::first(); 
+
+        if (!$dateFrom || !$dateTo) {
+            return redirect()->back()->with('error', 'Please select both dates.');
+        }
+
+        $reportData = CertificateOfIndigency::with('resident')
+            ->whereBetween('date_of_issuance', [$dateFrom, $dateTo])
+            ->orderBy('date_of_issuance', 'asc')
+            ->get();
+
+        return view('certificate_of_indigency.report', compact(
+            'reportData', 
+            'dateFrom', 
+            'dateTo',
+            'barangayDetails' 
+        ));
     }
 }

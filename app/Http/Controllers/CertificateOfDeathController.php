@@ -14,7 +14,7 @@ class CertificateOfDeathController extends Controller
     public function index()
     {
         $certificates = CertificateOfDeath::with('resident')->latest()->get();
-        $residents = ResidentModel::where('status', 'Deceased')->get();
+        $residents = ResidentModel::where('status', '!=', 'Deceased')->get();
         return view('certificate_of_death.index', compact('certificates', 'residents'));
     }
 
@@ -27,7 +27,16 @@ class CertificateOfDeathController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'resident_id' => 'required|exists:tblresidents,id',
+            'resident_id' => [
+                'required', 
+                'exists:tblresidents,id',
+                function ($attribute, $value, $fail) {
+                    $existingCertificate = CertificateOfDeath::where('resident_id', $value)->first();
+                    if ($existingCertificate) {
+                        $fail('A death certificate already exists for this resident.');
+                    }
+                }
+            ],
             'date_of_death' => 'required|date',
             'place_of_death' => 'required|string|max:255',
             'cause_of_death' => 'required|string|max:255',
@@ -37,10 +46,17 @@ class CertificateOfDeathController extends Controller
             'issued_by' => 'required|string|max:255',
         ]);
 
-        CertificateOfDeath::create($validated);
+        // Create the death certificate
+        $certificate = CertificateOfDeath::create($validated);
+        
+        // Update the resident's status to "Deceased"
+        $resident = ResidentModel::find($validated['resident_id']);
+        if ($resident) {
+            $resident->update(['status' => 'Deceased']);
+        }
 
         return redirect()->route('certificate-of-death.index')
-            ->with('success', 'Death certificate created successfully.');
+            ->with('success', 'Death certificate created successfully and resident status updated to Deceased.');
     }
 
     public function show($id)

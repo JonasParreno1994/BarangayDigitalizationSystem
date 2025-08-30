@@ -157,9 +157,16 @@ class ResidentController extends Controller
         return view('residentFolder.view', compact('resident'));
     }
 
-    public function edit($id)
+      public function edit($id)
     {
         $resident = ResidentModel::with('purok')->findOrFail($id);
+        
+        // Prevent editing deceased residents
+        if ($resident->status === 'Deceased') {
+            return redirect()->route('resident.index')
+                ->with('error', 'Cannot edit a deceased resident.');
+        }
+        
         $puroks = Purok::all();
         return view('residentFolder.edit', compact('resident', 'puroks'));
     }
@@ -217,6 +224,12 @@ class ResidentController extends Controller
                 if ($resident->profile_picture) {
                     Storage::delete('public/' . $resident->profile_picture);
                 }
+
+                // Prevent updating deceased residents
+            if ($resident->status === 'Deceased') {
+                return redirect()->route('resident.index')
+                    ->with('error', 'Cannot update a deceased resident.');
+            }
                 
                 $image = $request->file('profile_picture');
                 $filename = time() . '.' . $image->getClientOriginalExtension();

@@ -110,6 +110,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/residentFolder/{id}', [ResidentController::class, 'destroy'])->name('resident.destroy');
     Route::get('/residentFolder/{id}/print', [ResidentController::class, 'print'])->name('resident.print');
     Route::get('/residentFolder/{id}/printid', [ResidentController::class, 'printid'])->name('resident.printid');
+    Route::get('/residentFolder/{id}/printrbi', [ResidentController::class, 'printrbi'])->name('resident.printrbi');
     Route::post('/residentFolder/{id}/status', [ResidentController::class, 'updateStatus'])->name('resident.updateStatus');
 
 
@@ -199,6 +200,15 @@ Route::middleware('auth')->group(function () {
     Route::resource('dashboard-items', DashboardItemController::class)->except(['show']);
     Route::get('/dashboard-items/overview', [DashboardItemController::class, 'overview'])->name('dashboard.overview');
 
+    // Household routes
+    Route::resource('households', App\Http\Controllers\HouseholdController::class);
+    Route::get('/households/{household}/print', [App\Http\Controllers\HouseholdController::class, 'print'])->name('households.print');
+    Route::get('/households/{household}/add-member', [App\Http\Controllers\HouseholdController::class, 'addMember'])->name('households.add-member');
+    Route::post('/households/{household}/members', [App\Http\Controllers\HouseholdController::class, 'storeMember'])->name('households.store-member');
+    Route::get('/households/{household}/members/{member}/edit', [App\Http\Controllers\HouseholdController::class, 'editMember'])->name('households.edit-member');
+    Route::put('/households/{household}/members/{member}', [App\Http\Controllers\HouseholdController::class, 'updateMember'])->name('households.update-member');
+    Route::delete('/households/{household}/members/{member}', [App\Http\Controllers\HouseholdController::class, 'destroyMember'])->name('households.destroy-member');
+
     Route::prefix('reports')->group(function () {
         Route::get('/', [ReportController::class, 'index'])->name('reports.index');
         Route::post('/generate', [ReportController::class, 'generate'])->name('reports.generate');
@@ -214,13 +224,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/generate-purok', [SpecialReportController::class, 'generatePurokReport'])->name('special-reports.generate-purok');
     Route::get('/print-purok', [SpecialReportController::class, 'printPurokReport'])->name('special-reports.print-purok');
     
-    // Age bracket reports
+   
     Route::post('/generate-age-bracket', [SpecialReportController::class, 'generateAgeBracketReport'])
         ->name('special-reports.generate-age-bracket');
     Route::get('/print-age-bracket', [SpecialReportController::class, 'printAgeBracketReport'])
         ->name('special-reports.print-age-bracket');
         
-    // Sector reports
+  
     Route::post('/generate-sector', [SpecialReportController::class, 'generateSectorReport'])
         ->name('special-reports.generate-sector');
     Route::get('/print-sector', [SpecialReportController::class, 'printSectorReport'])

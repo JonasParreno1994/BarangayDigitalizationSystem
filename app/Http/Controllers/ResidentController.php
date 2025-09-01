@@ -8,7 +8,7 @@ use App\Models\Purok;
 use App\Models\BarangayIdDetail;
 use App\Models\BarangayClearance;
 use App\Models\CertificateOfIndigency;
-use App\Mpodels\File;
+use App\Models\File;
 use App\Models\BarangayGoodMoralCertificate;
 use App\Models\CertificateOfResidency;
 use Illuminate\Support\Facades\Storage;
@@ -155,6 +155,28 @@ class ResidentController extends Controller
     {
         $resident = ResidentModel::with('purok')->findOrFail($id);
         return view('residentFolder.view', compact('resident'));
+    }
+
+    public function printrbi($id)
+    {
+        $resident = ResidentModel::with('purok')->findOrFail($id);
+        
+        $birthDate = new \DateTime($resident->birth_date);
+        $today = new \DateTime();
+        $age = $today->diff($birthDate)->y;
+        
+        $address = ($resident->purok ? $resident->purok->purok_name : $resident->address) . ', ' . $resident->barangay;
+        
+        $middleInitial = $resident->middle_name ? substr($resident->middle_name, 0, 1) . '.' : '';
+        $fullName = $resident->first_name . ' ' . $middleInitial . ' ' . $resident->last_name;
+        $fullName = preg_replace('/\s+/', ' ', trim($fullName));
+        
+        return view('residentFolder.printrbi', compact(
+            'resident', 
+            'age', 
+            'address', 
+            'fullName'
+        ));
     }
 
       public function edit($id)

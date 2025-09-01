@@ -754,7 +754,7 @@
                             <!-- Signature Section -->
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                                 <div>
-                                    <label class="form-label">Household Number</label>
+                                    <label class="form-label">Resident ID Number</label>
                                     <input type="text" class="form-input" name="household_number">
                                 </div>
                             </div>

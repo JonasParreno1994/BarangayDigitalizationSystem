@@ -309,4 +309,46 @@ class ResidentController extends Controller
                 ->with('error', 'Error deleting resident: ' . $e->getMessage());
         }
     }
+
+    /**
+     * Search residents for auto-fill functionality
+     */
+    public function search(Request $request)
+    {
+        $query = $request->get('query');
+        
+        if (empty($query)) {
+            return response()->json([]);
+        }
+
+        $residents = ResidentModel::where(function($q) use ($query) {
+                $q->where('first_name', 'LIKE', "%{$query}%")
+                  ->orWhere('last_name', 'LIKE', "%{$query}%")
+                  ->orWhere('middle_name', 'LIKE', "%{$query}%")
+                  ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$query}%"])
+                  ->orWhereRaw("CONCAT(first_name, ' ', COALESCE(middle_name, ''), ' ', last_name) LIKE ?", ["%{$query}%"]);
+            })
+            ->where('status', '!=', 'Deceased')
+            ->select('id', 'first_name', 'middle_name', 'last_name', 'suffix', 'birth_date', 'birth_place', 
+                     'sex', 'civil_status', 'citizenship', 'occupation')
+            ->limit(10)
+            ->get();
+
+        return response()->json($residents->map(function($resident) {
+            return [
+                'id' => $resident->id,
+                'full_name' => $resident->getFullNameAttribute(),
+                'first_name' => $resident->first_name,
+                'middle_name' => $resident->middle_name,
+                'last_name' => $resident->last_name,
+                'suffix' => $resident->suffix,
+                'birth_date' => $resident->birth_date ? $resident->birth_date->format('Y-m-d') : null,
+                'birth_place' => $resident->birth_place,
+                'sex' => $resident->sex,
+                'civil_status' => $resident->civil_status,
+                'citizenship' => $resident->citizenship,
+                'occupation' => $resident->occupation,
+            ];
+        }));
+    }
 }

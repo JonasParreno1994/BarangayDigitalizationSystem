@@ -104,6 +104,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/residentFolder', [ResidentController::class, 'index'])->name('resident.index');
     Route::get('/residentFolder/create', [ResidentController::class, 'create'])->name('resident.create');
     Route::post('/residentFolder/store', [ResidentController::class, 'store'])->name('resident.store');
+    Route::get('/residentFolder/search', [ResidentController::class, 'search'])->name('resident.search');
     Route::get('/residentFolder/{id}/view', [ResidentController::class, 'view'])->name('resident.view');
     Route::get('/residentFolder/{id}/edit', [ResidentController::class, 'edit'])->name('resident.edit');
     Route::put('/residentFolder/{id}/update', [ResidentController::class, 'update'])->name('resident.update'); 

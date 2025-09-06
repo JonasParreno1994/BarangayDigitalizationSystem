@@ -3,61 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Household Record - {{ $household->household_number }}</title>
+    <title>RBI FORM A - Household Record</title>
     <style>
         @page {
-            size: A4;
+            size: A4 landscape;
             margin: 0.5in;
         }
         
         body {
             font-family: Arial, sans-serif;
-            font-size: 12px;
+            font-size: 11px;
             line-height: 1.2;
             color: #000;
             margin: 0;
             padding: 0;
         }
+
+        .form-header {
+            margin-bottom: 20px;
+        }
+
+        .form-title {
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .main-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+            margin: 20px 0;
+        }
         
         .header-info {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         
         .header-row {
             display: flex;
             width: 100%;
-            margin-bottom: 3px;
+            margin-bottom: 8px;
             align-items: center;
         }
         
         .header-label {
             font-weight: bold;
-            width: 180px;
+            width: 150px;
             padding-right: 10px;
             font-size: 11px;
         }
         
         .header-value {
-            width: 50%;
             border-bottom: 1px solid #000;
-            padding: 2px 5px;
+            padding: 2px 8px;
             font-size: 11px;
-            min-height: 16px;
+            min-height: 18px;
+            flex: 1;
         }
         
         .members-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 10px 0;
+            margin: 5px 0;
         }
         
         .members-table th,
         .members-table td {
             border: 1px solid #000;
-            padding: 4px;
+            padding: 3px;
             text-align: center;
             vertical-align: top;
-            font-size: 10px;
+            font-size: 8px;
         }
         
         .members-table th {
@@ -81,7 +98,7 @@
         }
         
         .signature-section {
-            margin-top: 30px;
+            margin-top: 15px;
         }
         
         .signature-section table {
@@ -91,7 +108,7 @@
         
         .signature-section td {
             border: 1px solid #000;
-            padding: 10px;
+            padding: 8px;
             text-align: center;
             vertical-align: bottom;
             height: 80px;
@@ -99,14 +116,21 @@
         
         .signature-label {
             font-weight: bold;
-            font-size: 10px;
+            font-size: 9px;
+            margin-bottom: 25px;
         }
         
         .signature-name {
-            border-top: 1px solid #000;
             font-size: 9px;
-            margin-top: 40px;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+        
+        .signature-line {
+            border-top: 1px solid #000;
+            font-size: 8px;
             padding-top: 2px;
+            font-style: italic;
         }
         
         .watermark {
@@ -151,6 +175,8 @@
 </head>
 <body>
     <div class="watermark">{{ $household->barangay ?? 'iBarangay' }}</div>
+
+    <div class="main-title">RECORDS OF BARANGAY INHABITANTS BY HOUSEHOLD</div>
     
     <div class="header-info">
         <div class="header-row">
@@ -178,7 +204,6 @@
             <div class="header-value">{{ $household->number_of_members }}</div>
         </div>
     </div>
-    </div>
 
   
     <table class="members-table">
@@ -204,7 +229,7 @@
             @php $maxRows = 8; @endphp
             @for($i = 0; $i < $maxRows; $i++)
                 @php $member = $household->members[$i] ?? null; @endphp
-                <tr style="height: 40px;">
+                <tr style="height: 30px;">
                     <td>{{ $member ? $member->last_name : '' }}</td>
                     <td>{{ $member ? $member->first_name : '' }}</td>
                     <td>{{ $member ? $member->middle_name : '' }}</td>
@@ -226,25 +251,33 @@
     <div class="signature-section">
         <table>
             <tr>
-                <td style="width: 25%;">
+                <td style="width: 33.33%;">
                     <div class="signature-label">Prepared by:</div>
                     <div class="signature-name">
-                        Name of Household/Head Member<br>
+                        {{ $household->householdHead ? $household->householdHead->first_name . ' ' . ($household->householdHead->middle_name ? substr($household->householdHead->middle_name, 0, 1) . '. ' : '') . $household->householdHead->last_name . ($household->householdHead->extension ? ' ' . $household->householdHead->extension : '') : 'Name of Household/Head Member' }}
+                    </div>
+                    <div class="signature-line">
+                        <div><span style="font-weight: bold;">Name of Household/Head Member</span></div>
                         (Signature over Printed Name)
                     </div>
                 </td>
-                <td style="width: 25%;"></td>
-                <td style="width: 25%;">
+                <td style="width: 33.33%;">
                     <div class="signature-label">Certified Correct:</div>
                     <div class="signature-name">
-                        Barangay Secretary<br>
+                        {{ $barangaySecretary ? $barangaySecretary->name : '' }}
+                    </div>
+                    <div class="signature-line">
+                        <div><span style="font-weight: bold;">Barangay Secretary</span></div>
                         (Signature over Printed Name)
                     </div>
                 </td>
-                <td style="width: 25%;">
+                <td style="width: 33.34%;">
                     <div class="signature-label">Validated by:</div>
                     <div class="signature-name">
-                        Punong Barangay<br>
+                        {{ $punongBarangay ? $punongBarangay->name : '' }}
+                    </div>
+                    <div class="signature-line">
+                            <div><span style="font-weight: bold;">Punong Barangay</span></div>
                         (Signature over Printed Name)
                     </div>
                 </td>
@@ -253,7 +286,7 @@
     </div>
 
    
-    <div style="margin-top: 20px; font-size: 8px; text-align: justify; border: 1px solid #000; padding: 5px;">
+    <div style="margin-top: 10px; font-size: 7px; text-align: justify; border: 1px solid #000; padding: 4px;">
         I hereby certify that the above information are true and correct to the best of my knowledge. I understand that for the Barangay to carry out its mandate pursuant to Section 394 (d)(6) of the Local Government Code of 1991, they must necessarily process my personal information for easy identification of inhabitants, as a tool in planning, and as an updated reference in the number of inhabitants of the Barangay. Therefore, I grant my consent and recognize the authority of the Barangay to process my personal information, subject to the provisions of Republic Act 10173 or the Data Privacy Act of 2012.
     </div>
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Household;
 use App\Models\HouseholdMember;
+use App\Models\Official;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -209,8 +210,16 @@ class HouseholdController extends Controller
     {
         $household->load(['members' => function($query) {
             $query->orderBy('is_head', 'desc')->orderBy('created_at', 'asc');
-        }]);
+        }, 'householdHead']);
         
-        return view('admin.households.print', compact('household'));
+        $barangaySecretary = Official::whereHas('position', function($query) {
+            $query->where('position', 'secretary');
+        })->where('status', 'Active')->first();
+        
+        $punongBarangay = Official::whereHas('position', function($query) {
+            $query->where('position', 'punong barangay');
+        })->where('status', 'Active')->first();
+        
+        return view('admin.households.print', compact('household', 'barangaySecretary', 'punongBarangay'));
     }
 }

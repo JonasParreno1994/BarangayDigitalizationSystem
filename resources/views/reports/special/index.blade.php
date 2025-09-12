@@ -141,7 +141,7 @@
 
                 <!-- Submit Button -->
                 <div class="d-flex justify-content-end mt-4">
-                    <button type="submit" class="btn btn-primary px-5 py-2 shadow-sm fw-semibold">
+                    <button type="submit" class="btn btn-success px-5 py-2 shadow-sm fw-semibold">
                         <i class="bi bi-file-earmark-text me-2"></i> Generate Purok Report
                     </button>
                 </div>

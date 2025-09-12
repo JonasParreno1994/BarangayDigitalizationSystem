@@ -7,17 +7,19 @@ use App\Models\CertIndigencyMinor;
 use App\Models\ResidentModel;
 use App\Models\BarangayIdDetail;
 use App\Models\Purok;
+use App\Traits\HasBarangayDetails;
 use Carbon\Carbon;
 use App\Models\Official;
 
 class CertIndigencyMinorController extends Controller
 {
+    use HasBarangayDetails;
     public function index(Request $request)
     {
         $certs = CertIndigencyMinor::with('resident')->latest()->get();
         $residents = ResidentModel::with('purok')->get();
         $puroks = Purok::all();
-        $barangayDetails = BarangayIdDetail::first(); 
+        $barangayDetails = $this->getBarangayDetailsForPrint(); 
 
         
         $certsThisMonth = CertIndigencyMinor::whereYear('date_of_issuance', now()->year)
@@ -82,7 +84,7 @@ class CertIndigencyMinorController extends Controller
     ]);
 
     $cert = CertIndigencyMinor::create($validated);
-    $barangayDetails = BarangayIdDetail::first();
+    $barangayDetails = $this->getBarangayDetailsForPrint();
     $officials = Official::with('position')->get();
 
     session()->flash('print_success', 'Certificate of Indigency for Minor issued and printed successfully!');
@@ -93,7 +95,7 @@ class CertIndigencyMinorController extends Controller
     public function show($id)
     {
         $cert = CertIndigencyMinor::with('resident')->findOrFail($id);
-        $barangayDetails = BarangayIdDetail::first();
+        $barangayDetails = $this->getBarangayDetailsForPrint();
         $officials = Official::with('position')->get();
 
         return view('cert_indigency_minor.show', compact('cert', 'barangayDetails', 'officials'));
@@ -139,7 +141,7 @@ class CertIndigencyMinorController extends Controller
     public function print($id)
     {
         $cert = CertIndigencyMinor::with('resident')->findOrFail($id);
-        $barangayDetails = BarangayIdDetail::first();
+        $barangayDetails = $this->getBarangayDetailsForPrint();
         $officials = Official::with('position')->get();
 
         return view('cert_indigency_minor.print', compact('cert', 'barangayDetails', 'officials'));
@@ -148,7 +150,7 @@ class CertIndigencyMinorController extends Controller
     {
         $dateFrom = $request->input('date_from');
         $dateTo = $request->input('date_to');
-        $barangayDetails = BarangayIdDetail::first(); 
+        $barangayDetails = $this->getBarangayDetailsForPrint(); 
 
         
         if (!$dateFrom || !$dateTo) {

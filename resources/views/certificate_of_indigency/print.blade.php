@@ -112,9 +112,9 @@
                     @endif
                 @endif
                 <p style="font-size: 14px; font-weight: bold;">REPUBLIC OF THE PHILIPPINES</p>
-                <p style="font-size: 14px; font-weight: bold;">PROVINCE OF {{ strtoupper($certificate->resident->province) }}</p>
-                <p style="font-size: 14px; font-weight: bold;">MUNICIPALITY OF {{ strtoupper($certificate->resident->city_municipality) }}</p>
-                <p style="font-size: 18px; font-weight: bold;">BARANGAY {{ strtoupper($certificate->resident->barangay) }}</p>
+                <p style="font-size: 14px; font-weight: bold;">PROVINCE OF {{ strtoupper($barangayDetails->province ?? $barangayDetails->province ?? $barangayDetails->province ?? $certificate->resident->province) }}</p>
+                <p style="font-size: 14px; font-weight: bold;">MUNICIPALITY OF {{ strtoupper($barangayDetails->city_municipality ?? $barangayDetails->municipality ?? $barangayDetails->city_municipality ?? $barangayDetails->municipality ?? $barangayDetails->city_municipality ?? $barangayDetails->municipality ?? $certificate->resident->city_municipality) }}</p>
+                <p style="font-size: 18px; font-weight: bold;">BARANGAY {{ strtoupper($barangayDetails->barangay_name ?? $barangayDetails->barangay ?? $barangayDetails->barangay_name ?? $barangayDetails->barangay ?? $barangayDetails->barangay_name ?? $barangayDetails->barangay ?? $certificate->resident->barangay) }}</p>
                 <p style="font-size: 14px; font-weight: bold; font-style: italic;">Office of the Punong Barangay</p>
                 <p>E-mail: __________ * Tel/CP No.  __________</p>
             </div>
@@ -257,7 +257,7 @@
                     <p style="text-indent: 0.5in;">
                         This is to certify that Mr./Ms./Mrs. <strong><u>{{ strtoupper($certificate->resident->full_name) }}</u> of Legal Age,
                              {{ ucfirst(strtolower($certificate->resident->sex)) }}, {{ ucfirst(strtolower($certificate->resident->citizenship)) }}</strong>, 
-                             and is a bonafide resident of Purok {{ $certificate->resident->purok->name }}, Barangay {{ strtoupper($certificate->resident->barangay) }}, {{ strtoupper($certificate->resident->city_municipality) }}, {{ strtoupper($certificate->resident->province) }},
+                             and is a bonafide resident of Purok {{ $certificate->resident->purok->name }}, Barangay {{ strtoupper($barangayDetails->barangay_name ?? $barangayDetails->barangay ?? $barangayDetails->barangay_name ?? $barangayDetails->barangay ?? $certificate->resident->barangay) }}, {{ strtoupper($barangayDetails->city_municipality ?? $barangayDetails->municipality ?? $barangayDetails->city_municipality ?? $barangayDetails->municipality ?? $certificate->resident->city_municipality) }}, {{ strtoupper($barangayDetails->province ?? $barangayDetails->province ?? $certificate->resident->province) }},
                         
                     </p>
                     <p style="text-indent: 0.5in;">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Household;
 use App\Models\HouseholdMember;
 use App\Models\Official;
+use App\Services\BarangayDetailsService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -219,7 +220,10 @@ class HouseholdController extends Controller
         $punongBarangay = Official::whereHas('position', function($query) {
             $query->where('position', 'punong barangay');
         })->where('status', 'Active')->first();
+
+        // Get barangay details for the form
+        $barangayDetails = BarangayDetailsService::getDetails();
         
-        return view('admin.households.print', compact('household', 'barangaySecretary', 'punongBarangay'));
+        return view('admin.households.print', compact('household', 'barangaySecretary', 'punongBarangay', 'barangayDetails'));
     }
 }

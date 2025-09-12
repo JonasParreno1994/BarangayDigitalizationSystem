@@ -112,9 +112,9 @@
                     @endif
                 @endif
                 <p style="font-size: 14px; font-weight: bold;">REPUBLIC OF THE PHILIPPINES</p>
-                <p style="font-size: 14px; font-weight: bold;">PROVINCE OF {{ strtoupper($cert->resident->province) }}</p>
-                <p style="font-size: 14px; font-weight: bold;">MUNICIPALITY OF {{ strtoupper($cert->resident->city_municipality) }}</p>
-                <p style="font-size: 18px; font-weight: bold;">BARANGAY {{ strtoupper($cert->resident->barangay) }}</p>
+                <p style="font-size: 14px; font-weight: bold;">PROVINCE OF {{ strtoupper($barangayDetails->province ?? $cert->resident->province) }}</p>
+                <p style="font-size: 14px; font-weight: bold;">MUNICIPALITY OF {{ strtoupper($barangayDetails->city_municipality ?? $barangayDetails->municipality ?? $cert->resident->city_municipality) }}</p>
+                <p style="font-size: 18px; font-weight: bold;">BARANGAY {{ strtoupper($barangayDetails->barangay_name ?? $barangayDetails->barangay ?? $cert->resident->barangay) }}</p>
                 <p style="font-size: 14px; font-weight: bold; font-style: italic;">Office of the Punong Barangay</p>
                 <p>E-mail: __________ * Tel/CP No.  __________</p>
             </div>

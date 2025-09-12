@@ -25,6 +25,8 @@ use App\Http\Controllers\SpecialReportController;
 use App\Http\Controllers\CertIndigencyMinorController;
 use App\Http\Controllers\CertFirstTimeJobseekerController;
 use App\Http\Controllers\CertificateOfDeathController;
+use App\Http\Controllers\RbiFormCController;
+use App\Http\Controllers\BarangayDetailController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -58,6 +60,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/officials/update/{id}', [OfficialController::class, 'update'])->name('officials.update');
     Route::delete('/officials/{id}', [OfficialController::class, 'destroy'])->name('officials.destroy');
     Route::get('/get-comelec-data', [OfficialController::class, 'getComelecData'])->name('getComelecData');
+
+    // Barangay Details Management
+    Route::get('/barangaydetails', [BarangayDetailController::class, 'index'])->name('barangaydetails.index');
+    Route::get('/barangay-details', [BarangayDetailController::class, 'index'])->name('barangay-details.index');
+    Route::get('/barangay-details/create', [BarangayDetailController::class, 'create'])->name('barangay-details.create');
+    Route::post('/barangay-details', [BarangayDetailController::class, 'store'])->name('barangay-details.store');
+    Route::get('/barangay-details/{id}/edit', [BarangayDetailController::class, 'edit'])->name('barangay-details.edit');
+    Route::put('/barangay-details/{id}', [BarangayDetailController::class, 'update'])->name('barangay-details.update');
+    Route::delete('/barangay-details/{id}', [BarangayDetailController::class, 'destroy'])->name('barangay-details.destroy');
 
     Route::get('/auth', [RegisteredUserController::class, 'register'])->name('auth.register');
     Route::post('/auth', [RegisteredUserController::class, 'store'])->name('auth.store'); 
@@ -236,6 +247,12 @@ Route::middleware('auth')->group(function () {
         ->name('special-reports.generate-sector');
     Route::get('/print-sector', [SpecialReportController::class, 'printSectorReport'])
         ->name('special-reports.print-sector');
+    });
+
+    // RBI Form C Routes
+    Route::prefix('rbi-form-c')->group(function () {
+        Route::get('/', [RbiFormCController::class, 'index'])->name('rbi-form-c.index');
+        Route::post('/generate', [RbiFormCController::class, 'generate'])->name('rbi-form-c.generate');
     });
 });
 

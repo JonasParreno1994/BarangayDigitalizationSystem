@@ -18,6 +18,12 @@ class BarangayIdDetail extends Model
         'validity',
         'details',
         'pass_captain',
-        'signature_path'
+        'signature_path',
+        'region',
+        'province',
+        'city_municipality',
+        'barangay',
+        'captain_name',
+        'secretary_name'
     ];
 }

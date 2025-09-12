@@ -124,9 +124,9 @@
                     @endif
                 @endif
                 <p style="font-size: 14px; font-weight: bold;">REPUBLIC OF THE PHILIPPINES</p>
-                <p style="font-size: 14px; font-weight: bold;">PROVINCE OF {{ strtoupper($certificate->resident->province) }}</p>
-                <p style="font-size: 14px; font-weight: bold;">MUNICIPALITY OF {{ strtoupper($certificate->resident->city_municipality) }}</p>
-                <p style="font-size: 18px; font-weight: bold;">BARANGAY {{ strtoupper($certificate->resident->barangay) }}</p>
+                <p style="font-size: 14px; font-weight: bold;">PROVINCE OF {{ strtoupper($barangayDetails->province ?? $barangayDetails->province ?? $certificate->resident->province) }}</p>
+                <p style="font-size: 14px; font-weight: bold;">MUNICIPALITY OF {{ strtoupper($barangayDetails->city_municipality ?? $barangayDetails->municipality ?? $barangayDetails->city_municipality ?? $barangayDetails->municipality ?? $certificate->resident->city_municipality) }}</p>
+                <p style="font-size: 18px; font-weight: bold;">BARANGAY {{ strtoupper($barangayDetails->barangay_name ?? $barangayDetails->barangay ?? $barangayDetails->barangay_name ?? $barangayDetails->barangay ?? $certificate->resident->barangay) }}</p>
                 <p style="font-size: 14px; font-weight: bold; font-style: italic;">Office of the Punong Barangay</p>
                 <p>E-mail: __________ * Tel/CP No.  __________</p>
             </div>
@@ -242,8 +242,8 @@
                         {{ \Carbon\Carbon::parse($certificate->resident->birth_date)->diffInYears($certificate->date_of_death) }} years old,
                         {{ $certificate->resident->civil_status }}, {{ $certificate->resident->citizenship }} citizen,
                         and a resident of {{ $certificate->resident->purok ? $certificate->resident->purok->purok_name : $certificate->resident->address }},
-                        {{ $certificate->resident->barangay }}, {{ $certificate->resident->city_municipality }},
-                        {{ $certificate->resident->province }}, died on
+                        {{ $barangayDetails->barangay_name ?? $barangayDetails->barangay ?? $barangayDetails->barangay_name ?? $barangayDetails->barangay ?? $certificate->resident->barangay }}, {{ $barangayDetails->city_municipality ?? $barangayDetails->municipality ?? $barangayDetails->city_municipality ?? $barangayDetails->municipality ?? $certificate->resident->city_municipality }},
+                        {{ $barangayDetails->province ?? $barangayDetails->province ?? $certificate->resident->province }}, died on
                         <strong>{{ \Carbon\Carbon::parse($certificate->date_of_death)->format('F j, Y') }}</strong> at
                         <strong>{{ $certificate->place_of_death }}</strong> due to
                         <strong>{{ $certificate->cause_of_death }}</strong>.
@@ -254,7 +254,7 @@
                     </p>
                     
                     <p style="text-indent: 0.5in;">
-                        Issued this <strong>{{ \Carbon\Carbon::parse($certificate->date_of_issuance)->format('jS') }}</strong> day of <strong>{{ \Carbon\Carbon::parse($certificate->date_of_issuance)->format('F, Y') }}</strong> at Barangay {{ $certificate->resident->barangay }}, {{ $certificate->resident->city_municipality }}, {{ $certificate->resident->province }}.
+                        Issued this <strong>{{ \Carbon\Carbon::parse($certificate->date_of_issuance)->format('jS') }}</strong> day of <strong>{{ \Carbon\Carbon::parse($certificate->date_of_issuance)->format('F, Y') }}</strong> at Barangay {{ $barangayDetails->barangay_name ?? $barangayDetails->barangay ?? $barangayDetails->barangay_name ?? $barangayDetails->barangay ?? $certificate->resident->barangay }}, {{ $barangayDetails->city_municipality ?? $barangayDetails->municipality ?? $barangayDetails->city_municipality ?? $barangayDetails->municipality ?? $certificate->resident->city_municipality }}, {{ $barangayDetails->province ?? $barangayDetails->province ?? $certificate->resident->province }}.
                     </p>
                 </div>
                 

@@ -7,18 +7,20 @@ use App\Models\CertFirstTimeJobseeker;
 use App\Models\ResidentModel;
 use App\Models\BarangayIdDetail;
 use App\Models\Purok;
+use App\Traits\HasBarangayDetails;
 use Carbon\Carbon;
 use App\Models\Official;
 
 
 class CertFirstTimeJobseekerController extends Controller
 {
+    use HasBarangayDetails;
     public function index(Request $request)
     {
         $certs = CertFirstTimeJobseeker::with('resident')->latest()->get();
         $residents = ResidentModel::with('purok')->get();
         $puroks = Purok::all();
-        $barangayDetails = BarangayIdDetail::first(); 
+        $barangayDetails = $this->getBarangayDetailsForPrint(); 
 
         
         $certsThisMonth = CertFirstTimeJobseeker::whereYear('date_of_issuance', now()->year)
@@ -82,7 +84,7 @@ class CertFirstTimeJobseekerController extends Controller
         $validated['barangay'] = 'Barangay Name'; // Or get from config/settings
 
         $cert = CertFirstTimeJobseeker::create($validated);
-        $barangayDetails = BarangayIdDetail::first();
+        $barangayDetails = $this->getBarangayDetailsForPrint();
         $officials = Official::with('position')->get();
 
         session()->flash('print_success', 'Certificate for First Time Jobseeker issued and printed successfully!');
@@ -93,7 +95,7 @@ class CertFirstTimeJobseekerController extends Controller
         public function print($id)
         {
             $cert = CertFirstTimeJobseeker::with('resident')->findOrFail($id);
-            $barangayDetails = BarangayIdDetail::first();
+            $barangayDetails = $this->getBarangayDetailsForPrint();
             $officials = Official::with('position')->get();
     
             return view('cert_firstTime_Jobseeker.print', compact('cert', 'barangayDetails', 'officials'));
@@ -101,7 +103,7 @@ class CertFirstTimeJobseekerController extends Controller
         public function show($id)
     {
         $cert = CertFirstTimeJobseeker::with('resident')->findOrFail($id);
-        $barangayDetails = BarangayIdDetail::first();
+        $barangayDetails = $this->getBarangayDetailsForPrint();
         $officials = Official::with('position')->get();
 
         return view('cert_firstTime_Jobseeker.show', compact('cert', 'barangayDetails', 'officials'));
@@ -120,7 +122,7 @@ class CertFirstTimeJobseekerController extends Controller
     {
         $dateFrom = $request->input('date_from');
         $dateTo = $request->input('date_to');
-        $barangayDetails = BarangayIdDetail::first(); 
+        $barangayDetails = $this->getBarangayDetailsForPrint(); 
 
         
         if (!$dateFrom || !$dateTo) {

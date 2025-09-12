@@ -6,16 +6,18 @@ use App\Models\CertificateOfResidency;
 use App\Models\ResidentModel;
 use App\Models\BarangayIdDetail;
 use App\Models\Official;
+use App\Traits\HasBarangayDetails;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CertificateOfResidencyController extends Controller
 {
+    use HasBarangayDetails;
     public function index()
     {
         $certificates = CertificateOfResidency::with('resident')->latest()->get();
         $residents = ResidentModel::all();
-        $barangayDetails = BarangayIdDetail::first();
+        $barangayDetails = $this->getBarangayDetailsForPrint();
 
         // Count certificates created this month
         $certsThisMonth = CertificateOfResidency::whereYear('date_of_issuance', now()->year)
@@ -74,7 +76,7 @@ class CertificateOfResidencyController extends Controller
          session()->flash('print_success', 'Certificate of Residency issued and printed successfully!');
 
         $certificate = CertificateOfResidency::with('resident')->latest()->first();
-        $barangayDetails = BarangayIdDetail::first();
+        $barangayDetails = $this->getBarangayDetailsForPrint();
         $officials = Official::with('position')->get();
 
         return view('certificate_of_residency.print', compact('certificate', 'barangayDetails', 'officials'));
@@ -83,7 +85,7 @@ class CertificateOfResidencyController extends Controller
     public function show($id)
     {
         $certificate = CertificateOfResidency::with('resident')->findOrFail($id);
-        $barangayDetails = BarangayIdDetail::first();
+        $barangayDetails = $this->getBarangayDetailsForPrint();
         $officials = Official::with('position')->get();
         
         return view('certificate_of_residency.show', compact('certificate', 'barangayDetails', 'officials'));
@@ -128,7 +130,7 @@ class CertificateOfResidencyController extends Controller
     public function print($id)
     {
         $certificate = CertificateOfResidency::with('resident')->findOrFail($id);
-        $barangayDetails = BarangayIdDetail::first();
+        $barangayDetails = $this->getBarangayDetailsForPrint();
         $officials = Official::with('position')->get();
         
         return view('certificate_of_residency.print', compact('certificate', 'barangayDetails', 'officials'));
@@ -138,7 +140,7 @@ class CertificateOfResidencyController extends Controller
     {
         $dateFrom = $request->input('date_from');
         $dateTo = $request->input('date_to');
-        $barangayDetails = BarangayIdDetail::first(); 
+        $barangayDetails = $this->getBarangayDetailsForPrint(); 
 
         if (!$dateFrom || !$dateTo) {
             return redirect()->back()->with('error', 'Please select both dates.');

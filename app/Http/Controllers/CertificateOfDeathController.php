@@ -6,17 +6,19 @@ use App\Models\ResidentModel;
 use App\Models\CertificateOfDeath;
 use App\Models\CertificationFooter;
 use App\Models\BarangayIdDetail;
+use App\Traits\HasBarangayDetails;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class CertificateOfDeathController extends Controller
 {
+    use HasBarangayDetails;
     public function index()
     {
         $certificates = CertificateOfDeath::with('resident')->latest()->get();
         $residents = ResidentModel::where('status', '!=', 'Deceased')->get();
-        $barangayDetails = BarangayIdDetail::first();
+        $barangayDetails = $this->getBarangayDetailsForPrint();
 
         // Count certificates created this month
         $certsThisMonth = CertificateOfDeath::whereYear('date_of_issuance', now()->year)
@@ -139,7 +141,7 @@ class CertificateOfDeathController extends Controller
     {
         $certificate = CertificateOfDeath::with('resident')->findOrFail($id);
         $footer = CertificationFooter::first();
-        $barangayDetails = BarangayIdDetail::first(); 
+        $barangayDetails = $this->getBarangayDetailsForPrint(); 
         $officials = \App\Models\Official::with('position')->get();
         
         $qrCode = QrCode::size(80)->generate(route('certificate-of-death.show', $id));
@@ -157,7 +159,7 @@ class CertificateOfDeathController extends Controller
     {
         $dateFrom = $request->input('date_from');
         $dateTo = $request->input('date_to');
-        $barangayDetails = BarangayIdDetail::first(); 
+        $barangayDetails = $this->getBarangayDetailsForPrint(); 
 
         if (!$dateFrom || !$dateTo) {
             return redirect()->back()->with('error', 'Please select both dates.');

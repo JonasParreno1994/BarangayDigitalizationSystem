@@ -119,9 +119,15 @@
                     @endif
                 @endif
                 <p style="font-size: 14px; font-weight: bold;">REPUBLIC OF THE PHILIPPINES</p>
-                <p style="font-size: 14px; font-weight: bold;">PROVINCE OF {{ strtoupper($clearance->resident->province) }}</p>
-                <p style="font-size: 14px; font-weight: bold;">MUNICIPALITY OF {{ strtoupper($clearance->resident->city_municipality) }}</p>
-                <p style="font-size: 18px; font-weight: bold;">BARANGAY BACUYANGAN</p>
+                <p style="font-size: 14px; font-weight: bold;">
+                    PROVINCE OF {{ strtoupper($barangayDetails->province ?? '') }}
+                </p>
+                <p style="font-size: 14px; font-weight: bold;">
+                    MUNICIPALITY OF {{ strtoupper($barangayDetails->city_municipality ?? $barangayDetails->municipality ?? '') }}
+                </p>
+                <p style="font-size: 18px; font-weight: bold;">
+                    BARANGAY {{ strtoupper($barangayDetails->barangay_name ?? $barangayDetails->barangay ?? $barangayDetails->name ?? '') }}
+                </p>
                 <p style="font-size: 14px; font-weight: bold; font-style: italic;">Office of the Punong Barangay</p>
                 <p>E-mail: __________ * Tel/CP No.  __________</p>
             </div>
@@ -263,10 +269,10 @@
                         This is to certify that Mr./Ms./Mrs. <strong><u>{{ strtoupper($clearance->resident->full_name) }}</u></strong>,
                         <strong><u>{{ \Carbon\Carbon::parse($clearance->resident->birth_date)->age }}</u> </strong> years old,
                         <strong>{{($clearance->resident->civil_status) }},</strong> and whose signature below is a 
-                        Filipino Citizen, a bonafide resident of Barangay Bacuyangan, Hinoba-an, Negros Occidental.
+                        Filipino Citizen, a bonafide resident of Barangay {{ $barangayDetails->barangay_name ?? $barangayDetails->barangay ?? 'Bacuyangan' }}, {{ $barangayDetails->city_municipality ?? $barangayDetails->municipality ?? 'Hinoba-an' }}, {{ $barangayDetails->province ?? 'Negros Occidental' }}.
                     </p>
                     <p style="text-indent: 0.5in;">
-                        He/She has established residence in Barangay Bacuyangan, Hinoba-an, Negros Occidental for a period of (__)months/(__) years now,
+                        He/She has established residence in Barangay {{ $barangayDetails->barangay_name ?? $barangayDetails->barangay ?? 'Bacuyangan' }}, {{ $barangayDetails->city_municipality ?? $barangayDetails->municipality ?? 'Hinoba-an' }}, {{ $barangayDetails->province ?? 'Negros Occidental' }} for a period of (__)months/(__) years now,
                         and is known to me to be a person of good moral character.
                     </p>
 
@@ -275,7 +281,7 @@
                     </p>
                     <p style="text-indent: 0.5in;">
                         Issued and signed this <strong> {{ $clearance->date_of_issuance->format('jS') }} </strong> day of 
-                        <strong>{{ $clearance->date_of_issuance->format('F') }}, {{ $clearance->date_of_issuance->format('Y') }} </strong> at Barangay Bacuyangan
+                        <strong>{{ $clearance->date_of_issuance->format('F') }}, {{ $clearance->date_of_issuance->format('Y') }} </strong> at Barangay {{ $barangayDetails->barangay_name ?? $barangayDetails->barangay ?? 'Bacuyangan' }}
                         Administration Center for the purpose of <u> <strong>{{ $clearance->purpose }}</strong></u>.
                     </p>
                 </div>

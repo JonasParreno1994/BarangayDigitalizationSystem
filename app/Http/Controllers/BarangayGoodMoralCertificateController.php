@@ -6,16 +6,18 @@ use App\Models\BarangayGoodMoralCertificate;
 use App\Models\ResidentModel;
 use App\Models\Official;
 use App\Models\BarangayIdDetail;
+use App\Traits\HasBarangayDetails;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class BarangayGoodMoralCertificateController extends Controller
 {
+    use HasBarangayDetails;
     public function index()
     {
         $certificates = BarangayGoodMoralCertificate::with('resident')->latest()->get();
         $residents = ResidentModel::orderBy('last_name')->get(); 
-        $barangayDetails = BarangayIdDetail::first();
+        $barangayDetails = $this->getBarangayDetailsForPrint();
 
         // Count certificates created this month
         $certsThisMonth = BarangayGoodMoralCertificate::whereYear('date_of_issuance', now()->year)
@@ -74,7 +76,7 @@ class BarangayGoodMoralCertificateController extends Controller
         session()->flash('print_success', 'Good Moral Certificate issued and printed successfully!');
 
         $certificate = BarangayGoodMoralCertificate::with('resident')->latest()->first();
-        $barangayDetails = BarangayIdDetail::first();
+        $barangayDetails = $this->getBarangayDetailsForPrint();
         $officials = Official::with('position')->get();
 
         return view('barangay_good_moral.print', compact('certificate', 'barangayDetails', 'officials'));
@@ -130,7 +132,7 @@ class BarangayGoodMoralCertificateController extends Controller
     public function print($id){
     $certificate = BarangayGoodMoralCertificate::with('resident')->findOrFail($id);
     $officials = Official::with('position')->get();
-    $barangayDetails = BarangayIdDetail::first();
+    $barangayDetails = $this->getBarangayDetailsForPrint();
 
     return view('barangay_good_moral.print', compact('certificate', 'officials', 'barangayDetails'));
     }
@@ -139,7 +141,7 @@ class BarangayGoodMoralCertificateController extends Controller
     {
         $dateFrom = $request->input('date_from');
         $dateTo = $request->input('date_to');
-        $barangayDetails = BarangayIdDetail::first(); 
+        $barangayDetails = $this->getBarangayDetailsForPrint(); 
 
         if (!$dateFrom || !$dateTo) {
             return redirect()->back()->with('error', 'Please select both dates.');

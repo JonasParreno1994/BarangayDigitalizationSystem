@@ -7,10 +7,12 @@ use App\Models\BarangayClearance;
 use App\Models\BarangayIdDetail;
 use App\Models\ResidentModel;
 use App\Models\Official;
+use App\Traits\HasBarangayDetails;
 use Carbon\Carbon;
 
 class BrgyclearanceController extends Controller
 {
+    use HasBarangayDetails;
     public function index()
     {
         $clearances = BarangayClearance::with('resident')->latest()->get();
@@ -56,7 +58,7 @@ class BrgyclearanceController extends Controller
         session()->flash('print_success', 'Barangay Clearance issued and printed successfully!');
 
         $clearance = BarangayClearance::with('resident')->latest()->first();
-        $barangayDetails = BarangayIdDetail::first();
+        $barangayDetails = $this->getBarangayDetailsForPrint();
         $officials = Official::with('position')->get();
 
         return view('barangayclearance.print', compact('clearance', 'barangayDetails', 'officials'));
@@ -107,7 +109,7 @@ class BrgyclearanceController extends Controller
 
     public function print($id){
         $clearance = BarangayClearance::with('resident')->findOrFail($id);
-        $barangayDetails = BarangayIdDetail::first(); 
+        $barangayDetails = $this->getBarangayDetailsForPrint(); 
         
         $officials = Official::with('position')
             ->active()
@@ -137,7 +139,7 @@ class BrgyclearanceController extends Controller
             ->orderBy('date_of_issuance', 'desc')
             ->get();
 
-        $barangayDetails = BarangayIdDetail::first();
+        $barangayDetails = $this->getBarangayDetailsForPrint();
 
         return view('barangayclearance.report', compact('reportData', 'dateFrom', 'dateTo', 'barangayDetails'));
     }

@@ -274,6 +274,9 @@
                                 <li>
                                     <a href="{{ route('barangayid.index') }}" class="nav-link {{ request()->routeIs('barangayid.index') ? 'active' : '' }}">Barangay ID details</a>
                                 </li>
+                                <li>
+                                    <a href="{{ route('barangaydetails.index') }}" class="nav-link {{ request()->routeIs('barangaydetails.index') ? 'active' : '' }}">Barangay Details</a>
+                                </li>
                                <li>
                                     <a href="{{ route('certification-footer.index') }}" class="nav-link {{ request()->routeIs('certification-footer.index') ? 'active' : '' }}">Certification Footer</a>
                                 </li>
@@ -312,6 +315,16 @@
                                                         <path d="M11.5092 2.2601L11.5 5.0945C11.4999 6.1916 11.4998 7.16117 11.6049 7.94269C11.7188 8.78981 11.9803 9.6368 12.6716 10.3281C13.3629 11.0193 14.2098 11.2808 15.057 11.3947C15.8385 11.4998 16.808 11.4997 17.9051 11.4996L21.9574 11.4996C21.9698 11.6552 21.9786 11.821 21.9848 11.9995H22C22 11.732 22 11.5983 21.9901 11.4408C21.9335 10.5463 21.5617 9.52125 21.0315 8.79853C20.9382 8.6713 20.8743 8.59493 20.7467 8.44218C19.9542 7.49359 18.911 6.31193 18 5.49953C17.1892 4.77645 16.0787 3.98536 15.1101 3.3385C14.2781 2.78275 13.862 2.50487 13.2915 2.29834C13.1403 2.24359 12.9408 2.18311 12.7846 2.14466C12.4006 2.05013 12.0268 2.01725 11.5 2.00586L11.5092 2.2601Z" fill="currentColor"></path>
                                                     </svg>
                                                 <span class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Generate Resident Reports</span>
+                                            </div>
+                                        </a>
+
+                                        <a href="{{ route('rbi-form-c.index') }}" class="nav-link {{ request()->routeIs('rbi-form-c.*') ? 'active' : '' }}">
+                                            <div class="flex items-center">
+                                                    <svg class="shrink-0 group-hover:!text-primary" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M8 3V5L16 5V3C16 2.44772 15.5523 2 15 2L9 2C8.44772 2 8 2.44772 8 3Z" fill="currentColor"></path>
+                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M6 5V3C6 1.89543 6.89543 1 8 1H16C17.1046 1 18 1.89543 18 3V5H20C21.1046 5 22 5.89543 22 7V19C22 20.1046 21.1046 21 20 21H4C2.89543 21 2 20.1046 2 19V7C2 5.89543 2.89543 5 4 5H6ZM8 7H4V19H20V7H16V9C16 9.55228 15.5523 10 15 10C14.4477 10 14 9.55228 14 9V7H10V9C10 9.55228 9.55228 10 9 10C8.44772 10 8 9.55228 8 9V7ZM7 13C6.44772 13 6 13.4477 6 14C6 14.5523 6.44772 15 7 15H17C17.5523 15 18 14.5523 18 14C18 13.4477 17.5523 13 17 13H7ZM7 16C6.44772 16 6 16.4477 6 17C6 17.5523 6.44772 18 7 18H13C13.5523 18 14 17.5523 14 17C14 16.4477 13.5523 16 13 16H7Z" fill="currentColor"></path>
+                                                    </svg>
+                                                <span class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">RBI Form C Report</span>
                                             </div>
                                         </a>
                                     </li>

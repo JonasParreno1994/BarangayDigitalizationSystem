@@ -112,9 +112,11 @@
                     @endif
                 @endif
                 <h1>REPUBLIC OF THE PHILIPPINES</h1>
-                <h1>PROVINCE OF {{ strtoupper($certificate->resident->province) }}</h1>
-                <h1>MUNICIPALITY OF {{ strtoupper($certificate->resident->city_municipality) }}</h1>
-                <p>{{ strtoupper($certificate->resident->barangay) }}</p>
+                <h1>PROVINCE OF {{ strtoupper($barangayDetails->province ?? $certificate->resident->province) }}</h1>
+                <h1>MUNICIPALITY OF {{ strtoupper($barangayDetails->city_municipality ?? $barangayDetails->municipality ?? $certificate->resident->city_municipality) }}</h1>
+                <p style="font-size: 18px; font-weight: bold;">
+                    BARANGAY {{ strtoupper($barangayDetails->barangay_name ?? $barangayDetails->barangay ?? $barangayDetails->name ?? '') }}
+                </p>
                 <p>E-mail: __________ * Tel/CP No.  __________</p>
             </div>
         </div>
@@ -196,8 +198,8 @@
                         This is to certify that <strong><u>{{ strtoupper($certificate->resident->full_name) }}</u></strong>,
                         <strong><u>{{ \Carbon\Carbon::parse($certificate->resident->birth_date)->age }}</u></strong> years old,
                         <strong>{{ $certificate->resident->civil_status }}</strong>, is a bonafide resident of 
-                        {{ $certificate->resident->barangay }}, {{ $certificate->resident->city_municipality }}, 
-                        {{ $certificate->resident->province }}. To the best of my knowledge and based on barangay records, 
+                        {{ $barangayDetails->barangay_name ?? $barangayDetails->barangay ?? $certificate->resident->barangay }}, {{ $barangayDetails->city_municipality ?? $barangayDetails->municipality ?? $certificate->resident->city_municipality }}, 
+                        {{ $barangayDetails->province ?? $certificate->resident->province }}. To the best of my knowledge and based on barangay records, 
                         the above-named person has not been involved in any illegal activities or misconduct within this barangay.
                     </p>
                    
@@ -209,8 +211,8 @@
                     <p style="text-indent: 0.5in;">
                         Issued this {{ $certificate->date_of_issuance->format('jS') }} day of 
                         {{ $certificate->date_of_issuance->format('F') }}, {{ $certificate->date_of_issuance->format('Y') }} at 
-                        {{ $certificate->resident->barangay }}, {{ $certificate->resident->city_municipality }}, 
-                        {{ $certificate->resident->province }}, Philippines.
+                        {{ $barangayDetails->barangay_name ?? $barangayDetails->barangay ?? $certificate->resident->barangay }}, {{ $barangayDetails->city_municipality ?? $barangayDetails->municipality ?? $certificate->resident->city_municipality }}, 
+                        {{ $barangayDetails->province ?? $certificate->resident->province }}, Philippines.
                     </p>
                 </div>
                 <div class="signature" style="margin-top: 80px; font-size: 17px; margin-left: 160px;">

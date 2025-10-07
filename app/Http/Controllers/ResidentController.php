@@ -129,6 +129,11 @@ class ResidentController extends Controller
         $resident = ResidentModel::with('purok')->findOrFail($id);
         $barangayDetails = BarangayIdDetail::first();
         
+        // If no barangay details exist, create one with defaults
+        if (!$barangayDetails) {
+            $barangayDetails = (object) BarangayIdDetail::getDefaultEnhancedData();
+        }
+        
         $birthDate = new \DateTime($resident->birth_date);
         $today = new \DateTime();
         $age = $today->diff($birthDate)->y;
@@ -139,7 +144,7 @@ class ResidentController extends Controller
         $fullName = $resident->first_name . ' ' . $middleInitial . ' ' . $resident->last_name;
         $fullName = preg_replace('/\s+/', ' ', trim($fullName));
         
-        $qrCode = QrCode::size(80)->generate($resident->household_number);
+        $qrCode = QrCode::size(80)->generate($resident->household_number ?? 'MHBB-' . date('Y') . '-' . str_pad($resident->id, 4, '0', STR_PAD_LEFT));
         
         return view('residentFolder.printid', compact(
             'resident', 

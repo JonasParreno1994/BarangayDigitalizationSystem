@@ -40,21 +40,44 @@ document.addEventListener('DOMContentLoaded', function() {
         const datatable = new simpleDatatables.DataTable('#customTable', {
             data: {
                 headings: [
-                    'Logo 1', 'Logo 2', 'Heading 1', 'Heading 2', 'Heading 3', 
-                    'Validity', 'Details', 'Pass Captain', 'Signature', 'Actions'
+                    'Logo 1', 'Logo 2', 'Header Info', 'Captain', 'Validity', 
+                    'Emergency Contact', 'Color Scheme', 'Features', 'Actions'
                 ],
                 data: [
                     @foreach($items as $item)
                     [
                         `<img src="{{ Storage::url($item->logo1_path) }}" class="h-10 w-10 object-cover">`,
                         `<img src="{{ Storage::url($item->logo2_path) }}" class="h-10 w-10 object-cover">`,
-                        `{{ $item->heading1 }}`,
-                        `{{ $item->heading2 }}`,
-                        `{{ $item->heading3 }}`,
-                        `{{ $item->validity }}`,
-                        `{{ Str::limit($item->details, 30) }}`,
+                        `<div class="text-xs">
+                            <div class="font-bold">{{ $item->heading1 }}</div>
+                            <div>{{ $item->heading2 }}</div>
+                            <div>{{ $item->heading3 }}</div>
+                            @if($item->office_info)
+                                <div class="text-gray-600">{{ $item->office_info }}</div>
+                            @endif
+                        </div>`,
                         `{{ $item->pass_captain }}`,
-                        `<img src="{{ Storage::url($item->signature_path) }}" class="h-10 w-20 object-contain">`,
+                        `<div class="text-xs">
+                            <div>{{ $item->validity }}</div>
+                            <div class="text-gray-600">{{ $item->validity_years ?? 3 }} years</div>
+                        </div>`,
+                        `<div class="text-xs">
+                            @if($item->emergency_contact_name)
+                                <div class="font-bold">{{ $item->emergency_contact_name }}</div>
+                                <div>{{ $item->emergency_contact_number }}</div>
+                            @else
+                                <span class="text-gray-500">Not Set</span>
+                            @endif
+                        </div>`,
+                        `<span class="badge badge-{{ $item->card_color_scheme ?? 'blue' }}">{{ ucfirst($item->card_color_scheme ?? 'blue') }}</span>`,
+                        `<div class="text-xs">
+                            @if($item->include_qr_code ?? true)
+                                <span class="badge badge-success">QR Code</span>
+                            @endif
+                            @if($item->include_fingerprint ?? true)
+                                <span class="badge badge-info">Fingerprint</span>
+                            @endif
+                        </div>`,
                         `<div class="action-buttons" style="display: flex; gap: 10px; align-items: center;">
                             <a href="{{ route('barangayid.edit', $item->id) }}" class="btn btn-sm btn-primary">Edit</a>
                             <form action="{{ route('barangayid.destroy', $item->id) }}" method="POST" style="display: inline;">
@@ -74,14 +97,13 @@ document.addEventListener('DOMContentLoaded', function() {
             columns: [
                 { select: 0, sortable: false, type: 'html' },
                 { select: 1, sortable: false, type: 'html' },
-                { select: 2, sortable: true },
+                { select: 2, sortable: false, type: 'html' },
                 { select: 3, sortable: true },
-                { select: 4, sortable: true },
-                { select: 5, sortable: true },
-                { select: 6, sortable: true },
-                { select: 7, sortable: true },
-                { select: 8, sortable: true },
-                { select: 9, sortable: false, type: 'html' }
+                { select: 4, sortable: false, type: 'html' },
+                { select: 5, sortable: false, type: 'html' },
+                { select: 6, sortable: true, type: 'html' },
+                { select: 7, sortable: false, type: 'html' },
+                { select: 8, sortable: false, type: 'html' }
             ]
         });
         console.log('Datatable initialized:', datatable);
@@ -128,8 +150,34 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     /* Make sure the action column is wide enough */
     #customTable td:last-child {
-        min-width: 100px;
+        min-width: 120px;
     }
+    
+    /* Badge styles */
+    .badge {
+        display: inline-block;
+        padding: 0.25em 0.4em;
+        font-size: 0.75em;
+        font-weight: 700;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0.25rem;
+        margin: 0.1rem;
+    }
+    
+    .badge-blue { background-color: #007bff; color: white; }
+    .badge-green { background-color: #28a745; color: white; }
+    .badge-red { background-color: #dc3545; color: white; }
+    .badge-purple { background-color: #6f42c1; color: white; }
+    .badge-success { background-color: #28a745; color: white; }
+    .badge-info { background-color: #17a2b8; color: white; }
+    
+    .text-xs { font-size: 0.75rem; }
+    .font-bold { font-weight: bold; }
+    .text-gray-600 { color: #6b7280; }
+    .text-gray-500 { color: #9ca3af; }
 </style>
 
 <script src="{{ asset('admin/assets/js/simple-datatables.js') }}"></script>

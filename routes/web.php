@@ -27,6 +27,7 @@ use App\Http\Controllers\CertFirstTimeJobseekerController;
 use App\Http\Controllers\CertificateOfDeathController;
 use App\Http\Controllers\RbiFormCController;
 use App\Http\Controllers\BarangayDetailController;
+use App\Http\Controllers\BarangayCertificateController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -208,6 +209,15 @@ Route::middleware('auth')->group(function () {
     Route::put('/certificate-of-residency/{id}', [CertificateOfResidencyController::class, 'update'])->name('certificate-of-residency.update');
     Route::delete('/certificate-of-residency/{id}', [CertificateOfResidencyController::class, 'destroy'])->name('certificate-of-residency.destroy');
     Route::get('/certificate-of-residency/{id}/print', [CertificateOfResidencyController::class, 'print'])->name('certificate-of-residency.print');
+
+    Route::get('/barangay-certificate', [BarangayCertificateController::class, 'index'])->name('barangay-certificate.index');
+    Route::post('/barangay-certificate', [BarangayCertificateController::class, 'store'])->name('barangay-certificate.store');
+    Route::get('/barangay-certificate/report', [BarangayCertificateController::class, 'report'])->name('barangay-certificate.report');
+    Route::get('/barangay-certificate/{id}', [BarangayCertificateController::class, 'show'])->name('barangay-certificate.show');
+    Route::get('/barangay-certificate/{id}/edit', [BarangayCertificateController::class, 'edit'])->name('barangay-certificate.edit');
+    Route::put('/barangay-certificate/{id}', [BarangayCertificateController::class, 'update'])->name('barangay-certificate.update');
+    Route::delete('/barangay-certificate/{id}', [BarangayCertificateController::class, 'destroy'])->name('barangay-certificate.destroy');
+    Route::get('/barangay-certificate/{id}/print', [BarangayCertificateController::class, 'print'])->name('barangay-certificate.print');
 
     Route::resource('dashboard-items', DashboardItemController::class)->except(['show']);
     Route::get('/dashboard-items/overview', [DashboardItemController::class, 'overview'])->name('dashboard.overview');

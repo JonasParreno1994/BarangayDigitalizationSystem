@@ -176,9 +176,6 @@
 <body>
     <div class="watermark">{{ $household->barangay ?? 'iBarangay' }}</div>
 
-    {{-- Include Barangay Header --}}
-    @include('components.barangay-header', ['barangayDetails' => $barangayDetails])
-
     <div class="main-title">RECORDS OF BARANGAY INHABITANTS BY HOUSEHOLD</div>
     
     <div class="header-info">

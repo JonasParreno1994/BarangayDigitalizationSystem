@@ -9,7 +9,7 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('/1.jfif') }}">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-        <link href="{{ asset('/admin/assets/css/ccs2.css') }}" rel="stylesheet">
+        <link href="{{ asset('/admin/assets/css/css2.css') }}" rel="stylesheet">
         <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('/admin/assets/css/perfect-scrollbar.min.css') }}">
         <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('/admin/assets/css/style.css') }}">
         <link defer="" rel="stylesheet" type="text/css" media="screen" href="{{ asset('/admin/assets/css/animate.css') }}">
@@ -277,7 +277,7 @@
                                         <template x-for="item in languages">
                                             <li>
                                                 <a href="javascript:;" class="hover:text-primary" @click="$store.app.toggleLocale(item.value),toggle()" :class="{'bg-primary/10 text-primary' : $store.app.locale == item.value}">
-                                                    <img class="h-5 w-5 rounded-full object-cover" :src="`assets/images/flags/${item.value.toUpperCase()}.svg`" alt="image">
+                                                    <img class="h-5 w-5 rounded-full object-cover" :src="`admin/assets/images/flags/${item.value.toUpperCase()}.svg`" alt="image">
                                                     <span class="ltr:ml-3 rtl:mr-3" x-text="item.key"></span>
                                                 </a>
                                             </li>
@@ -893,21 +893,26 @@
                                 theme: 'bootstrap4'
                             })
 
-                            $("#example1").DataTable({
-                                "responsive": true,
-                                "lengthChange": false,
-                                "autoWidth": false,
-
-                            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-                            $('#example2').DataTable({
-                                "paging": true,
-                                "lengthChange": false,
-                                "searching": false,
-                                "ordering": true,
-                                "info": true,
-                                "autoWidth": false,
-                                "responsive": true,
-                            });
+                            // Initialize DataTable only if elements exist
+                            if ($('#example1').length) {
+                                $("#example1").DataTable({
+                                    "responsive": true,
+                                    "lengthChange": false,
+                                    "autoWidth": false,
+                                }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+                            }
+                            
+                            if ($('#example2').length) {
+                                $('#example2').DataTable({
+                                    "paging": true,
+                                    "lengthChange": false,
+                                    "searching": false,
+                                    "ordering": true,
+                                    "info": true,
+                                    "autoWidth": false,
+                                    "responsive": true,
+                                });
+                            }
                         });
                     </script>
                 <div class="animate__animated p-6" :class="[$store.app.animation]">
@@ -918,7 +923,6 @@
 
                 </div>
 
-                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
         @include('layouts.adminLayout.footer')

@@ -117,10 +117,11 @@
                 <img src="{{ asset('storage/' . $barangayDetails->logo2_path) }}" class="logo-right" style="right:0;">
             @endif
         @endif
-        <h1>{{ $barangayDetails->heading1 ?? 'REPUBLIC OF THE PHILIPPINES' }}</h1>
-        <h1>{{ $barangayDetails->heading2 ?? 'PROVINCE / MUNICIPALITY' }}</h1>
-        <h1>{{ $barangayDetails->heading3 ?? 'BARANGAY CERTIFICATE REPORT' }}</h1>
-        <p>Generated on: {{ now()->format('F j, Y h:i A') }}</p>
+            <h1>REPUBLIC OF THE PHILIPPINES</h1>
+            <h1>PROVINCE OF {{ $barangayDetails->heading1}}</h1>
+            <h1>MUNICIPALITY OF {{ $barangayDetails->heading2}}</h1>
+            <h1>BARANGAY {{ $barangayDetails->heading3}}</h1>
+            <p>Generated on: {{ now()->format('F j, Y h:i A') }}</p>
     </div>
 
     <div class="report-title">Certificate of Residency Report</div>

@@ -141,14 +141,14 @@
     </script>
 @endif
 
-<div x-data="modal" class="mb-5">
+<div x-data="{ open: false }" class="mb-5">
     <div class="animate__animated p-6" :class="[$store.app.animation]">
         <!-- Main content section -->
+        <div class="panel flex items-center overflow-x-auto whitespace-nowrap p-3 text-primary text-2xl font-bold">
+            <button type="button" class="btn btn-success" @click="open = !open" x-text="open ? 'Close Modal' : 'Add Resident'"></button>
+            <h1 class="ltr:mr-4 rtl:ml-3 text-center w-full">List of Barangay Residents</h1>
+        </div>
         <div x-data="multipleTable">
-            <div class="panel flex items-center overflow-x-auto whitespace-nowrap p-3 text-primary text-2xl font-bold">
-                <button type="button" class="btn btn-success" @click="toggle">Add Resident</button>
-                <h1 class="ltr:mr-4 rtl:ml-3 text-center w-full">List of Barangay Residents</h1>
-            </div>
             <div class="panel mt-6">
                 <table id="residentTable" class="whitespace-nowrap"></table>
             </div>
@@ -717,7 +717,7 @@
                             </div>
 
                             <!-- Solo Parent -->
-                            <div class="mb-6" x-data x-init="$watch('$store.specialPopulation.isSoloParent', value => isSoloParent = value)" x-effect="isSoloParent = $store.specialPopulation.isSoloParent" x-modelable="isSoloParent" :isSoloParent="$store.specialPopulation.isSoloParent">
+                            <div class="mb-6" x-data="{ isSoloParent: false }" x-init="$watch('$store.specialPopulation.isSoloParent', value => isSoloParent = value)" x-effect="isSoloParent = $store.specialPopulation.isSoloParent" x-modelable="isSoloParent" :isSoloParent="$store.specialPopulation.isSoloParent">
                                 <div class="flex items-center mb-2">
                                     <input type="checkbox" id="is_solo_parent" name="is_solo_parent" value="1" 
                                         class="form-checkbox h-5 w-5 text-blue-600" x-model="$store.specialPopulation.isSoloParent">

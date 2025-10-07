@@ -12,12 +12,6 @@
 <script defer="" src="{{ asset('admin/assets/js/alpine.min.js') }}"></script>
 <script src="{{ asset('admin/assets/js/custom.js') }}"></script>
 <script src="{{ asset('admin/assets/js/highlight.min.js') }}"></script>
-<script src="{{ asset('admin/assets/js/alpine-collaspe.min.js') }}"></script>
-<script src="{{ asset('admin/assets/js/alpine-persist.min.js') }}"></script>
-<script defer="" src="{{ asset('admin/assets/js/alpine-ui.min.js') }}"></script>
-<script defer="" src="{{ asset('admin/assets/js/alpine-focus.min.js') }}"></script>
-<script defer="" src="{{ asset('admin/assets/js/alpine.min.js') }}"></script>
-<script src="{{ asset('admin/assets/js/custom.js') }}"></script>
 <script src="{{ asset('admin/assets/js/simple-datatables.js') }}"></script>
 <script>
     document.addEventListener('alpine:init', () => {

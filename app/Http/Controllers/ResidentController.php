@@ -134,6 +134,12 @@ class ResidentController extends Controller
             $barangayDetails = (object) BarangayIdDetail::getDefaultEnhancedData();
         }
         
+        // Ensure profile pictures directory exists
+        $profilePicturesPath = storage_path('app/public/profile_pictures');
+        if (!file_exists($profilePicturesPath)) {
+            mkdir($profilePicturesPath, 0755, true);
+        }
+        
         $birthDate = new \DateTime($resident->birth_date);
         $today = new \DateTime();
         $age = $today->diff($birthDate)->y;

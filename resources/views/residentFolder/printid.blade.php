@@ -257,7 +257,7 @@
             color: #b45309;
         }
 
-        /* Signature layout */
+       
         .signature-area {
             display: flex;
             flex-direction: column;
@@ -265,9 +265,9 @@
             width: 60px;
             margin-left: 15px;
             margin-top: 9px;
-            /* increase to move it downward */
+            
             margin-bottom: -6px;
-            /* use negative value to raise it */
+            
         }
 
         .signature-img {
@@ -492,7 +492,7 @@
     left: 12px;
     right: 12px;
     display: flex;
-    justify-content: flex-end; /* pushes signature to the right */
+    justify-content: flex-end;
     align-items: flex-end;
 }
 
@@ -500,7 +500,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-right: 10px; /* spacing from right edge */
+    margin-right: 10px; 
 }
 
 .signature-box {
@@ -542,7 +542,7 @@
     font-style: italic;
 }
 
-        /* Print Styles */
+       
         @media print {
             * {
                 -webkit-print-color-adjust: exact !important;
@@ -574,13 +574,15 @@
 </head>
 
 <body>
-    <div class="id-container"> <!-- FRONT SIDE -->
+    <div class="id-container"> 
         <div class="id-card id-card-front">
             <div class="header">
                 <div class="header-logo">
-                    @if ($barangayDetails && $barangayDetails->logo1_path)
-                        <img src="{{ Storage::url($barangayDetails->logo1_path) }}" class="front-header-logos">
-                        @endif
+                    @if ($barangayDetails && $barangayDetails->logo1_path && file_exists(storage_path('app/public/' . $barangayDetails->logo1_path)))
+                        <img src="{{ Storage::url($barangayDetails->logo1_path) }}" class="front-header-logos" alt="Logo 1">
+                    @else
+                        <div style="width: 38px; height: 38px; background: #f3f4f6; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #6b7280; font-size: 10px;">LOGO</div>
+                    @endif
                 </div>
                 <div class="header-text">
                     <h1>Republic of the Philippines</h1>
@@ -590,8 +592,10 @@
                     <div class="header-subtitle">Office of the Punong Barangay</div>
                 </div>
                 <div class="header-logo">
-                    @if ($barangayDetails && $barangayDetails->logo2_path)
-                        <img src="{{ Storage::url($barangayDetails->logo2_path) }}" class="front-header-logos">
+                    @if ($barangayDetails && $barangayDetails->logo2_path && file_exists(storage_path('app/public/' . $barangayDetails->logo2_path)))
+                        <img src="{{ Storage::url($barangayDetails->logo2_path) }}" class="front-header-logos" alt="Logo 2">
+                    @else
+                        <div style="width: 38px; height: 38px; background: #f3f4f6; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #6b7280; font-size: 10px;">LOGO</div>
                     @endif
                 </div>
                 <div class="ornament-line"></div>
@@ -600,28 +604,67 @@
             <hr>
             <div class="content-area">
                 <div class="photo-container">
-                    <div class="photo-frame"> <img
-                            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 120'%3E%3Crect fill='%23e5e7eb' width='100' height='120'/%3E%3Ccircle cx='50' cy='45' r='20' fill='%239ca3af'/%3E%3Cpath d='M30 85 Q50 70 70 85 L70 120 L30 120 Z' fill='%239ca3af'/%3E%3C/svg%3E"
-                            alt="Photo"> </div>
+                    <div class="photo-frame">
+                        @php
+                            $photoPath = null;
+                            
+                           
+                            if($resident->profile_picture && file_exists(storage_path('app/public/' . $resident->profile_picture))) {
+                                try {
+                                    $photoPath = Storage::url($resident->profile_picture);
+                                } catch (Exception $e) {
+                                    $photoPath = asset('storage/' . $resident->profile_picture);
+                                }
+                            }
+                            
+                            elseif(isset($resident->photo_path) && $resident->photo_path && file_exists(storage_path('app/public/' . $resident->photo_path))) {
+                                try {
+                                    $photoPath = Storage::url($resident->photo_path);
+                                } catch (Exception $e) {
+                                    $photoPath = asset('storage/' . $resident->photo_path);
+                                }
+                            }
+                            elseif(isset($resident->image) && $resident->image && file_exists(storage_path('app/public/' . $resident->image))) {
+                                try {
+                                    $photoPath = Storage::url($resident->image);
+                                } catch (Exception $e) {
+                                    $photoPath = asset('storage/' . $resident->image);
+                                }
+                            }
+                        @endphp
+                        
+                        @if($photoPath)
+                            <img src="{{ $photoPath }}" 
+                                 alt="Resident Photo" 
+                                 style="width: 100%; height: 100%; object-fit: cover;"
+                                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 120\'%3E%3Crect fill=\'%23e5e7eb\' width=\'100\' height=\'120\'/%3E%3Ccircle cx=\'50\' cy=\'45\' r=\'20\' fill=\'%239ca3af\'/%3E%3Cpath d=\'M30 85 Q50 70 70 85 L70 120 L30 120 Z\' fill=\'%239ca3af\'/%3E%3C/svg%3E';">
+                        @else
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 120'%3E%3Crect fill='%23e5e7eb' width='100' height='120'/%3E%3Ccircle cx='50' cy='45' r='20' fill='%239ca3af'/%3E%3Cpath d='M30 85 Q50 70 70 85 L70 120 L30 120 Z' fill='%239ca3af'/%3E%3C/svg%3E" 
+                                 alt="No Photo Available" 
+                                 style="width: 100%; height: 100%; object-fit: cover;">
+                        @endif
+                    </div>
                 </div>
                 <div class="id-number-badge">{{ strtoupper($resident->household_number ?? '') }}</div>
                 <div class="info-section">
                     <div>
                         <div class="resident-name">
-                            {{ $fullName ?? $resident->first_name . ' ' . $resident->last_name }}</div>
-                        <div class="address-line">{{ $resident->purok->purok_name ?? 'Bacuyangan' }}, Bacuyangan,
-                            Hinoba-an, Negros Occidental</div>
+                            {{ $fullName ?? trim(($resident->first_name ?? '') . ' ' . ($resident->middle_name ? $resident->middle_name . ' ' : '') . ($resident->last_name ?? '')) }}
+                        </div>
+                        <div class="address-line">
+                            {{ ($resident->purok->purok_name ?? $resident->address ?? 'Bacuyangan') . ', ' . ($barangayDetails->barangay ?? 'Bacuyangan') . ', ' . ($barangayDetails->city_municipality ?? 'Hinoba-an') . ', ' . ($barangayDetails->province ?? 'Negros Occidental') }}
+                        </div>
                         <div class="info-grid">
                             <div class="info-row"> <span class="info-label">Sex:</span> <span
                                     class="info-value">{{ strtoupper($resident->sex ?? '') }}</span> </div>
                             <div class="info-row"> <span class="info-label">Civil Status:</span> <span
                                     class="info-value">{{ strtoupper($resident->civil_status ?? '') }}</span> </div>
                             <div class="info-row"> <span class="info-label">Date of Birth:</span> <span
-                                    class="info-value">{{ strtoupper(date('M j, Y', strtotime($resident->birth_date ?? now()))) }}</span>
+                                    class="info-value">{{ $resident->birth_date ? strtoupper(date('M j, Y', strtotime($resident->birth_date))) : 'N/A' }}</span>
                             </div>
                             <div class="info-row"> <span class="info-label">Philsys Card #:</span> <span
-                                    class="info-value">{{ strtoupper($resident->civil_status ?? '') }}</span> </div>
-                        </div> <!-- ✅ Move thumbmark box here -->
+                                    class="info-value">{{ strtoupper($resident->philsys_number ?? $resident->philhealth_number ?? 'N/A') }}</span> </div>
+                        </div> 
                         <div class="thumbmark-area">
                             <div class="fingerprint-box">
                                 <div class="fingerprint-label">Right Thumb Mark</div>
@@ -648,36 +691,38 @@
                     </div>
                 </div>
             </div>
-        </div> <!-- BACK SIDE -->
+        </div> 
         <div class="id-card id-card-back">
             <div class="back-header">
-                <h2>⚠ This Card is Non-Transferable ⚠</h2>
+                <h2>{{ $barangayDetails->back_header ?? '⚠ This Card is Non-Transferable ⚠' }}</h2>
             </div>
             <div class="back-content">
                 <div class="emergency-box">
                     <div class="emergency-title">🚨 In Case of Emergency Please Notify:</div>
                     <div class="emergency-info">
-                        <div class="emergency-name">JONAS D. PARRENO</div>
-                        <div>0917-123-4567</div>
-                        <div>Same Address</div>
+                        <div class="emergency-name">{{ strtoupper($barangayDetails->emergency_contact_name ?? 'BARANGAY OFFICE') }}</div>
+                        <div>{{ $barangayDetails->emergency_contact_number ?? '(034) XXX-XXXX' }}</div>
+                        <div>{{ $barangayDetails->emergency_contact_address ?? 'Bacuyangan, Hinoba-an, Negros Occidental' }}</div>
                     </div>
                 </div>
-                <div class="certification"> This certifies that the person whose name and picture appear on the reverse
-                    side of this card is a bonafide resident of <strong>BARANGAY BACUYANGAN</strong>, Municipality of
-                    Hinoba-an, Province of Negros Occidental, Philippines. </div>
+                <div class="certification">
+                    {{ $barangayDetails->back_certification ?? 'This certifies that the person whose name and picture appear on the reverse side of this card is a bonafide resident of BARANGAY BACUYANGAN, Municipality of Hinoba-an, Province of Negros Occidental, Philippines.' }}
+                </div>
                 <div class="notes-box">
                     <div class="notes-title">⚠ IMPORTANT NOTES:</div>
-                    <div class="notes-text"> • This ID is the property of the Barangay<br> • Present this ID when
-                        transacting with the barangay<br> • Report immediately if lost or stolen </div>
+                    <div class="notes-text">
+                        {{ $barangayDetails->back_note ?? '• This ID is the property of the Barangay • Present this ID when transacting with the barangay • Report immediately if lost or stolen' }}
+                    </div>
                 </div>
                 <div class="bottom-section">
                     <div class="notes-signature-area">
                         <div class="signature-box">
                             <div class="signature-line">
-                                <!-- Optional: insert signature image -->
-                                <!-- <img src="{{ Storage::url('signature/noel_layda.png') }}" alt="Signature of Hon. Noel R. Layda"> -->
+                                @if ($barangayDetails && $barangayDetails->signature_path && file_exists(storage_path('app/public/' . $barangayDetails->signature_path)))
+                                    <img src="{{ Storage::url($barangayDetails->signature_path) }}" alt="Signature">
+                                @endif
                             </div>
-                            <div class="official-name">HON. NOEL R. LAYDA</div>
+                            <div class="official-name">{{ strtoupper($barangayDetails->captain_name ?? 'HON. NOEL R. LAYDA') }}</div>
                             <div class="official-title">Punong Barangay</div>
                         </div>
                     </div>
@@ -685,9 +730,64 @@
                 
                 
             </div>
-            <div class="loss-notice"> If found, please return to Barangay Bacuyangan Office </div>
+            <div class="loss-notice">
+                {{ $barangayDetails->back_loss_info ?? 'If found, please return to Barangay Bacuyangan Office' }}
+            </div>
         </div>
     </div>
+
+    <script>
+        let printCompleted = false;
+        
+        // Auto-print when page loads
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                window.print();
+            }, 500);
+        });
+
+        function handleRedirect() {
+            if (!printCompleted) {
+                printCompleted = true;
+                
+                // Check if this page was opened in a popup/new window
+                if (window.opener && !window.opener.closed) {
+                    // If opened from another window, just close this window
+                    window.close();
+                } else if (window.history.length > 1) {
+                    // If there's history, go back instead of redirecting
+                    window.history.back();
+                } else {
+                    // Normal redirect for direct access
+                    document.body.style.display = 'none';
+                    window.location.replace('{{ route("resident.index") }}');
+                }
+            }
+        }
+
+        // Handle print completion/cancellation
+        window.addEventListener('afterprint', function() {
+            setTimeout(handleRedirect, 100);
+        });
+
+        // Fallback: detect when print dialog is closed (browser regains focus)
+        let mediaQuery = window.matchMedia('print');
+        mediaQuery.addListener(function(mq) {
+            if (!mq.matches) {
+                setTimeout(handleRedirect, 100);
+            }
+        });
+
+        // Ultimate fallback: redirect after reasonable time
+        setTimeout(function() {
+            handleRedirect();
+        }, 5000);
+
+        // Handle window focus (when print dialog closes)
+        window.addEventListener('focus', function() {
+            setTimeout(handleRedirect, 200);
+        }, { once: true });
+    </script>
 </body>
 
 </html>

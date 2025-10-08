@@ -109,10 +109,10 @@
 
 <div x-data="modal" class="mb-5">
     <div class="animate__animated p-6" :class="[$store.app.animation]">
-        <div x-data="multipleTable">
+        <div>
             <div class="panel flex items-center overflow-x-auto whitespace-nowrap p-3 text-primary text-2xl font-bold">
                 <button type="button" class="btn btn-success" @click="toggle">Issue Certificate</button>
-                <h1 class="ltr:mr-4 rtl:ml-3 text-center w-full">List of Certificate of Indigency</h1>
+                <h1 class="ltr:mr-4 rtl:ml-3 text-center w-full">List of Indigency Certificates</h1>
             </div>
             <div class="panel mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -139,7 +139,7 @@
                 </div>
             </div>
             
-            <div class="panel mt-6">
+            <div class="panel mt-6" x-data="multipleTable">
                 <table id="indigencyTable" class="whitespace-nowrap"></table>
             </div>
         </div>
@@ -173,16 +173,7 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <script>
-                                        $(document).ready(function() {
-                                            $('#residentSelect').select2({
-                                                theme: 'bootstrap4',
-                                                placeholder: 'Select Resident',
-                                                allowClear: true,
-                                                width: '100%'
-                                            });
-                                        });
-                                    </script>
+
                                 </div>
                                 <div>
                                     <label class="form-label">Purpose <span class="text-red-500">*</span></label>
@@ -262,8 +253,30 @@
 </div>
 
 <script>
-// DataTable Initialization
+// Alpine.js and DataTable Initialization
 document.addEventListener('alpine:init', () => {
+    Alpine.data('modal', () => ({
+        open: false,
+        toggle() {
+            this.open = !this.open;
+            if (this.open) {
+                const form = document.getElementById('indigencyForm');
+                if (form) {
+                    form.reset();
+                    form.querySelectorAll('.error-message').forEach(el => el.remove());
+                    form.querySelectorAll('input, select, textarea').forEach(el => {
+                        el.style.borderColor = '';
+                        el.classList.remove('border-red-500');
+                    });
+                    // Reset Select2
+                    setTimeout(() => {
+                        $('#residentSelect').val(null).trigger('change');
+                    }, 100);
+                }
+            }
+        }
+    }));
+
     Alpine.data('multipleTable', () => ({
         datatable: null,
         init() {
@@ -445,25 +458,51 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    $('#residentSelect').select2({
+    // Safe Select2 initialization function
+    function initializeSelect2(selector, options = {}) {
+        const element = $(selector);
+        
+        // Check if element exists and is not already initialized with Select2
+        if (element.length && !element.hasClass('select2-hidden-accessible')) {
+            element.select2(options);
+        }
+    }
+    
+    // Safe Select2 destroy function
+    function destroySelect2(selector) {
+        const element = $(selector);
+        if (element.length && element.hasClass('select2-hidden-accessible')) {
+            element.select2('destroy');
+        }
+    }
+
+    // Initialize Select2 on page load
+    initializeSelect2('#residentSelect', {
         width: '100%',
         placeholder: 'Search for a resident...',
         allowClear: true,
-        dropdownParent: $('#residentSelect').parent() 
+        dropdownParent: $('#residentSelect').closest('.panel, .modal, body')
     });
     
-    document.querySelector('[x-data="modal"]').addEventListener('toggle', function(e) {
-        if (e.detail.open) {
-            setTimeout(() => {
-                $('#residentSelect').select2({
-                    width: '100%',
-                    placeholder: 'Search for a resident...',
-                    allowClear: true,
-                    dropdownParent: $('#residentSelect').parent()
-                });
-            }, 100);
-        }
-    });
+    // Handle modal toggle events if modal exists
+    const modalElement = document.querySelector('[x-data="modal"]');
+    if (modalElement) {
+        modalElement.addEventListener('toggle', function(e) {
+            if (e.detail && e.detail.open) {
+                setTimeout(() => {
+                    destroySelect2('#residentSelect');
+                    initializeSelect2('#residentSelect', {
+                        width: '100%',
+                        placeholder: 'Search for a resident...',
+                        allowClear: true,
+                        dropdownParent: $('#residentSelect').closest('.panel, .modal, body')
+                    });
+                }, 100);
+            } else {
+                destroySelect2('#residentSelect');
+            }
+        });
+    }
 });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

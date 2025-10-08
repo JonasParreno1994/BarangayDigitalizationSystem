@@ -83,7 +83,18 @@
 
 <script>
     $(document).ready(function () {
-        $('#comelec').select2({
+        // Safe Select2 initialization function
+        function initializeSelect2(selector, options = {}) {
+            const element = $(selector);
+            
+            // Check if element exists and is not already initialized with Select2
+            if (element.length && !element.hasClass('select2-hidden-accessible')) {
+                element.select2(options);
+            }
+        }
+
+        // Initialize Select2 safely
+        initializeSelect2('#comelec', {
             theme: 'bootstrap4'
         });
     

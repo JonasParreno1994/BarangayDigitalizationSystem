@@ -885,13 +885,24 @@
 
                 <script>
                         $(function() {
-                            //Initialize Select2 Elements
-                            $('.select2').select2()
+                            // Safe Select2 initialization function
+                            function safeInitSelect2(selector, options = {}) {
+                                $(selector).each(function() {
+                                    const $element = $(this);
+                                    // Only initialize if not already initialized and element is visible
+                                    if (!$element.hasClass('select2-hidden-accessible') && $element.is(':visible')) {
+                                        $element.select2(options);
+                                    }
+                                });
+                            }
 
-                            //Initialize Select2 Elements
-                            $('.select2bs4').select2({
+                            // Initialize Select2 Elements safely
+                            safeInitSelect2('.select2');
+
+                            // Initialize Select2 Elements with Bootstrap4 theme safely
+                            safeInitSelect2('.select2bs4', {
                                 theme: 'bootstrap4'
-                            })
+                            });
 
                             // Initialize DataTable only if elements exist
                             if ($('#example1').length) {

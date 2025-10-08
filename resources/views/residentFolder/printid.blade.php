@@ -1,513 +1,693 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barangay ID - {{ $resident->last_name }}, {{ $resident->first_name }}</title>
+    <title>Barangay ID - Enhanced Design</title>
     <style>
         * {
             box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: white;
             margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
         }
-        
-        .id-container {
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
             display: flex;
-            flex-direction: row;
-            gap: 0.5in;
             justify-content: center;
             align-items: center;
-            width: 100vw;
-            height: 100vh;
-            padding: 0.25in;
-            box-sizing: border-box;
+            min-height: 100vh;
+            padding: 20px;
         }
-        
+
+        .id-container {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
         .id-card {
             width: 3.5in;
             height: 2.25in;
-            border: 2px solid #0066cc;
-            border-radius: 8px;
-            position: relative;
+            background: white;
+            border-radius: 12px;
             overflow: hidden;
-            background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 100%);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            flex-shrink: 0;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            position: relative;
+            border: 1px solid #e0e0e0;
         }
-        
-        /* Front Side Styles */
-        .front-header {
-            background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
-            color: white;
-            padding: 4px 6px;
-            text-align: center;
-            font-size: 7px;
-            line-height: 1.0;
+
+        /* FRONT SIDE */
+        .id-card-front .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #1e3c72 100%);
+            padding: 8px 12px;
             position: relative;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            height: 45px;
+            gap: 8px;
+            min-height: 65px;
+        }
+
+        .header-logo {
+            width: 42px;
+            height: 42px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
             overflow: hidden;
         }
-        
-        .front-header-logos {
-            width: 28px;
-            height: 28px;
+
+        .header-logo img {
+            width: 38px;
+            height: 38px;
             object-fit: contain;
-            flex-shrink: 0;
         }
-        
-        .front-header-text {
+
+        .header-text {
             flex: 1;
-            font-weight: bold;
+            color: white;
+            text-align: center;
+            line-height: 1;
+        }
+
+        .header-text h1 {
+            font-size: 9px;
+            font-weight: 600;
             text-transform: uppercase;
-            padding: 0 4px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            letter-spacing: 0.5px;
         }
-        
-        .front-header-text > div {
-            margin: 0;
-            line-height: 1.0;
-        }
-        
-        .office-info {
-            font-size: 5px;
+
+        .header-text h2 {
+            font-size: 7.5px;
+            font-weight: 500;
             margin-top: 1px;
+            opacity: 0.95;
+        }
+
+        .header-text h3 {
+            font-size: 10px;
+            font-weight: 700;
+            margin-top: 3px;
+            letter-spacing: 0.8px;
+        }
+
+        .header-subtitle {
+            font-size: 6px;
+            margin-top: 2px;
+            opacity: 0.85;
             font-style: italic;
         }
-        
-        .ordinance-info {
-            background: rgba(255,255,255,0.2);
-            font-size: 5px;
-            padding: 1px 3px;
-            margin-top: 1px;
-            border-radius: 2px;
+
+        .ornament-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 215, 0, 0.8) 20%, rgba(255, 215, 0, 1) 50%, rgba(255, 215, 0, 0.8) 80%, transparent 100%);
         }
-        
-        .front-content {
-            padding: 6px;
+
+        .content-area {
+            padding: 10px 12px;
             display: flex;
-            gap: 6px;
-            height: calc(100% - 75px);
+            gap: 10px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        }
+
+        .photo-container {
             position: relative;
         }
-        
-        .resident-photo {
-            width: 55px;
-            height: 65px;
-            border: 1px solid #ddd;
-            background-color: #f8f9fa;
+
+        .photo-frame {
+            width: 70px;
+            height: 85px;
+            border: 2px solid #1e3c72;
+            border-radius: 6px;
             overflow: hidden;
-            flex-shrink: 0;
-            border-radius: 3px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
-        
-        .resident-photo img {
+
+        .photo-frame img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        
-        .resident-details {
-            flex: 1;
-            font-size: 7px;
-            line-height: 1.1;
-            padding-right: 70px;
-        }
-        
-        .resident-name {
-            font-weight: bold;
-            font-size: 8px;
-            color: #0066cc;
-            margin-bottom: 2px;
-            text-transform: uppercase;
-            line-height: 1.0;
-        }
-        
-        .resident-info {
-            margin-bottom: 1px;
-            font-size: 6px;
-            line-height: 1.1;
-        }
-        
-        .resident-info strong {
-            color: #333;
-            width: 30px;
-            display: inline-block;
-            font-size: 6px;
-        }
-        
-        .id-number {
+
+        .photo-frame::before {
+            content: '';
             position: absolute;
-            top: 50px;
-            right: 6px;
-            background: #ff0000;
-            color: white;
-            padding: 1px 4px;
-            font-size: 6px;
-            font-weight: bold;
-            border-radius: 2px;
-            z-index: 10;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+            pointer-events: none;
         }
-        
-        .issue-dates {
-            position: absolute;
-            top: 62px;
-            right: 6px;
-            font-size: 5px;
-            color: #d63333;
-            text-align: right;
-            background: rgba(255,255,255,0.95);
-            padding: 1px 3px;
-            border-radius: 2px;
-            border: 1px solid #eee;
-            z-index: 10;
-        }
-        
-        .front-footer {
-            position: absolute;
-            bottom: 3px;
-            left: 6px;
-            right: 6px;
-            text-align: center;
-            font-size: 5px;
-            color: #0066cc;
-            font-weight: bold;
-            border-top: 1px solid #ddd;
-            padding-top: 1px;
-        }
-        
-        .card-title {
+
+        .id-number-badge {
             position: absolute;
             bottom: 10px;
-            left: 6px;
-            right: 6px;
-            text-align: center;
-            font-size: 6px;
-            color: #ff6600;
-            font-weight: bold;
-            background: rgba(255,255,255,0.95);
-            padding: 1px 3px;
-            border-radius: 2px;
-            border: 1px solid #eee;
-        }
-        
-        /* Back Side Styles */
-        .id-card-back {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        }
-        
-        .back-header {
-            background: #333;
+            left: 14%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
             color: white;
-            padding: 8px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 8px;
-            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 6.5px;
+            font-weight: 700;
+            white-space: nowrap;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            border: 1.5px solid white;
+            letter-spacing: 0.3px;
         }
-        
-        .back-content {
-            padding: 6px;
-            font-size: 6px;
+
+        .info-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .resident-name {
+            font-size: 11px;
+            font-weight: 700;
+            color: #1e3c72;
+            text-transform: uppercase;
             line-height: 1.2;
-            height: calc(100% - 35px);
+            margin-bottom: 4px;
+            letter-spacing: 0.3px;
+        }
+
+        .address-line {
+            font-size: 6.5px;
+            color: #444;
+            margin-bottom: 6px;
+            line-height: 1.3;
+            padding: 3px 6px;
+            background: rgba(30, 60, 114, 0.05);
+            border-radius: 3px;
+            border-left: 2px solid #1e3c72;
+        }
+
+        .info-grid {
+            display: grid;
+            gap: 1px;
+        }
+
+        .info-row {
+            display: grid;
+            grid-template-columns: 65px 1fr;
+            font-size: 7px;
+            line-height: 1;
+            padding: 2px 0;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #666;
+        }
+
+        .info-value {
+            color: #222;
+            font-weight: 500;
+        }
+
+        .validity-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            /* Two equal columns */
+            gap: 6px;
+            /* space between columns */
+            margin-top: 4px;
+        }
+
+        .validity-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 1px solid #fbbf24;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-size: 6px;
+            line-height: 1.3;
+        }
+
+        .validity-row {
+            display: flex;
+            font-size: 6px;
+            line-height: 1.3;
+        }
+
+        .validity-label {
+            font-weight: 600;
+            color: #92400e;
+        }
+
+        .validity-date {
+            font-weight: 700;
+            color: #b45309;
+        }
+
+        /* Signature layout */
+        .signature-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 60px;
+            margin-left: 15px;
+            margin-top: 9px;
+            /* increase to move it downward */
+            margin-bottom: -6px;
+            /* use negative value to raise it */
+        }
+
+        .signature-img {
+            width: 80px;
+            height: auto;
+            margin-bottom: 1px;
+            object-fit: contain;
+        }
+
+        .signature-underline {
+            width: 100%;
+            border-bottom: 0.6px solid #92400e;
+        }
+
+        .card-type-badge {
+            position: absolute;
+            bottom: 132px;
+            left: 12px;
+            right: 12px;
+            text-align: center;
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 7px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 6px rgba(249, 115, 22, 0.4);
+        }
+
+        /* BACK SIDE */
+        .id-card-back .back-header {
+            background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+            padding: 10px;
+            text-align: center;
+        }
+
+        .back-header h2 {
+            color: white;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .back-content {
+            padding: 10px 12px;
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+            height: calc(100% - 44px);
             position: relative;
         }
-        
-        .certification-text {
-            margin-bottom: 6px;
-            text-align: justify;
-            color: #333;
-            padding-right: 60px;
-            margin-top: 35px;
-        }
-        
-        .note-section {
-            margin-bottom: 8px;
+
+        .emergency-box {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border: 1.5px solid #dc2626;
+            border-radius: 6px;
             padding: 4px;
-            background: rgba(255,255,255,0.7);
-            border-radius: 3px;
+            margin-bottom: 3px;
         }
-        
-        .note-title {
-            font-weight: bold;
-            color: #d63333;
+
+        .emergency-title {
+            font-size: 6px;
+            font-weight: 700;
+            color: #991b1b;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+            text-align: center;
         }
-        
-        .fingerprint-section {
+
+        .emergency-info {
+            font-size: 7px;
+            color: #7f1d1d;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .emergency-name {
+            font-weight: 700;
+            font-size: 8px;
+            margin: 2px 0;
+        }
+
+        .certification {
+            font-size: 7px;
+            line-height: 1.5;
+            color: #374151;
+            text-align: justify;
+            margin-bottom: 8px;
+            padding: 6px;
+            background: white;
+            border-radius: 4px;
+            border-left: 3px solid #1e3c72;
+        }
+
+        .notes-box {
+            background: #fff7ed;
+            border: 1px solid #fb923c;
+            border-radius: 4px;
+            padding: 5px;
+            margin-bottom: 6px;
+        }
+
+        .notes-title {
+            font-size: 6.5px;
+            font-weight: 700;
+            color: #c2410c;
+            margin-bottom: 2px;
+        }
+
+        .notes-text {
+            font-size: 6px;
+            line-height: 1.4;
+            color: #7c2d12;
+        }
+
+        .bottom-section {
             position: absolute;
-            bottom: 35px;
-            left: 6px;
-            width: 45px;
-            height: 30px;
-            border: 1px solid #333;
+            bottom: 10px;
+            left: 12px;
+            right: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .fingerprint-box {
+            width: 50px;
+            height: 38px;
+            border: 2px solid #374151;
+            border-radius: 4px;
+            background: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: white;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
         }
-        
+
         .fingerprint-label {
-            font-size: 4px;
+            font-size: 5.5px;
+            color: #6b7280;
             text-align: center;
-            color: #666;
-        }
-        
-        .emergency-contact {
-            position: absolute;
-            top: 6px;
-            right: 6px;
-            font-size: 5px;
-            text-align: center;
-            color: #d63333;
-            background: rgba(255,255,255,0.95);
+            font-weight: 600;
             padding: 2px;
-            border-radius: 2px;
-            border: 1px solid #ddd;
-            width: 55px;
         }
-        
-        .emergency-label {
-            font-weight: bold;
+
+        .signature-box {
+            text-align: center;
+        }
+
+        .signature-line {
+            width: 90px;
+            height: 18px;
+            border-bottom: 1.5px solid #374151;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .signature-line img {
+            max-width: 85px;
+            max-height: 16px;
+            object-fit: contain;
+        }
+
+        .official-name {
+            font-size: 7.5px;
+            font-weight: 700;
+            color: #1f2937;
+            text-transform: uppercase;
+        }
+
+        .official-title {
+            font-size: 6px;
+            color: #6b7280;
             font-style: italic;
-            color: #d63333;
+            margin-top: 1px;
         }
-        
-        .signature-section {
+
+        .loss-notice {
             position: absolute;
-            bottom: 6px;
-            right: 6px;
+            bottom: 3px;
+            left: 12px;
+            right: 12px;
             text-align: center;
             font-size: 5px;
-        }
-        
-        .signature-image {
-            height: 12px;
-            margin-bottom: 1px;
-        }
-        
-        .captain-name {
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 1px;
-        }
-        
-        .captain-title {
+            color: #9ca3af;
             font-style: italic;
-            color: #666;
         }
-        
-        .additional-info {
+
+        .thumbmark-area {
             position: absolute;
-            bottom: 18px;
-            left: 6px;
-            right: 65px;
-            font-size: 4px;
-            color: #666;
-            font-style: italic;
+            right: 15px;
+            bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        
+
+        .fingerprint-box {
+            width: 70px;
+            height: 50px;
+            border: 2px solid #374151;
+            border-radius: 6px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .fingerprint-label {
+            font-size: 6px;
+            color: #6b7280;
+            text-align: center;
+            font-weight: 600;
+        }
+        .bottom-section {
+    position: absolute;
+    bottom: 10px;
+    left: 12px;
+    right: 12px;
+    display: flex;
+    justify-content: flex-end; /* pushes signature to the right */
+    align-items: flex-end;
+}
+
+.notes-signature-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 10px; /* spacing from right edge */
+}
+
+.signature-box {
+    text-align: center;
+}
+
+.signature-line {
+    width: 120px;
+    height: 18px;
+    border-bottom: 1.5px solid #374151;
+    margin-bottom: 3px;
+    display: flex;
+    line-height: 1;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.signature-line img {
+    max-width: 115px;
+    max-height: 16px;
+    line-height: 1;
+    object-fit: contain;
+    opacity: 0.95;
+}
+
+.official-name {
+    font-size: 8px;
+    font-weight: 700;
+    color: #1f2937;
+    line-height: 1;
+    text-transform: uppercase;
+    margin-top: 1px;
+}
+
+.official-title {
+    font-size: 6px;
+    line-height: 1;
+    color: #6b7280;
+    font-style: italic;
+}
+
+        /* Print Styles */
         @media print {
             * {
                 -webkit-print-color-adjust: exact !important;
                 color-adjust: exact !important;
                 print-color-adjust: exact !important;
-                box-sizing: border-box !important;
             }
-            
+
             @page {
-                size: 11in 8.5in;
+                size: 11in 8.5in landscape;
                 margin: 0.5in;
             }
-            
-            html, body {
-                width: 100% !important;
-                height: 100% !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                overflow: hidden !important;
-                background: white !important;
+
+            body {
+                background: white;
+                padding: 0;
             }
-            
+
             .id-container {
-                width: 100% !important;
-                height: 100% !important;
-                display: flex !important;
-                flex-direction: row !important;
-                justify-content: center !important;
-                align-items: center !important;
-                gap: 0.75in !important;
-                padding: 0.25in !important;
-                margin: 0 !important;
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
+                gap: 0.75in;
+                page-break-inside: avoid;
             }
-            
+
             .id-card {
-                width: 3.5in !important;
-                height: 2.25in !important;
-                flex-shrink: 0 !important;
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-                display: block !important;
-            }
-            
-            .front-header {
-                background: linear-gradient(135deg, #0066cc 0%, #004499 100%) !important;
-                color: white !important;
-            }
-            
-            .back-header {
-                background: #333 !important;
-                color: white !important;
+                page-break-inside: avoid;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             }
         }
     </style>
 </head>
-<body>
-    <div class="id-container">
-        <!-- Front Side -->
-        <div class="id-card">
-            <div class="front-header">
-                @if($barangayDetails && $barangayDetails->logo1_path)
-                    <img src="{{ Storage::url($barangayDetails->logo1_path) }}" class="front-header-logos">
-                @endif
-                
-                <div class="front-header-text">
-                    <div>Republic Of The Philippines</div>
-                    <div>Province of {{ $barangayDetails->heading1 ?? 'NEGROS OCCIDENTAL' }}</div>
-                    <div>Municipality of {{ $barangayDetails->heading2 ?? 'HINOBA-AN' }}</div>
-                    <div style="font-size: 8px; margin-top: 1px;">{{ $barangayDetails->heading4 ?? 'BARANGAY BACUYANGAN' }}</div>
-                    @if($barangayDetails && $barangayDetails->office_info)
-                        <div class="office-info">{{ $barangayDetails->office_info }}</div>
-                    @endif
-                    @if($barangayDetails && $barangayDetails->ordinance_info)
-                        <div class="ordinance-info">{{ $barangayDetails->ordinance_info }}</div>
-                    @endif
-                </div>
-                
-                @if($barangayDetails && $barangayDetails->logo2_path)
-                    <img src="{{ Storage::url($barangayDetails->logo2_path) }}" class="front-header-logos">
-                @endif
-            </div>
-            
-            <div class="front-content">
-                <div class="resident-photo">
-                    @if($resident->profile_picture)
-                        <img src="{{ asset('storage/public/profile_pictures/' . basename($resident->profile_picture)) }}" alt="Profile Picture">
-                    @else
-                        <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #666;">
-                            <span style="font-size: 10px;">No Photo</span>
-                        </div>
-                    @endif
-                </div>
-                
-                <div class="resident-details">
-                    <div class="resident-name">{{ $fullName ?? ($resident->first_name . ' ' . $resident->last_name) }}</div>
-                    <div class="resident-info">Zone 3, Brgy. {{ $resident->purok->purok_name ?? 'Bacuyangan' }}, Hinoba-an, Neg. Occ.</div>
-                    <div class="resident-info"><strong>Sex:</strong> {{ strtoupper($resident->sex ?? '') }}</div>
-                    <div class="resident-info"><strong>Civil Status:</strong> {{ strtoupper($resident->civil_status ?? '') }}</div>
-                    <div class="resident-info"><strong>Date of Birth:</strong> {{ strtoupper(date('M j, Y', strtotime($resident->birth_date ?? now()))) }}</div>
-                    <div class="resident-info"><strong>Date Issued:</strong> {{ strtoupper(date('m/d/Y')) }}</div>
-                    <div class="resident-info"><strong>Expiration Date:</strong> {{ strtoupper(date('m/d/Y', strtotime('+' . ($barangayDetails->validity_years ?? 3) . ' years'))) }}</div>
-                </div>
-            </div>
-            
-            <div class="id-number">
-                ID No: {{ $resident->household_number ?? 'MHBB-' . date('Y') . '-' . str_pad($resident->id ?? '0000', 4, '0', STR_PAD_LEFT) }}
-            </div>
-            
-            <div class="issue-dates">
-                <div>Date Issued: {{ date('m/d/Y') }}</div>
-                <div>Expiration: {{ date('m/d/Y', strtotime('+' . ($barangayDetails->validity_years ?? 3) . ' years')) }}</div>
-            </div>
-            
-            @if($barangayDetails && $barangayDetails->footer_text)
-                <div class="front-footer">
-                    {{ $barangayDetails->footer_text }}
-                </div>
-            @endif
-            
-            @if($barangayDetails && $barangayDetails->card_title)
-                <div class="card-title">
-                    {{ $barangayDetails->card_title }}
-                </div>
-            @endif
-        </div>
 
-        <!-- Back Side -->
+<body>
+    <div class="id-container"> <!-- FRONT SIDE -->
+        <div class="id-card id-card-front">
+            <div class="header">
+                <div class="header-logo">
+                    @if ($barangayDetails && $barangayDetails->logo1_path)
+                        <img src="{{ Storage::url($barangayDetails->logo1_path) }}" class="front-header-logos">
+                        @endif
+                </div>
+                <div class="header-text">
+                    <h1>Republic of the Philippines</h1>
+                    <h2>Province of Negros Occidental</h2>
+                    <h2>Municipality of Hinoba-an</h2>
+                    <h3>BARANGAY BACUYANGAN</h3>
+                    <div class="header-subtitle">Office of the Punong Barangay</div>
+                </div>
+                <div class="header-logo">
+                    @if ($barangayDetails && $barangayDetails->logo2_path)
+                        <img src="{{ Storage::url($barangayDetails->logo2_path) }}" class="front-header-logos">
+                    @endif
+                </div>
+                <div class="ornament-line"></div>
+            </div>
+            <div class="card-type-badge">BARANGAY IDENTIFICATION CARD</div> <br>
+            <hr>
+            <div class="content-area">
+                <div class="photo-container">
+                    <div class="photo-frame"> <img
+                            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 120'%3E%3Crect fill='%23e5e7eb' width='100' height='120'/%3E%3Ccircle cx='50' cy='45' r='20' fill='%239ca3af'/%3E%3Cpath d='M30 85 Q50 70 70 85 L70 120 L30 120 Z' fill='%239ca3af'/%3E%3C/svg%3E"
+                            alt="Photo"> </div>
+                </div>
+                <div class="id-number-badge">{{ strtoupper($resident->household_number ?? '') }}</div>
+                <div class="info-section">
+                    <div>
+                        <div class="resident-name">
+                            {{ $fullName ?? $resident->first_name . ' ' . $resident->last_name }}</div>
+                        <div class="address-line">{{ $resident->purok->purok_name ?? 'Bacuyangan' }}, Bacuyangan,
+                            Hinoba-an, Negros Occidental</div>
+                        <div class="info-grid">
+                            <div class="info-row"> <span class="info-label">Sex:</span> <span
+                                    class="info-value">{{ strtoupper($resident->sex ?? '') }}</span> </div>
+                            <div class="info-row"> <span class="info-label">Civil Status:</span> <span
+                                    class="info-value">{{ strtoupper($resident->civil_status ?? '') }}</span> </div>
+                            <div class="info-row"> <span class="info-label">Date of Birth:</span> <span
+                                    class="info-value">{{ strtoupper(date('M j, Y', strtotime($resident->birth_date ?? now()))) }}</span>
+                            </div>
+                            <div class="info-row"> <span class="info-label">Philsys Card #:</span> <span
+                                    class="info-value">{{ strtoupper($resident->civil_status ?? '') }}</span> </div>
+                        </div> <!-- ✅ Move thumbmark box here -->
+                        <div class="thumbmark-area">
+                            <div class="fingerprint-box">
+                                <div class="fingerprint-label">Right Thumb Mark</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="validity-container">
+                        <div class="validity-box">
+                            <div class="validity-row"> <span class="validity-label">Date Issued:</span> <span
+                                    class="validity-date"> {{ strtoupper(date('m/d/Y')) }}</span> <span
+                                    style="margin: 0 4px;">|</span> <span class="validity-label">Valid Until:</span>
+                                <span
+                                    class="validity-date">{{ strtoupper(date('m/d/Y', strtotime('+' . ($barangayDetails->validity_years ?? 3) . ' years'))) }}</span>
+                            </div>
+                        </div>
+                        <div class="validity-box">
+                            <div class="validity-row">
+                                <div class="signature-area">
+                                    <div class="signature-underline"></div> <span
+                                        class="validity-label">Signature:</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- BACK SIDE -->
         <div class="id-card id-card-back">
             <div class="back-header">
-                {{ $barangayDetails->back_header ?? 'THIS CARD IS NON-TRANSFERABLE' }}
+                <h2>⚠ This Card is Non-Transferable ⚠</h2>
             </div>
-            
             <div class="back-content">
-                @if($barangayDetails && $barangayDetails->emergency_contact_name)
-                    <div class="emergency-contact">
-                        <div class="emergency-label">In case of EMERGENCY please notify:</div>
-                        <div style="margin-top: 2px;">
-                            <div style="font-weight: bold;">{{ $barangayDetails->emergency_contact_name }}</div>
-                            <div>{{ $barangayDetails->emergency_contact_number }}</div>
-                            <div style="font-size: 5px; margin-top: 1px;">{{ $barangayDetails->emergency_contact_address }}</div>
+                <div class="emergency-box">
+                    <div class="emergency-title">🚨 In Case of Emergency Please Notify:</div>
+                    <div class="emergency-info">
+                        <div class="emergency-name">JONAS D. PARRENO</div>
+                        <div>0917-123-4567</div>
+                        <div>Same Address</div>
+                    </div>
+                </div>
+                <div class="certification"> This certifies that the person whose name and picture appear on the reverse
+                    side of this card is a bonafide resident of <strong>BARANGAY BACUYANGAN</strong>, Municipality of
+                    Hinoba-an, Province of Negros Occidental, Philippines. </div>
+                <div class="notes-box">
+                    <div class="notes-title">⚠ IMPORTANT NOTES:</div>
+                    <div class="notes-text"> • This ID is the property of the Barangay<br> • Present this ID when
+                        transacting with the barangay<br> • Report immediately if lost or stolen </div>
+                </div>
+                <div class="bottom-section">
+                    <div class="notes-signature-area">
+                        <div class="signature-box">
+                            <div class="signature-line">
+                                <!-- Optional: insert signature image -->
+                                <!-- <img src="{{ Storage::url('signature/noel_layda.png') }}" alt="Signature of Hon. Noel R. Layda"> -->
+                            </div>
+                            <div class="official-name">HON. NOEL R. LAYDA</div>
+                            <div class="official-title">Punong Barangay</div>
                         </div>
                     </div>
-                @endif
-                
-                <div class="certification-text">
-                    {{ $barangayDetails->back_certification ?? 'This certifies that the person whose name and picture appear on the reverse side of this card is a bonafide resident of BARANGAY BACUYANGAN, MUNICIPALITY OF HINOBA-AN, NEGROS OCCIDENTAL.' }}
                 </div>
                 
-                @if($barangayDetails && $barangayDetails->back_note)
-                    <div class="note-section">
-                        <div class="note-title">NOTE:</div>
-                        <div style="white-space: pre-line;">{{ $barangayDetails->back_note }}</div>
-                    </div>
-                @endif
                 
-                @if(($barangayDetails->include_fingerprint ?? true))
-                    <div class="fingerprint-section">
-                        <div class="fingerprint-label">
-                            Right Thumb Print
-                        </div>
-                    </div>
-                @endif
-                
-                <div class="signature-section">
-                    @if($barangayDetails && $barangayDetails->signature_path)
-                        <img src="{{ Storage::url($barangayDetails->signature_path) }}" class="signature-image">
-                    @endif
-                    <div class="captain-name">{{ $barangayDetails->pass_captain ?? 'NOEL R. LAYDA' }}</div>
-                    <div class="captain-title">Punong Barangay</div>
-                </div>
-                
-                @if($barangayDetails && $barangayDetails->back_loss_info)
-                    <div class="additional-info">
-                        {{ $barangayDetails->back_loss_info }}
-                    </div>
-                @endif
             </div>
+            <div class="loss-notice"> If found, please return to Barangay Bacuyangan Office </div>
         </div>
     </div>
-
-    <script>
-        window.onload = function() {
-            // Small delay to ensure CSS is loaded
-            setTimeout(function() {
-                window.print();
-            }, 500);
-        };
-    </script>
 </body>
+
 </html>

@@ -295,7 +295,7 @@
             window.print();
         }
         window.onafterprint = function() {
-            window.history.back(); 
+            window.location.href = "{{ route('cert_firstTime_Jobseeker.index') }}";
         };
     </script>
 </body>

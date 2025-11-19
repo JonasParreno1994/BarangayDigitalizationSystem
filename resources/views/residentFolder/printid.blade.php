@@ -608,17 +608,17 @@
                         @php
                             $photoPath = null;
                             
-                            // Check profile_picture field
+                       
                             if(!empty($resident->profile_picture)) {
-                                // Try multiple possible storage paths (handle double 'public' issue)
+                               
                                 $possiblePaths = [
-                                    'public/profile_pictures/' . $resident->profile_picture,  // Double public path
-                                    'profile_pictures/' . $resident->profile_picture,          // Correct path
-                                    $resident->profile_picture,                                // Direct filename
+                                    'public/profile_pictures/' . $resident->profile_picture,  
+                                    'profile_pictures/' . $resident->profile_picture,         
+                                    $resident->profile_picture,                                
                                 ];
                                 
                                 foreach($possiblePaths as $path) {
-                                    // Check in storage/app/public
+                                    
                                     $storagePath = storage_path('app/public/' . $path);
                                     if(file_exists($storagePath)) {
                                         $photoPath = asset('storage/' . $path);
@@ -626,7 +626,7 @@
                                     }
                                 }
                                 
-                                // Fallback: construct URL anyway
+                              
                                 if(!$photoPath) {
                                     if(strpos($resident->profile_picture, 'profile_pictures/') === 0) {
                                         $photoPath = asset('storage/' . $resident->profile_picture);

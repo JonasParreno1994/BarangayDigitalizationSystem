@@ -277,7 +277,7 @@
                                         <template x-for="item in languages">
                                             <li>
                                                 <a href="javascript:;" class="hover:text-primary" @click="$store.app.toggleLocale(item.value),toggle()" :class="{'bg-primary/10 text-primary' : $store.app.locale == item.value}">
-                                                    <img class="h-5 w-5 rounded-full object-cover" :src="`admin/assets/images/flags/${item.value.toUpperCase()}.svg`" alt="image">
+                                                    <img class="h-5 w-5 rounded-full object-cover" :src="`{{ asset('admin/assets/images/flags') }}/${item.value.toUpperCase()}.svg`" alt="image" onerror="this.style.display='none'">
                                                     <span class="ltr:ml-3 rtl:mr-3" x-text="item.key"></span>
                                                 </a>
                                             </li>

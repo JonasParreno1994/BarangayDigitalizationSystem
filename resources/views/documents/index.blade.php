@@ -83,13 +83,14 @@
     </script>
 @endif
 
-<div x-data="modal" class="mb-5">
+<div class="mb-5">
     <div class="animate__animated p-6" :class="[$store.app.animation]">
-        <div x-data="multipleTable">
+        <div x-data="modal">
             <div class="panel flex items-center overflow-x-auto whitespace-nowrap p-3 text-primary text-2xl font-bold">
                 <button type="button" class="btn btn-success" @click="toggle">Upload Document</button>
                 <h1 class="ltr:mr-4 rtl:ml-3 text-center w-full">Uploaded Documents</h1>
             </div>
+            <div x-data="multipleTable">
             <div class="panel mt-6">
                 <table id="documentsTable" class="whitespace-nowrap">
                     <thead>
@@ -128,10 +129,10 @@
                 </table>
             </div>
         </div>
-        
+            
         <!-- Upload Document Modal -->
-        <div class="fixed inset-0 z-[999] hidden overflow-y-auto bg-[black]/60" :class="open && '!block'">
-            <div class="flex min-h-screen items-start justify-center px-4" @click.self="open = false">
+            <div class="fixed inset-0 z-[999] hidden overflow-y-auto bg-[black]/60" :class="open && '!block'">
+                <div class="flex min-h-screen items-start justify-center px-4" @click.self="open = false">
                 <div x-show="open" x-transition x-transition.duration.300 class="panel my-8 w-full max-w-4xl overflow-hidden rounded-lg border-0 p-0">
                     <div class="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
                         <div class="text-lg font-bold">UPLOAD NEW DOCUMENT</div>
@@ -190,6 +191,24 @@
 <script>
 // DataTable Initialization
 document.addEventListener('alpine:init', () => {
+    Alpine.data('modal', () => ({
+        open: false,
+        toggle() {
+            this.open = !this.open;
+            if (this.open) {
+                const form = document.getElementById('documentForm');
+                if (form) {
+                    form.reset();
+                    form.querySelectorAll('.error-message').forEach(el => el.remove());
+                    form.querySelectorAll('input, select, textarea').forEach(el => {
+                        el.style.borderColor = '';
+                        el.classList.remove('border-red-500');
+                    });
+                }
+            }
+        }
+    }));
+
     Alpine.data('multipleTable', () => ({
         datatable: null,
         init() {
@@ -233,7 +252,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Form Validation
 // Form Validation
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('documentForm');
@@ -317,5 +335,4 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<script src="{{ asset('admin/assets/js/simple-datatables.js') }}"></script>
 @endsection

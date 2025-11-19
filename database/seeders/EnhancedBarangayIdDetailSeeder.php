@@ -27,9 +27,9 @@ class EnhancedBarangayIdDetailSeeder extends Seeder
                 'validity' => '3 years',
                 'details' => 'This ID card serves as official identification for residents of Barangay Bacuyangan.',
                 'pass_captain' => 'NOEL R. LAYDA',
-                'logo1_path' => null, // You can set actual logo paths here if you have logos uploaded
+                'logo1_path' => null, 
                 'logo2_path' => null,
-                'signature_path' => null, // You can set actual signature path here if you have a signature uploaded
+                'signature_path' => null, 
             ]);
             
             BarangayIdDetail::create($enhancedData);

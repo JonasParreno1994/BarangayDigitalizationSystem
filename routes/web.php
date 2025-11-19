@@ -257,6 +257,16 @@ Route::middleware('auth')->group(function () {
         ->name('special-reports.generate-sector');
     Route::get('/print-sector', [SpecialReportController::class, 'printSectorReport'])
         ->name('special-reports.print-sector');
+    
+    // Senior Citizen Prediction Routes
+    Route::get('/senior-prediction', [SpecialReportController::class, 'seniorCitizenPrediction'])
+        ->name('special-reports.senior-prediction');
+    Route::post('/generate-senior-prediction', [SpecialReportController::class, 'generateSeniorPrediction'])
+        ->name('special-reports.generate-senior-prediction');
+    Route::get('/print-senior-prediction', [SpecialReportController::class, 'printSeniorPrediction'])
+        ->name('special-reports.print-senior-prediction');
+    Route::get('/senior-prediction-analytics', [SpecialReportController::class, 'getSeniorPredictionAnalytics'])
+        ->name('special-reports.senior-prediction-analytics');
     });
 
     // RBI Form C Routes

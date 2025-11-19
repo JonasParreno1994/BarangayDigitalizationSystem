@@ -428,4 +428,174 @@ class SpecialReportController extends Controller
         $parts = explode('-', $bracket);
         return [intval($parts[0]), intval($parts[1])];
     }
+
+    /**
+     * Show the senior citizen prediction analytics page
+     */
+    public function seniorCitizenPrediction()
+    {
+        $puroks = Purok::all();
+        
+        // Get current year and next 5 years
+        $currentYear = date('Y');
+        $years = [];
+        for ($i = 0; $i <= 5; $i++) {
+            $years[] = $currentYear + $i;
+        }
+        
+        return view('reports.special.senior-prediction', compact('puroks', 'years'));
+    }
+
+    /**
+     * Generate senior citizen prediction report
+     */
+    public function generateSeniorPrediction(Request $request)
+    {
+        $request->validate([
+            'prediction_year' => 'required|integer|min:' . date('Y'),
+            'purok_id' => 'nullable|exists:puroks,id',
+            'month' => 'nullable|integer|min:1|max:12',
+        ]);
+
+        $predictionYear = $request->prediction_year;
+        $purokId = $request->purok_id;
+        $month = $request->month;
+
+        // Calculate birth year range for people who will turn 60 in the prediction year
+        $birthYearStart = $predictionYear - 60;
+        $birthYearEnd = $predictionYear - 60;
+
+        $query = ResidentModel::query()
+            ->where('is_senior_citizen', false)  // Not currently senior citizens
+            ->whereYear('birth_date', $birthYearStart);
+
+        // Filter by month if specified
+        if ($month) {
+            $query->whereMonth('birth_date', $month);
+        }
+
+        // Filter by purok if specified
+        if ($purokId) {
+            $query->where('purok_id', $purokId);
+        }
+
+        $residents = $query->orderBy('birth_date')->orderBy('last_name')->get();
+        
+        $purok = $purokId ? Purok::find($purokId) : null;
+        $barangayDetails = BarangayIdDetail::latest()->first();
+
+        return view('reports.special.senior-prediction-results', compact(
+            'residents', 
+            'predictionYear',
+            'month',
+            'purok',
+            'barangayDetails'
+        ));
+    }
+
+    /**
+     * Print senior citizen prediction report
+     */
+    public function printSeniorPrediction(Request $request)
+    {
+        $predictionYear = $request->prediction_year;
+        $purokId = $request->purok_id;
+        $month = $request->month;
+
+        $birthYearStart = $predictionYear - 60;
+        $birthYearEnd = $predictionYear - 60;
+
+        $query = ResidentModel::query()
+            ->where('is_senior_citizen', false)
+            ->whereYear('birth_date', $birthYearStart);
+
+        if ($month) {
+            $query->whereMonth('birth_date', $month);
+        }
+
+        if ($purokId) {
+            $query->where('purok_id', $purokId);
+        }
+
+        $residents = $query->orderBy('birth_date')->orderBy('last_name')->get();
+        
+        $purok = $purokId ? Purok::find($purokId) : null;
+        $barangayDetails = BarangayIdDetail::latest()->first();
+
+        return view('reports.special.senior-prediction-print', compact(
+            'residents', 
+            'predictionYear',
+            'month',
+            'purok',
+            'barangayDetails'
+        ));
+    }
+
+    /**
+     * Get analytics data for senior citizen predictions (for charts)
+     */
+    public function getSeniorPredictionAnalytics()
+    {
+        $currentYear = date('Y');
+        $analytics = [];
+
+        // Get prediction data for next 10 years
+        for ($i = 0; $i <= 10; $i++) {
+            $year = $currentYear + $i;
+            $birthYear = $year - 60;
+            
+            $count = ResidentModel::query()
+                ->where('is_senior_citizen', false)
+                ->whereYear('birth_date', $birthYear)
+                ->count();
+            
+            $analytics[] = [
+                'year' => $year,
+                'count' => $count
+            ];
+        }
+
+        // Monthly breakdown for next year
+        $nextYear = $currentYear + 1;
+        $birthYearNext = $nextYear - 60;
+        $monthlyData = [];
+        
+        for ($month = 1; $month <= 12; $month++) {
+            $count = ResidentModel::query()
+                ->where('is_senior_citizen', false)
+                ->whereYear('birth_date', $birthYearNext)
+                ->whereMonth('birth_date', $month)
+                ->count();
+            
+            $monthlyData[] = [
+                'month' => $month,
+                'month_name' => date('F', mktime(0, 0, 0, $month, 1)),
+                'count' => $count
+            ];
+        }
+
+        // By Purok breakdown for next year
+        $purokData = [];
+        $puroks = Purok::all();
+        
+        foreach ($puroks as $purok) {
+            $count = ResidentModel::query()
+                ->where('is_senior_citizen', false)
+                ->where('purok_id', $purok->id)
+                ->whereYear('birth_date', $birthYearNext)
+                ->count();
+            
+            $purokData[] = [
+                'purok_name' => $purok->purok_name,
+                'count' => $count
+            ];
+        }
+
+        return view('reports.special.senior-prediction-analytics', compact(
+            'analytics',
+            'monthlyData',
+            'purokData',
+            'currentYear'
+        ));
+    }
 }

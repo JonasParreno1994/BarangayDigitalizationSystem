@@ -141,7 +141,7 @@
     </script>
 @endif
 
-<div x-data="{ open: false }" class="mb-5">
+<div x-data="{ open: false, toggle() { this.open = !this.open } }" class="mb-5">
     <div class="animate__animated p-6" :class="[$store.app.animation]">
         <!-- Main content section -->
         <div class="panel flex items-center overflow-x-auto whitespace-nowrap p-3 text-primary text-2xl font-bold">
@@ -1153,7 +1153,7 @@ document.addEventListener('alpine:init', () => {
                             [
                                 '{{ $res->id }}',
                                 `@if($res->profile_picture)
-                                    <img src="{{ asset('storage/public/profile_pictures/' . basename($res->profile_picture)) }}" alt="Profile" class="w-10 h-10 rounded-full object-cover">
+                                    <img src="{{ asset('storage/' . $res->profile_picture) }}" alt="Profile" class="w-10 h-10 rounded-full object-cover">
                                 @else
                                     <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">

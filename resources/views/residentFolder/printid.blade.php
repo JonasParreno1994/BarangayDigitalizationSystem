@@ -608,27 +608,31 @@
                         @php
                             $photoPath = null;
                             
-                           
-                            if($resident->profile_picture && file_exists(storage_path('app/public/' . $resident->profile_picture))) {
-                                try {
-                                    $photoPath = Storage::url($resident->profile_picture);
-                                } catch (Exception $e) {
-                                    $photoPath = asset('storage/' . $resident->profile_picture);
+                            // Check profile_picture field
+                            if(!empty($resident->profile_picture)) {
+                                // Try multiple possible storage paths (handle double 'public' issue)
+                                $possiblePaths = [
+                                    'public/profile_pictures/' . $resident->profile_picture,  // Double public path
+                                    'profile_pictures/' . $resident->profile_picture,          // Correct path
+                                    $resident->profile_picture,                                // Direct filename
+                                ];
+                                
+                                foreach($possiblePaths as $path) {
+                                    // Check in storage/app/public
+                                    $storagePath = storage_path('app/public/' . $path);
+                                    if(file_exists($storagePath)) {
+                                        $photoPath = asset('storage/' . $path);
+                                        break;
+                                    }
                                 }
-                            }
-                            
-                            elseif(isset($resident->photo_path) && $resident->photo_path && file_exists(storage_path('app/public/' . $resident->photo_path))) {
-                                try {
-                                    $photoPath = Storage::url($resident->photo_path);
-                                } catch (Exception $e) {
-                                    $photoPath = asset('storage/' . $resident->photo_path);
-                                }
-                            }
-                            elseif(isset($resident->image) && $resident->image && file_exists(storage_path('app/public/' . $resident->image))) {
-                                try {
-                                    $photoPath = Storage::url($resident->image);
-                                } catch (Exception $e) {
-                                    $photoPath = asset('storage/' . $resident->image);
+                                
+                                // Fallback: construct URL anyway
+                                if(!$photoPath) {
+                                    if(strpos($resident->profile_picture, 'profile_pictures/') === 0) {
+                                        $photoPath = asset('storage/' . $resident->profile_picture);
+                                    } else {
+                                        $photoPath = asset('storage/profile_pictures/' . $resident->profile_picture);
+                                    }
                                 }
                             }
                         @endphp
@@ -637,7 +641,7 @@
                             <img src="{{ $photoPath }}" 
                                  alt="Resident Photo" 
                                  style="width: 100%; height: 100%; object-fit: cover;"
-                                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 120\'%3E%3Crect fill=\'%23e5e7eb\' width=\'100\' height=\'120\'/%3E%3Ccircle cx=\'50\' cy=\'45\' r=\'20\' fill=\'%239ca3af\'/%3E%3Cpath d=\'M30 85 Q50 70 70 85 L70 120 L30 120 Z\' fill=\'%239ca3af\'/%3E%3C/svg%3E';">
+                                 onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 120\'%3E%3Crect fill=\'%23e5e7eb\' width=\'100\' height=\'120\'/%3E%3Ccircle cx=\'50\' cy=\'45\' r=\'20\' fill=\'%239ca3af\'/%3E%3Cpath d=\'M30 85 Q50 70 70 85 L70 120 L30 120 Z\' fill=\'%239ca3af\'/%3E%3C/svg%3E';">
                         @else
                             <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 120'%3E%3Crect fill='%23e5e7eb' width='100' height='120'/%3E%3Ccircle cx='50' cy='45' r='20' fill='%239ca3af'/%3E%3Cpath d='M30 85 Q50 70 70 85 L70 120 L30 120 Z' fill='%239ca3af'/%3E%3C/svg%3E" 
                                  alt="No Photo Available" 

@@ -77,7 +77,7 @@ class ResidentController extends Controller
             if ($request->hasFile('profile_picture')) {
                 $image = $request->file('profile_picture');
                 $filename = time() . '.' . $image->getClientOriginalExtension();
-                $path = $image->storeAs('public/profile_pictures', $filename);
+                $path = $image->storeAs('profile_pictures', $filename, 'public');
                 $validatedData['profile_picture'] = 'profile_pictures/' . $filename;
             }
 
@@ -266,7 +266,7 @@ class ResidentController extends Controller
                 
                 $image = $request->file('profile_picture');
                 $filename = time() . '.' . $image->getClientOriginalExtension();
-                $path = $image->storeAs('public/profile_pictures', $filename);
+                $path = $image->storeAs('profile_pictures', $filename, 'public');
                 $validatedData['profile_picture'] = 'profile_pictures/' . $filename;
             }
 

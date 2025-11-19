@@ -33,6 +33,62 @@ class DashboardController extends Controller
         ->mapWithKeys(function ($purok) {
             return [$purok->purok_name => $purok->residents_count];
         });
+
+        // Senior Citizen Prediction Analytics
+        $currentYear = now()->year;
+        $analytics = [];
+
+        // Get prediction data for next 10 years
+        for ($i = 0; $i <= 10; $i++) {
+            $year = $currentYear + $i;
+            $birthYear = $year - 60;
+            
+            $count = ResidentModel::query()
+                ->where('is_senior_citizen', false)
+                ->whereYear('birth_date', $birthYear)
+                ->count();
+            
+            $analytics[] = [
+                'year' => $year,
+                'count' => $count
+            ];
+        }
+
+        // Monthly breakdown for next year
+        $nextYear = $currentYear + 1;
+        $birthYearNext = $nextYear - 60;
+        $monthlyData = [];
+        
+        for ($month = 1; $month <= 12; $month++) {
+            $count = ResidentModel::query()
+                ->where('is_senior_citizen', false)
+                ->whereYear('birth_date', $birthYearNext)
+                ->whereMonth('birth_date', $month)
+                ->count();
+            
+            $monthlyData[] = [
+                'month' => $month,
+                'month_name' => date('F', mktime(0, 0, 0, $month, 1)),
+                'count' => $count
+            ];
+        }
+
+        // By Purok breakdown for next year (senior predictions)
+        $seniorPurokData = [];
+        $puroks = Purok::all();
+        
+        foreach ($puroks as $purok) {
+            $count = ResidentModel::query()
+                ->where('is_senior_citizen', false)
+                ->where('purok_id', $purok->id)
+                ->whereYear('birth_date', $birthYearNext)
+                ->count();
+            
+            $seniorPurokData[] = [
+                'purok_name' => $purok->purok_name,
+                'count' => $count
+            ];
+        }
     
 
         return view('dashboard.residentsgraph', compact(
@@ -40,7 +96,11 @@ class DashboardController extends Controller
             'femaleCount',
             'civilStatusCounts',
             'ageGroups',
-            'purokCounts'
+            'purokCounts',
+            'analytics',
+            'monthlyData',
+            'seniorPurokData',
+            'currentYear'
         ));
     }
 }

@@ -1241,6 +1241,28 @@ document.addEventListener('alpine:init', () => {
                     { select: 7, sortable: false, type: 'html' }
                 ],
             });
+
+            // Reinitialize dropdown handlers after table updates
+            this.datatable.on('datatable.page', () => {
+                initializeDropdowns();
+            });
+
+            this.datatable.on('datatable.perpage', () => {
+                initializeDropdowns();
+            });
+
+            this.datatable.on('datatable.search', () => {
+                initializeDropdowns();
+            });
+
+            this.datatable.on('datatable.sort', () => {
+                initializeDropdowns();
+            });
+
+            // Initial dropdown setup
+            setTimeout(() => {
+                initializeDropdowns();
+            }, 100);
         },
     }));
 });
@@ -1379,6 +1401,34 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Function to initialize dropdowns
+function initializeDropdowns() {
+    // Remove existing listeners by cloning nodes
+    document.querySelectorAll('.dropdown-toggle').forEach(function(button) {
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+    });
+
+    // Toggle dropdown when clicking the button
+    document.querySelectorAll('.dropdown-toggle').forEach(function(button) {
+        button.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const menu = this.nextElementSibling;
+            const isHidden = menu.classList.contains('hidden');
+            
+            // Close all other dropdowns
+            document.querySelectorAll('.dropdown-menu').forEach(function(otherMenu) {
+                otherMenu.classList.add('hidden');
+            });
+            
+            // Toggle current dropdown
+            if (isHidden) {
+                menu.classList.remove('hidden');
+            }
+        });
+    });
+}
+
 // Add this to your script section
 document.addEventListener('DOMContentLoaded', function() {
     // Close dropdowns when clicking outside
@@ -1390,18 +1440,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Toggle dropdown when clicking the button
-    document.querySelectorAll('.dropdown-toggle').forEach(function(button) {
-        button.addEventListener('click', function() {
-            const menu = this.nextElementSibling;
-            document.querySelectorAll('.dropdown-menu').forEach(function(otherMenu) {
-                if (otherMenu !== menu) {
-                    otherMenu.classList.add('hidden');
-                }
-            });
-            menu.classList.toggle('hidden');
-        });
-    });
+    // Initial dropdown setup
+    initializeDropdowns();
 });
 </script>
 <script src="{{ asset('admin/assets/js/simple-datatables.js') }}"></script>

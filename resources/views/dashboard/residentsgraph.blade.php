@@ -60,7 +60,7 @@
     </div>
 
     <!-- Full width chart for Age Group distribution -->
-    <div class="row">
+    <div class="row mb-4">
         <div class="col-12">
             <div class="card shadow">
                 <div class="card-header py-3">
@@ -69,6 +69,57 @@
                 <div class="card-body">
                     <div class="chart-bar">
                         <canvas id="ageGroupChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Senior Citizen Prediction Analytics Section -->
+    <center><h2 class="custom-title mt-4 mb-3">👴 Senior Citizen Prediction Analytics</h2></center>
+    
+    <!-- Year-by-Year Prediction Chart -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header py-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <center><h6 class="m-0 font-weight-bold">10-Year Prediction Trend</h6></center>
+                    <center><small>Residents who will turn 60 years old per year</small></center>
+                </div>
+                <div class="card-body">
+                    <div class="chart-compact">
+                        <canvas id="yearlyTrendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Monthly and Purok Breakdown -->
+    <div class="cards-container mb-4">
+        <div class="card-wrapper">
+            <div class="card shadow h-100">
+                <div class="card-header py-3" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                    <center><h6 class="m-0 font-weight-bold">Monthly Breakdown for {{ $currentYear + 1 }}</h6></center>
+                    <center><small>Distribution by birth month</small></center>
+                </div>
+                <div class="card-body">
+                    <div class="chart-compact">
+                        <canvas id="seniorMonthlyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-wrapper">
+            <div class="card shadow h-100">
+                <div class="card-header py-3" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
+                    <center><h6 class="m-0 font-weight-bold">By Purok for {{ $currentYear + 1 }}</h6></center>
+                    <center><small>Distribution by geographic area</small></center>
+                </div>
+                <div class="card-body">
+                    <div class="chart-compact">
+                        <canvas id="seniorPurokChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -203,6 +254,180 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+
+    // Senior Citizen Prediction Analytics Charts
+    
+    // Yearly Trend Chart
+    var yearlyCtx = document.getElementById('yearlyTrendChart').getContext('2d');
+    var yearlyData = {!! json_encode($analytics) !!};
+    
+    new Chart(yearlyCtx, {
+        type: 'line',
+        data: {
+            labels: yearlyData.map(d => d.year),
+            datasets: [{
+                label: 'Residents Turning 60',
+                data: yearlyData.map(d => d.count),
+                backgroundColor: 'rgba(102, 126, 234, 0.2)',
+                borderColor: 'rgba(102, 126, 234, 1)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                pointBackgroundColor: 'rgba(102, 126, 234, 1)',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        font: { size: 12 }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.parsed.y + ' residents will turn 60';
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 5,
+                        font: { size: 11 }
+                    }
+                },
+                x: {
+                    ticks: {
+                        font: { size: 11 }
+                    }
+                }
+            }
+        }
+    });
+
+    // Senior Monthly Chart
+    var seniorMonthlyCtx = document.getElementById('seniorMonthlyChart').getContext('2d');
+    var monthlyData = {!! json_encode($monthlyData) !!};
+    
+    new Chart(seniorMonthlyCtx, {
+        type: 'bar',
+        data: {
+            labels: monthlyData.map(d => d.month_name),
+            datasets: [{
+                label: 'Residents',
+                data: monthlyData.map(d => d.count),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.7)',
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(255, 206, 86, 0.7)',
+                    'rgba(75, 192, 192, 0.7)',
+                    'rgba(153, 102, 255, 0.7)',
+                    'rgba(255, 159, 64, 0.7)',
+                    'rgba(199, 199, 199, 0.7)',
+                    'rgba(83, 102, 255, 0.7)',
+                    'rgba(255, 99, 255, 0.7)',
+                    'rgba(99, 255, 132, 0.7)',
+                    'rgba(255, 192, 203, 0.7)',
+                    'rgba(173, 216, 230, 0.7)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(199, 199, 199, 1)',
+                    'rgba(83, 102, 255, 1)',
+                    'rgba(255, 99, 255, 1)',
+                    'rgba(99, 255, 132, 1)',
+                    'rgba(255, 192, 203, 1)',
+                    'rgba(173, 216, 230, 1)'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+
+    // Senior Purok Chart
+    var seniorPurokCtx = document.getElementById('seniorPurokChart').getContext('2d');
+    var seniorPurokData = {!! json_encode($seniorPurokData) !!};
+    
+    new Chart(seniorPurokCtx, {
+        type: 'doughnut',
+        data: {
+            labels: seniorPurokData.map(d => d.purok_name),
+            datasets: [{
+                data: seniorPurokData.map(d => d.count),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.8)',
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(255, 206, 86, 0.8)',
+                    'rgba(75, 192, 192, 0.8)',
+                    'rgba(153, 102, 255, 0.8)',
+                    'rgba(255, 159, 64, 0.8)',
+                    'rgba(199, 199, 199, 0.8)',
+                    'rgba(83, 102, 255, 0.8)',
+                    'rgba(255, 99, 255, 0.8)',
+                    'rgba(99, 255, 132, 0.8)'
+                ],
+                borderColor: '#fff',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        font: { size: 10 },
+                        padding: 8
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.parsed || 0;
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                            return label + ': ' + value + ' (' + percentage + '%)';
+                        }
+                    }
+                }
+            }
+        }
+    });
 });
 </script>
 
@@ -210,6 +435,11 @@ document.addEventListener('DOMContentLoaded', function() {
 .chart-bar {
     position: relative;
     height: 300px;
+}
+
+.chart-compact {
+    position: relative;
+    height: 220px;
 }
 
 

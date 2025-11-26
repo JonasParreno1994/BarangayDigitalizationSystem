@@ -13,6 +13,17 @@
             <h5 class="card-title mb-0">Template Configuration</h5>
         </div>
         <div class="card-body">
+            @if ($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Validation Error:</strong>
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             <form action="{{ route('barangayid.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row g-4">
@@ -251,7 +262,7 @@ Loss of this card must be reported immediately to the Barangay Hall.</textarea>
                     <div class="col-md-4">
                         <div class="form-group mb-3">
                             <div class="form-check mt-4">
-                                <input type="checkbox" name="include_fingerprint" class="form-check-input" checked id="fingerprint">
+                                <input type="checkbox" name="include_fingerprint" class="form-check-input" checked value="1" id="fingerprint">
                                 <label class="form-check-label fw-semibold" for="fingerprint">
                                     Include Fingerprint Section
                                 </label>
@@ -263,7 +274,7 @@ Loss of this card must be reported immediately to the Barangay Hall.</textarea>
                     <div class="col-md-4">
                         <div class="form-group mb-3">
                             <div class="form-check mt-4">
-                                <input type="checkbox" name="include_qr_code" class="form-check-input" checked id="qrcode">
+                                <input type="checkbox" name="include_qr_code" class="form-check-input" checked value="1" id="qrcode">
                                 <label class="form-check-label fw-semibold" for="qrcode">
                                     Include QR Code
                                 </label>
@@ -292,9 +303,9 @@ Loss of this card must be reported immediately to the Barangay Hall.</textarea>
                     <!-- Form Actions -->
                     <div class="col-12">
                         <div class="d-flex gap-2 justify-content-end border-top pt-4">
-                             <button type="submit" class="btn btn-primary px-4">
+                            <button type="submit" class="btn btn-primary px-4">
                                 <i class="fas fa-save me-2"></i> Save Template
-                            </button> <br>
+                            </button>
                             <a href="{{ route('barangayid.index') }}" class="btn btn-outline-secondary px-4">
                                 <i class="fas fa-times me-2"></i> Cancel
                             </a>

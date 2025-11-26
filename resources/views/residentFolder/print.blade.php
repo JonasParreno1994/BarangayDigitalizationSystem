@@ -61,7 +61,7 @@
         <div class="grid" style="align-items: flex-start;">
             <div class="col" style="max-width:80px;">
                 @if($resident->profile_picture)
-                    <img src="{{ asset('storage/public/profile_pictures/' . basename($resident->profile_picture)) }}" alt="Profile Image" class="profile-img">
+                    <img src="{{ asset('storage/profile_pictures/' . basename($resident->profile_picture)) }}" alt="Profile Image" class="profile-img">
                 @else
                     <div class="profile-img" style="background:#e9ecef;display:flex;align-items:center;justify-content:center;">
                         <span style="font-size:30px;color:#bbb;">&#128100;</span>

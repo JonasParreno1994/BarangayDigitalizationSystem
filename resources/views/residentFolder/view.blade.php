@@ -9,7 +9,7 @@
             <!-- Profile Image -->
             <div class="flex-shrink-0 flex justify-center md:justify-start">
                 @if($resident->profile_picture)
-                    <img src="{{ asset('storage/public/profile_pictures/' . basename($resident->profile_picture)) }}" alt="Profile Image" class="w-32 h-32 rounded-full object-cover border shadow">
+                    <img src="{{ asset('storage/profile_pictures/' . basename($resident->profile_picture)) }}" alt="Profile Image" class="w-32 h-32 rounded-full object-cover border shadow">
                 @else
                     <div class="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center border shadow text-gray-400 text-6xl">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">

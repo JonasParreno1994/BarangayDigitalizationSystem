@@ -4,7 +4,8 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>{{ env('APP_NAME', 'Laravel') }} </title>
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        {{-- Admin uses its own Alpine from footer; loading app.js causes double Alpine and transition errors --}}
+@vite(['resources/css/app.css'])
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="icon" type="image/x-icon" href="{{ asset('/1.jfif') }}">
         <link rel="preconnect" href="https://fonts.googleapis.com">

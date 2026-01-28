@@ -9,6 +9,12 @@
 <script src="{{ asset('admin/assets/js/alpine-persist.min.js') }}"></script>
 <script defer="" src="{{ asset('admin/assets/js/alpine-ui.min.js') }}"></script>
 <script defer="" src="{{ asset('admin/assets/js/alpine-focus.min.js') }}"></script>
+{{-- Register Alpine components before alpine.min.js runs so alpine:init listeners fire --}}
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('modal', () => ({ open: false, toggle() { this.open = !this.open; } }));
+    });
+</script>
 <script defer="" src="{{ asset('admin/assets/js/alpine.min.js') }}"></script>
 <script src="{{ asset('admin/assets/js/custom.js') }}"></script>
 <script src="{{ asset('admin/assets/js/highlight.min.js') }}"></script>

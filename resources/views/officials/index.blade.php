@@ -16,9 +16,9 @@
 </div>
 
 
-<div class="fixed inset-0 z-[999] hidden overflow-y-auto bg-[black]/60" :class="open && '!block'">
-    <div class="flex min-h-screen items-start justify-center px-4" @click.self="open = false">
-        <div x-show="open" x-transition="" x-transition.duration.300="" class="panel my-8 w-full max-w-lg overflow-hidden rounded-lg border-0 p-0">
+<div x-show="open" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-[999] overflow-y-auto bg-[black]/60" style="display: none;" @click.self="open = false">
+    <div class="flex min-h-screen items-start justify-center px-4">
+        <div @click.stop class="panel my-8 w-full max-w-lg overflow-hidden rounded-lg border-0 p-0 shadow-xl">
             <div class="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
                 <div class="text-lg font-bold">Add Official</div>
                 <button type="button" class="text-white-dark hover:text-dark" @click="toggle">
@@ -40,7 +40,6 @@
                         <div class="mb-3">
                             <label for="name" class="form-label">Full Name</label>
                             <input type="text" class="form-control w-full border border-gray-300 rounded-md" id="committee" name="name" >
-                            </select>
                         </div>
                                                 
                        

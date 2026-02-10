@@ -44,12 +44,13 @@
         /* FRONT SIDE */
         .id-card-front .header {
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #1e3c72 100%);
-            padding: 8px 12px;
+            padding: 8px 35px; /* Increased side padding (was 20px) to bring logos much closer */
             position: relative;
             display: flex;
             align-items: center;
             gap: 8px;
             min-height: 65px;
+            text-align: center;
         }
 
         .header-logo {
@@ -257,7 +258,7 @@
             color: #b45309;
         }
 
-       
+
         .signature-area {
             display: flex;
             flex-direction: column;
@@ -265,9 +266,9 @@
             width: 60px;
             margin-left: 15px;
             margin-top: 9px;
-            
+
             margin-bottom: -6px;
-            
+
         }
 
         .signature-img {
@@ -319,6 +320,8 @@
             background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
             height: calc(100% - 44px);
             position: relative;
+            display: flex;
+            flex-direction: column; /* Changed to flex column */
         }
 
         .emergency-box {
@@ -327,6 +330,7 @@
             border-radius: 6px;
             padding: 4px;
             margin-bottom: 3px;
+            flex-shrink: 0;
         }
 
         .emergency-title {
@@ -361,6 +365,7 @@
             background: white;
             border-radius: 4px;
             border-left: 3px solid #1e3c72;
+            flex-shrink: 0;
         }
 
         .notes-box {
@@ -369,6 +374,7 @@
             border-radius: 4px;
             padding: 5px;
             margin-bottom: 6px;
+            flex-shrink: 0;
         }
 
         .notes-title {
@@ -385,78 +391,76 @@
         }
 
         .bottom-section {
-            position: absolute;
-            bottom: 10px;
-            left: 12px;
-            right: 12px;
+            margin-top: auto; /* Pushes to bottom */
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
+            gap: 12px;
+            padding-bottom: 8px; /* Add some padding if needed */
         }
 
-        .fingerprint-box {
-            width: 50px;
-            height: 38px;
-            border: 2px solid #374151;
-            border-radius: 4px;
-            background: white;
+        .notes-signature-area {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .fingerprint-label {
-            font-size: 5.5px;
-            color: #6b7280;
-            text-align: center;
-            font-weight: 600;
-            padding: 2px;
+            margin-right: 10px;
+            width: 100%; /* Ensure it takes full width for centering if needed, but flex-end aligns it right */
+            align-items: flex-end; /* Align signature block to right */
         }
 
         .signature-box {
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .signature-line {
-            width: 90px;
+            width: 120px;
             height: 18px;
             border-bottom: 1.5px solid #374151;
-            margin-bottom: 2px;
+            margin-bottom: 3px;
             display: flex;
+            line-height: 1;
             align-items: flex-end;
             justify-content: center;
         }
 
         .signature-line img {
-            max-width: 85px;
+            max-width: 115px;
             max-height: 16px;
+            line-height: 1;
             object-fit: contain;
+            opacity: 0.95;
         }
 
         .official-name {
-            font-size: 7.5px;
+            font-size: 8px;
             font-weight: 700;
             color: #1f2937;
+            line-height: 1;
             text-transform: uppercase;
+            margin-top: 1px;
         }
 
         .official-title {
             font-size: 6px;
+            line-height: 1;
             color: #6b7280;
             font-style: italic;
-            margin-top: 1px;
         }
 
         .loss-notice {
-            position: absolute;
-            bottom: 3px;
-            left: 12px;
-            right: 12px;
-            text-align: center;
-            font-size: 5px;
-            color: #9ca3af;
-            font-style: italic;
+            background: linear-gradient(90deg, #fff7f3 0%, #fff1e6 100%);
+            border: 1px solid #fb923c;
+            color: #92400e;
+            font-size: 7px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            align-self: flex-start;
+            max-width: 52%;
+            box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+            font-style: normal;
         }
 
         .thumbmark-area {
@@ -486,63 +490,8 @@
             text-align: center;
             font-weight: 600;
         }
-        .bottom-section {
-    position: absolute;
-    bottom: 10px;
-    left: 12px;
-    right: 12px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-}
 
-.notes-signature-area {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-right: 10px; 
-}
 
-.signature-box {
-    text-align: center;
-}
-
-.signature-line {
-    width: 120px;
-    height: 18px;
-    border-bottom: 1.5px solid #374151;
-    margin-bottom: 3px;
-    display: flex;
-    line-height: 1;
-    align-items: flex-end;
-    justify-content: center;
-}
-
-.signature-line img {
-    max-width: 115px;
-    max-height: 16px;
-    line-height: 1;
-    object-fit: contain;
-    opacity: 0.95;
-}
-
-.official-name {
-    font-size: 8px;
-    font-weight: 700;
-    color: #1f2937;
-    line-height: 1;
-    text-transform: uppercase;
-    margin-top: 1px;
-}
-
-.official-title {
-    font-size: 6px;
-    line-height: 1;
-    color: #6b7280;
-    font-style: italic;
-}
-
-       
         @media print {
             * {
                 -webkit-print-color-adjust: exact !important;
@@ -574,7 +523,7 @@
 </head>
 
 <body>
-    <div class="id-container"> 
+    <div class="id-container">
         <div class="id-card id-card-front">
             <div class="header">
                 <div class="header-logo">
@@ -607,26 +556,26 @@
                     <div class="photo-frame">
                         @php
                             $photoPath = null;
-                            
-                       
+
+
                             if(!empty($resident->profile_picture)) {
-                               
+
                                 $possiblePaths = [
-                                    'public/profile_pictures/' . $resident->profile_picture,  
-                                    'profile_pictures/' . $resident->profile_picture,         
-                                    $resident->profile_picture,                                
+                                    'public/profile_pictures/' . $resident->profile_picture,
+                                    'profile_pictures/' . $resident->profile_picture,
+                                    $resident->profile_picture,
                                 ];
-                                
+
                                 foreach($possiblePaths as $path) {
-                                    
+
                                     $storagePath = storage_path('app/public/' . $path);
                                     if(file_exists($storagePath)) {
                                         $photoPath = asset('storage/' . $path);
                                         break;
                                     }
                                 }
-                                
-                              
+
+
                                 if(!$photoPath) {
                                     if(strpos($resident->profile_picture, 'profile_pictures/') === 0) {
                                         $photoPath = asset('storage/' . $resident->profile_picture);
@@ -636,15 +585,15 @@
                                 }
                             }
                         @endphp
-                        
+
                         @if($photoPath)
-                            <img src="{{ $photoPath }}" 
-                                 alt="Resident Photo" 
+                            <img src="{{ $photoPath }}"
+                                 alt="Resident Photo"
                                  style="width: 100%; height: 100%; object-fit: cover;"
                                  onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 120\'%3E%3Crect fill=\'%23e5e7eb\' width=\'100\' height=\'120\'/%3E%3Ccircle cx=\'50\' cy=\'45\' r=\'20\' fill=\'%239ca3af\'/%3E%3Cpath d=\'M30 85 Q50 70 70 85 L70 120 L30 120 Z\' fill=\'%239ca3af\'/%3E%3C/svg%3E';">
                         @else
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 120'%3E%3Crect fill='%23e5e7eb' width='100' height='120'/%3E%3Ccircle cx='50' cy='45' r='20' fill='%239ca3af'/%3E%3Cpath d='M30 85 Q50 70 70 85 L70 120 L30 120 Z' fill='%239ca3af'/%3E%3C/svg%3E" 
-                                 alt="No Photo Available" 
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 120'%3E%3Crect fill='%23e5e7eb' width='100' height='120'/%3E%3Ccircle cx='50' cy='45' r='20' fill='%239ca3af'/%3E%3Cpath d='M30 85 Q50 70 70 85 L70 120 L30 120 Z' fill='%239ca3af'/%3E%3C/svg%3E"
+                                 alt="No Photo Available"
                                  style="width: 100%; height: 100%; object-fit: cover;">
                         @endif
                     </div>
@@ -668,7 +617,7 @@
                             </div>
                             <div class="info-row"> <span class="info-label">Philsys Card #:</span> <span
                                     class="info-value">{{ strtoupper($resident->philsys_number ?? $resident->philhealth_number ?? 'N/A') }}</span> </div>
-                        </div> 
+                        </div>
                         <div class="thumbmark-area">
                             <div class="fingerprint-box">
                                 <div class="fingerprint-label">Right Thumb Mark</div>
@@ -695,7 +644,7 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
         <div class="id-card id-card-back">
             <div class="back-header">
                 <h2>{{ $barangayDetails->back_header ?? '⚠ This Card is Non-Transferable ⚠' }}</h2>
@@ -704,21 +653,25 @@
                 <div class="emergency-box">
                     <div class="emergency-title">🚨 In Case of Emergency Please Notify:</div>
                     <div class="emergency-info">
-                        <div class="emergency-name">{{ strtoupper($barangayDetails->emergency_contact_name ?? 'BARANGAY OFFICE') }}</div>
-                        <div>{{ $barangayDetails->emergency_contact_number ?? '(034) XXX-XXXX' }}</div>
-                        <div>{{ $barangayDetails->emergency_contact_address ?? 'Bacuyangan, Hinoba-an, Negros Occidental' }}</div>
+                        <div class="emergency-name">{{ strtoupper($resident->idEmergencyContact->contact_name ?? $barangayDetails->emergency_contact_name ?? 'BARANGAY OFFICE') }}</div>
+                        <div>{{ $resident->idEmergencyContact->contact_number ?? $barangayDetails->emergency_contact_number ?? '(034) XXX-XXXX' }}</div>
+                        <div>{{ $resident->idEmergencyContact->contact_address ?? $barangayDetails->emergency_contact_address ?? 'Bacuyangan, Hinoba-an, Negros Occidental' }}</div>
                     </div>
                 </div>
                 <div class="certification">
                     {{ $barangayDetails->back_certification ?? 'This certifies that the person whose name and picture appear on the reverse side of this card is a bonafide resident of BARANGAY BACUYANGAN, Municipality of Hinoba-an, Province of Negros Occidental, Philippines.' }}
                 </div>
-                <div class="notes-box">
-                    <div class="notes-title">⚠ IMPORTANT NOTES:</div>
-                    <div class="notes-text">
-                        {{ $barangayDetails->back_note ?? '• This ID is the property of the Barangay • Present this ID when transacting with the barangay • Report immediately if lost or stolen' }}
+               <div class="bottom-section">
+                    <div class="loss-notice">
+                        <div class="notes-title">⚠ IMPORTANT NOTES:</div>
+                            <div class="notes-text">
+                                {{ $barangayDetails->back_note ?? '• This ID is the property of the Barangay • Present this ID when transacting with the barangay • Report immediately if lost or stolen' }}
+                        </div>
                     </div>
-                </div>
-                <div class="bottom-section">
+
+
+
+                    <!-- Right Column: Signature -->
                     <div class="notes-signature-area">
                         <div class="signature-box">
                             <div class="signature-line">
@@ -731,18 +684,17 @@
                         </div>
                     </div>
                 </div>
-                
-                
+
+
+
             </div>
-            <div class="loss-notice">
-                {{ $barangayDetails->back_loss_info ?? 'If found, please return to Barangay Bacuyangan Office' }}
-            </div>
+
         </div>
     </div>
 
     <script>
         let printCompleted = false;
-        
+
         // Auto-print when page loads
         window.addEventListener('load', function() {
             setTimeout(function() {
@@ -753,7 +705,7 @@
         function handleRedirect() {
             if (!printCompleted) {
                 printCompleted = true;
-                
+
                 // Check if this page was opened in a popup/new window
                 if (window.opener && !window.opener.closed) {
                     // If opened from another window, just close this window

@@ -125,6 +125,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/residentFolder/{id}/printid', [ResidentController::class, 'printid'])->name('resident.printid');
     Route::get('/residentFolder/{id}/printrbi', [ResidentController::class, 'printrbi'])->name('resident.printrbi');
     Route::post('/residentFolder/{id}/status', [ResidentController::class, 'updateStatus'])->name('resident.updateStatus');
+    Route::post('/residentFolder/{id}/emergency-contact', [ResidentController::class, 'updateEmergencyContact'])->name('resident.updateEmergencyContact');
 
 
     Route::get('/residentFolder/printAll', [ResidentController::class, 'printAll'])->name('resident.printAll');

@@ -26,6 +26,9 @@ class BarangayDetailController extends Controller
         // Handle file uploads
         $validated = $this->handleFileUploads($request, $validated);
         
+        // Apply default fee values for any null fees
+        $validated = $this->applyDefaultFees($validated);
+        
         BarangayDetail::create($validated);
         
         return redirect()->route('barangay-details.index')

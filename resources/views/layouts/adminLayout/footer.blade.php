@@ -1,6 +1,6 @@
         <!-- start footer section -->
         <div class="mt-auto p-6 pt-0 text-center dark:text-white-dark">
-            © <span id="footer-year">2025</span>. OneByte Software-Team MISO! *All rights reserved.
+            © <span id="footer-year">2025</span>. TreeByte Software Development Services! *All rights reserved.
         </div>
         <!-- end footer section -->
     </div>

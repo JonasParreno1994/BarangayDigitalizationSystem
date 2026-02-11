@@ -13,7 +13,7 @@ class User extends Authenticatable
     const ROLE_ADMIN = 'Admin';
     const ROLE_STAFF = 'Staff';
     const ROLE_SECRETARY = 'Secretary';
-    const ROLE_TREASURER = 'Treasurer';
+    const ROLE_ENCODER = 'Encoder';
 
     /**
      * The attributes that are mass assignable.
@@ -64,12 +64,18 @@ class User extends Authenticatable
         return $this->role === self::ROLE_TREASURER;
     }
 
+    public function isEncoder(): bool
+    {
+        return $this->role === self::ROLE_ENCODER;
+    }
+
     public static function getRoles(): array
     {
         return [
             self::ROLE_STAFF,
             self::ROLE_SECRETARY,
             self::ROLE_TREASURER,
+            self::ROLE_ENCODER,
         ];
     }
 }

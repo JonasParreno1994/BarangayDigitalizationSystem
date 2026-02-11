@@ -133,6 +133,27 @@ class BarangayDetailController extends Controller
         ]);
     }
 
+    private function applyDefaultFees(array $validated): array
+    {
+        $feeFields = [
+            'clearance_fee',
+            'residency_fee',
+            'indigency_fee',
+            'good_moral_fee',
+            'death_cert_fee',
+            'jobseeker_fee',
+            'id_replacement_fee'
+        ];
+
+        foreach ($feeFields as $field) {
+            if (!isset($validated[$field]) || $validated[$field] === null || $validated[$field] === '') {
+                $validated[$field] = 0;
+            }
+        }
+
+        return $validated;
+    }
+
     private function handleFileUploads(Request $request, array $validated, $existingDetails = null)
     {
         $fileFields = [

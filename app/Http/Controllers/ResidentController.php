@@ -13,13 +13,14 @@ use App\Models\BarangayGoodMoralCertificate;
 use App\Models\CertificateOfResidency;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use App\Models\IdEmergencyContact;
 
 
 class ResidentController extends Controller
 {
     public function index()
     {
-        $resident = ResidentModel::with('purok')->get();
+        $resident = ResidentModel::with(['purok', 'idEmergencyContact'])->get();
         return view('residentFolder.index', compact('resident'));
     }
 
@@ -118,6 +119,38 @@ class ResidentController extends Controller
         }
     }
 
+    public function updateEmergencyContact(Request $request, $id)
+    {
+        $request->validate([
+            'emergency_contact_name' => 'required|string|max:255',
+            'emergency_contact_number' => 'required|string|max:50',
+            'emergency_contact_address' => 'required|string|max:500',
+        ]);
+
+        try {
+            $resident = ResidentModel::findOrFail($id);
+
+            IdEmergencyContact::updateOrCreate(
+                ['resident_id' => $resident->id],
+                [
+                    'contact_name'    => $request->emergency_contact_name,
+                    'contact_number'  => $request->emergency_contact_number,
+                    'contact_address' => $request->emergency_contact_address,
+                ]
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Emergency contact saved successfully!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error saving emergency contact: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function print($id)
     {
         $resident = ResidentModel::with('purok')->findOrFail($id);
@@ -126,7 +159,7 @@ class ResidentController extends Controller
 
     public function printid($id)
     {
-        $resident = ResidentModel::with('purok')->findOrFail($id);
+        $resident = ResidentModel::with(['purok', 'idEmergencyContact'])->findOrFail($id);
         $barangayDetails = BarangayIdDetail::first();
         
         // If no barangay details exist, create one with defaults

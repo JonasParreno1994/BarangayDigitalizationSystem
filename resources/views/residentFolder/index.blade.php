@@ -784,6 +784,59 @@
             </div>
         </div>
 
+        <!-- Emergency Contact Modal -->
+        <div class="fixed inset-0 z-[999] hidden overflow-y-auto bg-[black]/60" id="emergencyContactModal">
+            <div class="flex min-h-screen items-center justify-center px-4">
+                <div class="panel w-full max-w-lg rounded-lg border-0 p-0 shadow-2xl">
+                    <div class="flex items-center justify-between bg-gradient-to-r from-red-500 to-red-600 px-5 py-4 rounded-t-lg">
+                        <div class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            <div class="text-lg font-bold text-white">In Case of Emergency</div>
+                        </div>
+                        <button type="button" class="text-white/80 hover:text-white transition" onclick="closeEmergencyModal()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div class="p-6">
+                        <p class="text-sm text-gray-600 mb-4">
+                            Please fill in the emergency contact details for <strong id="emergencyResidentName"></strong> before releasing the ID.
+                        </p>
+                        <form id="emergencyContactForm">
+                            @csrf
+                            <input type="hidden" id="emergencyResidentId" value="">
+                            <div class="mb-4">
+                                <label class="form-label font-semibold">Contact Person Name <span class="text-red-500">*</span></label>
+                                <input type="text" class="form-input" id="emergency_contact_name" name="emergency_contact_name" placeholder="Enter full name" required>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label font-semibold">Contact Number <span class="text-red-500">*</span></label>
+                                <input type="text" class="form-input" id="emergency_contact_number" name="emergency_contact_number" placeholder="Enter contact number (e.g. 09XXXXXXXXX)" required>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label font-semibold">Address <span class="text-red-500">*</span></label>
+                                <input type="text" class="form-input" id="emergency_contact_address" name="emergency_contact_address" placeholder="Enter complete address" required>
+                            </div>
+                            <div class="flex justify-end gap-3 mt-6">
+                                <button type="button" class="btn btn-outline-danger" onclick="closeEmergencyModal()">Cancel</button>
+                                <button type="submit" class="btn btn-primary flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                    </svg>
+                                    Save & Print ID
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Status Change Modal -->
         <div class="fixed inset-0 z-[999] hidden overflow-y-auto bg-[black]/60" id="statusModal">
             <div class="flex min-h-screen items-center justify-center px-4">
@@ -1306,17 +1359,134 @@ function showResidentModal(residentId) {
 }
 
 function printResidentID(residentId) {
-    const printWindow = window.open(
-        `/residentFolder/${residentId}/printid`, 
-        '_blank',
-        'toolbar=0,location=0,menubar=0,scrollbars=1,resizable=1'
-    );
-    if (printWindow) {
-        printWindow.moveTo(0, 0);
-        printWindow.resizeTo(screen.availWidth, screen.availHeight);
-        printWindow.focus();
-    }
+    // Fetch existing emergency contact data for this resident
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
+                      document.querySelector('input[name="_token"]')?.value;
+    
+    // Find the resident data from the table to get existing emergency contact info
+    fetch(`/residentFolder/${residentId}/view`)
+        .then(response => response.text())
+        .then(html => {
+            // Show the emergency contact modal
+            document.getElementById('emergencyResidentId').value = residentId;
+            
+            // Try to extract resident name from the dropdown button context
+            const rows = document.querySelectorAll('#residentTable tbody tr');
+            let residentName = 'this resident';
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length > 0) {
+                    const actionsHtml = cells[cells.length - 1]?.innerHTML || '';
+                    if (actionsHtml.includes(`printResidentID(${residentId})`)) {
+                        residentName = cells[2]?.textContent?.trim() || 'this resident';
+                    }
+                }
+            });
+            document.getElementById('emergencyResidentName').textContent = residentName;
+            
+            document.getElementById('emergencyContactModal').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        })
+        .catch(() => {
+            // Even if fetch fails, still show the modal
+            document.getElementById('emergencyResidentId').value = residentId;
+            document.getElementById('emergencyResidentName').textContent = 'this resident';
+            document.getElementById('emergencyContactModal').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        });
+    
+    // Also try to pre-fill from existing data attributes
+    @foreach ($resident as $res)
+        if (residentId == {{ $res->id }}) {
+            document.getElementById('emergency_contact_name').value = '{{ addslashes($res->idEmergencyContact->contact_name ?? '') }}';
+            document.getElementById('emergency_contact_number').value = '{{ addslashes($res->idEmergencyContact->contact_number ?? '') }}';
+            document.getElementById('emergency_contact_address').value = '{{ addslashes($res->idEmergencyContact->contact_address ?? '') }}';
+        }
+    @endforeach
 }
+
+function closeEmergencyModal() {
+    document.getElementById('emergencyContactModal').classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+    document.getElementById('emergencyContactForm').reset();
+}
+
+// Handle emergency contact form submission
+document.addEventListener('DOMContentLoaded', function() {
+    const emergencyForm = document.getElementById('emergencyContactForm');
+    if (emergencyForm) {
+        emergencyForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const residentId = document.getElementById('emergencyResidentId').value;
+            const name = document.getElementById('emergency_contact_name').value.trim();
+            const number = document.getElementById('emergency_contact_number').value.trim();
+            const address = document.getElementById('emergency_contact_address').value.trim();
+            
+            if (!name || !number || !address) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Required Fields',
+                    text: 'Please fill in all emergency contact fields.',
+                });
+                return;
+            }
+            
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
+                              document.querySelector('input[name="_token"]')?.value;
+            
+            // Save emergency contact data
+            fetch(`/residentFolder/${residentId}/emergency-contact`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    emergency_contact_name: name,
+                    emergency_contact_number: number,
+                    emergency_contact_address: address,
+                })
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to save');
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // Close modal and open print window
+                    closeEmergencyModal();
+                    
+                    const printWindow = window.open(
+                        `/residentFolder/${residentId}/printid`, 
+                        '_blank',
+                        'toolbar=0,location=0,menubar=0,scrollbars=1,resizable=1'
+                    );
+                    if (printWindow) {
+                        printWindow.moveTo(0, 0);
+                        printWindow.resizeTo(screen.availWidth, screen.availHeight);
+                        printWindow.focus();
+                    }
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: data.message || 'Failed to save emergency contact.',
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Failed to save emergency contact. Please try again.',
+                });
+            });
+        });
+    }
+});
 
 function printRBIForm(residentId) {
     const printWindow = window.open(

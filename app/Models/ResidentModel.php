@@ -57,6 +57,9 @@ class ResidentModel extends Model
         'ofw_country',
         'is_unemployed',
         'status',
+        'emergency_contact_name',
+        'emergency_contact_number',
+        'emergency_contact_address',
     ];
 
     protected $casts = [
@@ -123,6 +126,11 @@ class ResidentModel extends Model
        public function deathCertificate()
     {
         return $this->hasOne(CertificateOfDeath::class, 'resident_id');
+    }
+
+    public function idEmergencyContact()
+    {
+        return $this->hasOne(IdEmergencyContact::class, 'resident_id');
     }
      public function scopeActive($query)
     {

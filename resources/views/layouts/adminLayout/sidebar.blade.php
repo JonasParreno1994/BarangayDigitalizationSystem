@@ -100,6 +100,41 @@
                     </ul>
                 </li>
 
+                <!-- KP Section -->
+                <li class="mt-4">
+                    <h2 class="menu-section-header flex items-center uppercase text-xs font-bold tracking-wider text-gray-500 dark:text-gray-400">
+                        <svg class="mr-2 h-4 w-4" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        <span>KP SECTION</span>
+                    </h2>
+                    <ul class="mt-2 space-y-1">
+                        <li class="nav-item">
+                            <a href="{{ route('kp-cases.index') }}" class="nav-link {{ request()->routeIs('kp-cases.*') ? 'active' : '' }}">
+                                <div class="flex items-center">
+                                    <svg class="shrink-0 group-hover:!text-primary" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2 10C2 7.17157 2 5.75736 2.87868 4.87868C3.75736 4 5.17157 4 8 4H16C18.8284 4 20.2426 4 21.1213 4.87868C22 5.75736 22 7.17157 22 10V14C22 16.8284 22 18.2426 21.1213 19.1213C20.2426 20 18.8284 20 16 20H8C5.17157 20 3.75736 20 2.87868 19.1213C2 18.2426 2 16.8284 2 14V10Z" stroke="currentColor" stroke-width="1.5"/>
+                                        <path opacity="0.5" d="M2 10H22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                    <span class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">KP Cases</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('kp-cases.report-form') }}" class="nav-link {{ request()->routeIs('kp-cases.report-form') ? 'active' : '' }}">
+                                <div class="flex items-center">
+                                    <svg class="shrink-0 group-hover:!text-primary" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path opacity="0.5" d="M18 10L13 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                        <path d="M2 6C2 4.11438 2 3.17157 2.58579 2.58579C3.17157 2 4.11438 2 6 2C7.88562 2 8.82843 2 9.41421 2.58579C10 3.17157 10 4.11438 10 6V18C10 19.8856 10 20.8284 9.41421 21.4142C8.82843 22 7.88562 22 6 22C4.11438 22 3.17157 22 2.58579 21.4142C2 20.8284 2 19.8856 2 18V6Z" stroke="currentColor" stroke-width="1.5"/>
+                                        <path d="M14 2C15.8856 2 16.8284 2 17.4142 2.58579C18 3.17157 18 4.11438 18 6V18C18 19.8856 18 20.8284 17.4142 21.4142C16.8284 22 15.8856 22 14 22C12.1144 22 11.1716 22 10.5858 21.4142C10 20.8284 10 19.8856 10 18V6C10 4.11438 10 3.17157 10.5858 2.58579C11.1716 2 12.1144 2 14 2Z" stroke="currentColor" stroke-width="1.5"/>
+                                    </svg>
+                                    <span class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Generate Report</span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
                 <!-- Files Management Section -->
                 <li class="mt-4">
                     <h2 class="menu-section-header flex items-center uppercase text-xs font-bold tracking-wider text-gray-500 dark:text-gray-400">

@@ -11,6 +11,7 @@
             <!-- Menu Items -->
             <ul class="perfect-scrollbar flex-1 overflow-y-auto overflow-x-hidden p-4 py-0 font-semibold" x-data="{ activeDropdown: '' }">
                 <!-- Dashboard Section -->
+                @if(auth()->user()->role !== 'Encoder')
                 <li class="nav-item">
                             <a href="{{ route('dashboard.residentsgraph')}}" class="nav-link {{ request()->routeIs('dashboard.residentsgraph') ? 'active' : '' }}">
                                 <div class="flex items-center">
@@ -22,6 +23,7 @@
                                 </div>
                             </a>
                         </li>
+                @endif
 
                {{-- <li class="menu nav-item">
                     <button type="button" class="nav-link group w-full" :class="{'active' : activeDropdown === 'dashboard'}" @click="activeDropdown === 'dashboard' ? activeDropdown = '' : activeDropdown = 'dashboard'">
@@ -101,6 +103,7 @@
                 </li>
 
                 <!-- KP Section -->
+                @if(auth()->user()->role !== 'Encoder')
                 <li class="mt-4">
                     <h2 class="menu-section-header flex items-center uppercase text-xs font-bold tracking-wider text-gray-500 dark:text-gray-400">
                         <svg class="mr-2 h-4 w-4" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -135,7 +138,10 @@
                     </ul>
                 </li>
 
+                @endif
+
                 <!-- Files Management Section -->
+                @if(auth()->user()->role !== 'Encoder')
                 <li class="mt-4">
                     <h2 class="menu-section-header flex items-center uppercase text-xs font-bold tracking-wider text-gray-500 dark:text-gray-400">
                         <svg class="mr-2 h-4 w-4" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -253,7 +259,9 @@
                         </li>
                     </ul>
                 </li>
+                @endif
 
+                @if(auth()->user()->role !== 'Encoder')
                 <li class="mt-4">
                     <h2 class="menu-section-header flex items-center uppercase text-xs font-bold tracking-wider text-gray-500 dark:text-gray-400">
                         <svg class="mr-2 h-4 w-4" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -274,8 +282,10 @@
                         </li>
                     </ul>
                 </li>
+                @endif
 
                 <!-- User and Settings Section -->
+                @if(auth()->user()->role !== 'Encoder')
                 <li class="mt-4">
                     <h2 class="menu-section-header flex items-center uppercase text-xs font-bold tracking-wider text-gray-500 dark:text-gray-400">
                         <svg class="mr-2 h-4 w-4" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -394,6 +404,7 @@
                         </li>
                     </ul>
                 </li>
+                @endif
             </ul>
         </div>
     </nav>

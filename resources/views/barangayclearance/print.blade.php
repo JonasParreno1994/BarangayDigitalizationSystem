@@ -6,9 +6,10 @@
     <title>Barangay Clearance - {{ $clearance->resident->full_name ?? 'Resident' }}</title>
     <style>
         @page { size: A4; margin: 12mm; }
-        body { font-family: 'Times New Roman', Times, serif; margin:0; padding:0; background:#fff; color:#000 }
-        .page { width:210mm; margin:0 auto; padding:20mm 18mm; box-sizing:border-box }
-        .header { position:relative; text-align:center; padding-bottom:8px; padding-left:110px; background: linear-gradient(135deg, #00b894 0%, #fdcb6e 50%, #0984e3 100%) }
+        body { font-family: 'Times New Roman', Times, serif; margin:0; padding:0; background:#fafafa; color:#000 }
+        /* emulate admin "panel" on light gray background */
+        .page { width:210mm; margin:0 auto; padding:20mm 18mm; box-sizing:border-box; background:#fff; border-radius:.375rem; box-shadow:0 1px 3px rgba(0,0,0,0.1) }
+        .header { position:relative; text-align:center; padding-bottom:1px; padding-left:110px;   }
         .logo-left { position:absolute; left:18mm; top:.05mm; width:100px; height:100px; object-fit:contain }
         .logo-right { position:absolute; right:18mm; top:.05mm; width:90px; height:90px; object-fit:contain }
         .header .gov { font-weight:700;font-family: Calisto MT; font-size:13px; margin:2px 0 }
@@ -32,6 +33,11 @@
         @media print {
             body, html { width:210mm }
             .page { padding:12mm }
+            /* hide common app UI elements when printing (if present) */
+            .navbar, .topbar, .breadcrumb, .print-header, .no-print { display:none !important; }
+            /* Note: browser-added headers/footers (date, URL, title) are controlled by
+               the browser print dialog. Disable "Headers and footers" in print settings
+               to remove the timestamp and URL from the printed output. */
         }
     </style>
 </head>
@@ -56,73 +62,74 @@
         </div>
 
         <div class="title">BARANGAY CLEARANCE</div>
-  <div style="margin-bottom: 30px;"></div>
-        <div class="to-whom">TO WHOM IT MAY CONCERN:</div>
-
         <div style="margin-bottom: 30px;"></div>
+                <div class="to-whom">TO WHOM IT MAY CONCERN:</div>
 
-        <div class="content">
-            <p>
-                This is to certify that Mr./Mrs./Ms. <strong class="name">{{ strtoupper($clearance->resident->full_name ?? '__________') }}</strong>,
-                <strong>{{ isset($clearance->resident->birth_date) ? \Carbon\Carbon::parse($clearance->resident->birth_date)->age : '___' }}</strong> years old,
-                <strong>{{ $clearance->resident->civil_status ?? '__________' }}</strong>, is a Filipino Citizen, a bonafide resident of
-                 {{ ($clearance->resident->purok && $clearance->resident->purok->purok_name) ? $clearance->resident->purok->purok_name : '__________' }},
-                {{ ucfirst(strtolower($barangayDetails->barangay_name ?? $barangayDetails->barangay ?? 'Barangay')) }},
-                {{ ucfirst(strtolower($barangayDetails->city_municipality ?? $barangayDetails->municipality ?? 'Municipality')) }},
-                {{ ucfirst(strtolower($barangayDetails->province ?? 'Province')) }}.
-            </p>
+                <div style="margin-bottom: 30px;"></div>
 
-            <p>
-                He/She has established residence for (__) months / (__) years now, and is known to me to be a person of good moral character.
-            </p>
+                <div class="content">
+                    <p>
+                        This is to certify that Mr./Mrs./Ms. <strong class="name">{{ strtoupper($clearance->resident->full_name ?? '__________') }}</strong>,
+                        <strong>{{ isset($clearance->resident->birth_date) ? \Carbon\Carbon::parse($clearance->resident->birth_date)->age : '___' }}</strong> years old,
+                        <strong>{{ $clearance->resident->civil_status ?? '__________' }}</strong>, is a Filipino Citizen, a bonafide resident of
+                        {{ ($clearance->resident->purok && $clearance->resident->purok->purok_name) ? $clearance->resident->purok->purok_name : '__________' }},
+                        {{ ucfirst(strtolower($barangayDetails->barangay_name ?? $barangayDetails->barangay ?? 'Barangay')) }},
+                        {{ ucfirst(strtolower($barangayDetails->city_municipality ?? $barangayDetails->municipality ?? 'Municipality')) }},
+                        {{ ucfirst(strtolower($barangayDetails->province ?? 'Province')) }}.
+                    </p>
 
-            <p>
-                He/She has not been engaged in any unlawful activity as per Barangay file.
-            </p>
+                    <p>
+                        He/She has established residence for (__) months / (__) years now, and is known to me to be a person of good moral character.
+                    </p>
 
-            <p>
-                This certification is issued upon the request of the interested party for whatever legal purpose it may serve him/her best.
-            </p>
+                    <p>
+                        He/She has not been engaged in any unlawful activity as per Barangay file.
+                    </p>
 
-            <p>
-                Issued and signed this <strong>{{ $clearance->date_of_issuance->format('jS') }}</strong> day of
-                <strong>{{ $clearance->date_of_issuance->format('F') }}, {{ $clearance->date_of_issuance->format('Y') }}</strong>
-                at Barangay {{ ucfirst(strtolower($barangayDetails->barangay_name ?? $barangayDetails->barangay ?? 'Barangay')) }} Administration Center.
-            </p>
-        </div>
+                    <p>
+                        This certification is issued upon the request of the interested party for whatever legal purpose it may serve him/her best.
+                    </p>
 
-        <div class="signature-row">
-            <div class="applicant">
-                <div style="margin-top:30px; padding-top:6px; text-decoration:underline">{{ strtoupper($clearance->resident->full_name ?? '__________') }}<br>
+                    <p>
+                        Issued and signed this <strong>{{ $clearance->date_of_issuance->format('jS') }}</strong> day of
+                        <strong>{{ $clearance->date_of_issuance->format('F') }}, {{ $clearance->date_of_issuance->format('Y') }}</strong>
+                        at Barangay {{ ucfirst(strtolower($barangayDetails->barangay_name ?? $barangayDetails->barangay ?? 'Barangay')) }} Administration Center.
+                    </p>
+                </div>
+
+                <div class="signature-row">
+                    <div class="applicant">
+                        <div style="margin-top:30px; padding-top:6px; text-decoration:underline">{{ strtoupper($clearance->resident->full_name ?? '__________') }}<br>
+                            </div>
+                            <span style="font-size:12px; text-decoration:none">Name and Signature of Applicant</span>
                     </div>
-                    <span style="font-size:12px; text-decoration:none">Name and Signature of Applicant</span>
-            </div>
 
-            <div class="sign">
-                <div style="margin-top:20px">
-                    <span class="name">{{ ($barangayDetails && $barangayDetails->captain_name) ?
-                     strtoupper($barangayDetails->captain_name) : '________________' }}</span>
-                    <div class="position">Punong Barangay</div>
+                    <div class="sign">
+                        <div style="margin-top:20px">
+                            <span class="name">{{ ($barangayDetails && $barangayDetails->captain_name) ?
+                            strtoupper($barangayDetails->captain_name) : '________________' }}</span>
+                            <div class="position">Punong Barangay</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="receipt">
+
+                    <div>Paid under Receipt No: {{ $clearance->or_number ?? '__________' }}</div>
+                    <div>Amount : {{ $clearance->amount_paid ? '₱' . number_format($clearance->amount_paid,2) : '__________' }}</div>
+                    <div>Date: {{ $clearance->date_of_issuance->format('m/d/Y') }}</div>
+                </div>
+
+                <div class="contact">
+                    <div class="left">{{ $barangayDetails->email ?? 'brgy@example.com' }}</div>
+                    <div class="right">{{ $barangayDetails->facebook ?? 'fb.com/barangay' }} &nbsp; {{ $barangayDetails->telephone ?? '034-000-0000' }}</div>
                 </div>
             </div>
-        </div>
-
-        <div class="receipt">
-
-            <div>Paid under Receipt No: {{ $clearance->or_number ?? '__________' }}</div>
-            <div>Amount : {{ $clearance->amount_paid ? '₱' . number_format($clearance->amount_paid,2) : '__________' }}</div>
-            <div>Date: {{ $clearance->date_of_issuance->format('m/d/Y') }}</div>
-        </div>
-
-        <div class="contact">
-            <div class="left">{{ $barangayDetails->email ?? 'brgy@example.com' }}</div>
-            <div class="right">{{ $barangayDetails->facebook ?? 'fb.com/barangay' }} &nbsp; {{ $barangayDetails->telephone ?? '034-000-0000' }}</div>
-        </div>
-    </div>
 
     <script>
         window.onload = function(){ window.print(); }
         window.onafterprint = function(){ window.close(); window.history.back(); };
     </script>
+    </div>
 </body>
 </html>

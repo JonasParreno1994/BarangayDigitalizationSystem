@@ -3,7 +3,8 @@
 @section('content')
 <div class="animate__animated p-6" :class="[$store.app.animation]">
     <div class="panel">
-        <div class="flex items-center justify-between mb-5">
+        @include('partials.certificate_header')
+        <div class="flex items-center justify-between mb-5 no-print">
             <h1 class="text-2xl font-bold">Certificate of First Time Jobseekers Details</h1>
             <div class="flex space-x-2">
                 <a href="{{ route('certificate_of_indigency.edit', $cert->id) }}" class="btn btn-primary">Edit</a>

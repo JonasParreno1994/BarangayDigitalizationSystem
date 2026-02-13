@@ -3,10 +3,10 @@
 @section('content')
 <div class="animate__animated p-6" :class="[$store.app.animation]">
     <div class="panel">
-        <div class="flex items-center justify-between mb-5">
+        @include('partials.certificate_header')
+        <div class="flex items-center justify-between mb-5 no-print">
             <h1 class="text-2xl font-bold">Certificate of Indigency Details</h1>
             <div class="flex space-x-2">
-              
                 <a href="{{ route('cert_indigency_minor.print', $cert->id) }}" class="btn btn-success" target="_blank">Print</a>
                 <form action="{{ route('cert_indigency_minor.destroy', $cert->id) }}" method="POST">
                     @csrf

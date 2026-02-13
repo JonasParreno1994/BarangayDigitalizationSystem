@@ -1,313 +1,291 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=794px">
-    <title>Barangay Certificate - {{ $certificate->resident->first_name }} {{ $certificate->resident->last_name }}</title>
+    <title>Barangay Certificate - {{ $certificate->resident->first_name . ' ' . $certificate->resident->last_name }}
+    </title>
     <style>
+        @page {
+            size: A4;
+            margin: 12mm;
+        }
+
         body {
             font-family: 'Times New Roman', Times, serif;
             margin: 0;
             padding: 0;
-            font-size: 12px;
-            line-height: 1.4;
-            background: #fff;
+            background: #fafafa;
+            color: #000
         }
-        .container {
-            width: 794px;
+
+        /* emulate admin "panel" on light gray background */
+        .page {
+            width: 210mm;
             margin: 0 auto;
-            padding: 20px;
+            padding: 20mm 18mm;
             box-sizing: border-box;
-            position: relative;
+            background: #fff;
+            border-radius: .375rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
         }
-        
-        /* Left sidebar with officials */
-        .officials-sidebar {
-            position: absolute;
-            left: 20px;
-            top: 80px;
-            width: 140px;
-            font-size: 11px;
-            padding-right: 10px;
-        }
-        
-        .official-item {
-            margin-bottom: 14px;
-            text-align: center;
-            line-height: 1.1;
-        }
-        
-        .official-name {
-            font-weight: bold;
-            font-size: 11px;
-            line-height: 1.2;
-            color: #000;
-            margin-bottom: 1px;
-        }
-        
-        .official-position {
-            font-size: 9px;
-            color: #000;
-            font-weight: normal;
-            margin-top: 1px;
-            line-height: 1.1;
-        }
-        
-        /* Main content area */
-        .main-content {
-            margin-left: 180px;
-            padding: 0 20px;
-        }
-        
+
         .header {
-            text-align: center;
-            margin-bottom: 20px;
             position: relative;
-            padding-top: 10px;
+            text-align: center;
+            padding-bottom: 1px;
+            padding-left: 110px;
         }
-        
-        .header-text {
-            font-size: 11px;
-            line-height: 1.3;
-            margin: 2px 0;
+
+        .logo-left {
+            position: absolute;
+            left: 18mm;
+            top: .05mm;
+            width: 100px;
+            height: 100px;
+            object-fit: contain
         }
-        
-        .logo-left,
+
         .logo-right {
             position: absolute;
-            width: 60px;
-            height: 60px;
-            object-fit: contain;
-            top: 10px;
+            right: 18mm;
+            top: .05mm;
+            width: 90px;
+            height: 90px;
+            object-fit: contain
         }
-        
-        .logo-left { left: -30px; }
-        .logo-right { right: -30px; }
-        
-        .certificate-title {
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-            margin: 20px 0;
-            text-decoration: underline;
+
+        .header .gov {
+            font-weight: 700;
+            font-family: Calisto MT;
+            font-size: 13px;
+            margin: 2px 0
         }
-        
-        .to-whom {
-            text-align: center;
-            font-weight: bold;
-            margin: 15px 0;
-            font-size: 12px;
+
+        .header .barangay {
+            font-weight: 900;
+            font-size: 20px;
+            margin: 4px 0;
+            color: #0b5ed7
         }
-        
-        .certificate-body {
-            text-align: justify;
-            font-size: 12px;
-            line-height: 1.6;
-            margin: 20px 0;
-            text-indent: 50px;
-        }
-        
-        .resident-info {
-            font-weight: bold;
-            text-decoration: underline;
-        }
-        
-        .signature-section {
-            margin-top: 40px;
-            text-align: right;
-            font-size: 11px;
-        }
-        
-        .signature-line {
-            margin-top: 30px;
-            border-bottom: 1px solid #000;
-            width: 200px;
-            margin-left: auto;
-        }
-        
-        .signature-name {
-            font-weight: bold;
-            margin-top: 5px;
-        }
-        
-        .signature-title {
+
+        .office {
+            font-weight: 700;
             font-style: italic;
-            font-size: 10px;
+            font-size: 14px;
+            color: #0b5ed7
         }
-        
-        .footer-info {
+
+        .title {
+            text-align: center;
+            font-size: 26px;
+            font-weight: 700;
+            margin: 18px 0 8px
+        }
+
+        .to-whom {
+            font-style: italic;
+            margin-bottom: 6px
+        }
+
+        .content {
+            font-size: 20px;
+            font-family: 'Times New Roman', Times, serif;
+            text-align: justify;
+            margin: 6px 0;
+            line-height: 2
+        }
+
+        .content p {
+            text-indent: 0.6in;
+            margin: 10px 0
+        }
+
+        .signature-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 50px
+        }
+
+        .applicant {
+            width: 45%;
+            text-align: left
+        }
+
+        .applicant .name {
+            font-weight: 700;
+            text-decoration: underline
+        }
+
+        .sign {
+            width: 45%;
+            text-align: center
+        }
+
+        .sign .name {
+            font-weight: 700;
+            text-decoration: underline;
+            display: block
+        }
+
+        .sign .position {
+            margin-top: 4px;
+            font-size: 14px
+        }
+
+        .footer {
             margin-top: 40px;
-            font-size: 10px;
+            font-size: 12px
         }
-        
-        .payment-info {
-            margin-top: 20px;
-            font-size: 11px;
+
+        .receipt {
+            margin-top: 18px
         }
-        
-        .background-image {
-            position: absolute;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 300px;
-            height: 150px;
-            opacity: 0.1;
-            z-index: -1;
+
+        .contact {
+            margin-top: 24px;
+            font-size: 12px;
+            border-top: 2px solid #e6e6e6;
+            padding-top: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center
         }
-        
+
+        .contact .left {
+            font-size: 12px
+        }
+
+        .contact .right {
+            font-size: 12px
+        }
+
         @media print {
-            body, html {
-                width: 800px;
-                height: 950px;
-                margin: 0;
-                padding: 0;
+
+            body,
+            html {
+                width: 210mm
             }
-            .container { 
-                page-break-inside: avoid;
-                width: 100%;
-                margin: 0;
-                padding: 20px;
+
+            .page {
+                padding: 12mm
             }
-            img { max-width: 100%; height: auto; }
+
+            /* hide common app UI elements when printing (if present) */
+            .navbar,
+            .topbar,
+            .breadcrumb,
+            .print-header,
+            .no-print {
+                display: none !important;
+            }
+
+            /* Note: browser-added headers/footers (date, URL, title) are controlled by
+               the browser print dialog. Disable "Headers and footers" in print settings
+               to remove the timestamp and URL from the printed output. */
         }
     </style>
 </head>
+
 <body>
-    <div class="container">
-        <!-- Officials Sidebar -->
-        <div class="officials-sidebar">
-            @if($officials && $officials->count() > 0)
-                @foreach($officials->take(14) as $official)
-                    <div class="official-item">
-                        <div class="official-name">{{ strtoupper($official->name ?? 'N/A') }}</div>
-                        <div class="official-position">{{ strtoupper($official->position->position ?? $official->committee ?? 'BARANGAY KAGAWAD') }}</div>
-                    </div>
-                @endforeach
-            @else
-                <div class="official-item">
-                    <div class="official-name">NO OFFICIALS</div>
-                    <div class="official-position">AVAILABLE</div>
+    <div class="page">
+        <div class="header" style="text-align:center; padding-left:0">
+            @if($barangayDetails && $barangayDetails->logo1_path)
+                <img src="{{ asset('storage/' . $barangayDetails->logo1_path) }}" class="logo-left" alt="logo left">
+            @endif
+            @if($barangayDetails && $barangayDetails->logo2_path)
+                <img src="{{ asset('storage/' . $barangayDetails->logo2_path) }}" class="logo-right" alt="logo right">
+            @endif
+            <div class="gov">REPUBLIC OF THE PHILIPPINES</div>
+            <div class="gov">PROVINCE OF {{ strtoupper($barangayDetails->province ?? '') }}</div>
+            <div class="gov">MUNICIPALITY OF
+                {{ strtoupper($barangayDetails->city_municipality ?? $barangayDetails->municipality ?? '') }}</div>
+            <div class="barangay">BARANGAY
+                {{ strtoupper($barangayDetails->barangay_name ?? $barangayDetails->barangay ?? $barangayDetails->name ?? '') }}
+            </div>
+            <div class="office">Office of the Punong Barangay</div>
+            <div style="margin-top:12px">
+                <hr style="border:none; border-top:2px solid #000; margin:6px auto; width:100%">
+                <hr style="border:none; border-top:1px solid #000; margin:0 auto; width:100%">
+            </div>
+        </div>
+
+        <div class="title">BARANGAY CERTIFICATE</div>
+        <div style="margin-bottom: 30px;"></div>
+        <div class="to-whom">TO WHOM IT MAY CONCERN:</div>
+
+        <div style="margin-bottom: 30px;"></div>
+
+        <div class="content">
+            <p>
+                This is to certify that
+                <strong
+                    class="name">{{ strtoupper($certificate->resident->first_name . ' ' . $certificate->resident->last_name) }}</strong>,
+                <strong>{{ \Carbon\Carbon::parse($certificate->resident->birth_date)->age }}</strong> years old,
+                <strong>{{ strtolower($certificate->resident->civil_status) }}</strong>, is a Filipino Citizen, is a
+                bonafide resident of
+                {{ ucfirst(strtolower($barangayDetails->barangay_name ?? $barangayDetails->barangay ?? 'Barangay')) }},
+                {{ ucfirst(strtolower($barangayDetails->city_municipality ?? $barangayDetails->municipality ?? '')) }},
+                {{ ucfirst(strtolower($barangayDetails->province ?? '')) }}.
+            </p>
+
+            <p>
+                He/She has established residence for
+                <strong>{{ $certificate->residence_period_years ?? '____' }}</strong> years and
+                <strong>{{ $certificate->residence_period_months ?? '____' }}</strong> months and is known to me to be a
+                person of good moral character.
+            </p>
+
+            <p>
+                Issued and signed this
+                <strong>{{ \Carbon\Carbon::parse($certificate->date_of_issuance)->format('jS') }}</strong> day of
+                <strong>{{ \Carbon\Carbon::parse($certificate->date_of_issuance)->format('F') }},
+                    {{ \Carbon\Carbon::parse($certificate->date_of_issuance)->format('Y') }}</strong>
+                at Barangay
+                {{ ucfirst(strtolower($barangayDetails->barangay_name ?? $barangayDetails->barangay ?? 'Barangay')) }}
+                Administration Center.
+            </p>
+        </div>
+
+        <div class="signature-row">
+            <div class="applicant">
+                <div style="margin-top:30px; padding-top:6px; text-decoration:underline">
+                    {{ strtoupper($certificate->resident->first_name . ' ' . $certificate->resident->last_name) }}<br>
                 </div>
-            @endif
+                <span style="font-size:12px; text-decoration:none">Name and Signature of Applicant</span>
+            </div>
+
+            <div class="sign">
+                <div style="margin-top:20px">
+                    <span class="name">{{ ($barangayDetails && $barangayDetails->captain_name) ?
+    strtoupper($barangayDetails->captain_name) : '________________' }}</span>
+                    <div class="position">Punong Barangay</div>
+                </div>
+            </div>
         </div>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <!-- Header -->
-            <div class="header">
-                @if(isset($barangayDetails) && $barangayDetails->logo1_path)
-                    <img src="{{ asset('storage/' . $barangayDetails->logo1_path) }}" alt="Logo 1" class="logo-left">
-                @endif
-                @if(isset($barangayDetails) && $barangayDetails->logo2_path)
-                    <img src="{{ asset('storage/' . $barangayDetails->logo2_path) }}" alt="Logo 2" class="logo-right">
-                @endif
-                
-                <div class="header-text">Republic of the Philippines</div>
-                <div class="header-text">Province of {{ $barangayDetails->province ?? 'Negros Occidental' }}</div>
-                <div class="header-text">Municipality of {{ $barangayDetails->municipality ?? 'Hinobaan' }}</div>
-                <div class="header-text"><strong>{{ strtoupper($barangayDetails->barangay_name ?? 'BARANGAY BACUYANGAN') }}</strong></div>
-                <div class="header-text">Office of the Punong Barangay</div>
-            </div>
-
-            <!-- Certificate Title -->
-            <div class="certificate-title">BARANGAY CERTIFICATE</div>
-
-            <!-- To Whom It May Concern -->
-            <div class="to-whom">TO WHOM IT MAY CONCERN:</div>
-
-            <!-- Certificate Body -->
-            <div class="certificate-body">
-                This is to certify that 
-                <span class="resident-info">
-                    {{ strtoupper($certificate->resident->first_name . ' ' . ($certificate->resident->middle_name ? $certificate->resident->middle_name[0] . '. ' : '') . $certificate->resident->last_name) }}, 
-                    {{ \Carbon\Carbon::parse($certificate->resident->birth_date)->age }} years old, 
-                    {{ strtolower($certificate->resident->civil_status) }}, is a Filipino Citizen, 
-                    {{ strtolower($certificate->resident->civil_status === 'Married' ? 
-                        ($certificate->resident->sex === 'Male' ? 'married' : 'married') : 'separated') }}.
-                </span>
-                is a bonafide resident of {{ $barangayDetails->barangay_name ?? 'Barangay Bacuyangan' }}, {{ $barangayDetails->municipality ?? 'Hinobaan' }}, {{ $barangayDetails->province ?? 'Negros Occidental' }}.
-            </div>
-
-            <div class="certificate-body" style="text-indent: 50px; margin-top: 15px;">
-                He/She has established residence in {{ $barangayDetails->barangay_name ?? 'Barangay Bacuyangan' }}, {{ $barangayDetails->municipality ?? 'Hinobaan' }}, {{ $barangayDetails->province ?? 'Negros Occidental' }} for a period of 
-                @if($certificate->residence_period_years || $certificate->residence_period_months)
-                    {{ $certificate->residence_period_years ? $certificate->residence_period_years . ' year' . ($certificate->residence_period_years > 1 ? 's' : '') : '' }}
-                    {{ $certificate->residence_period_years && $certificate->residence_period_months ? ' and ' : '' }}
-                    {{ $certificate->residence_period_months ? $certificate->residence_period_months . ' month' . ($certificate->residence_period_months > 1 ? 's' : '') : '' }}
-                @else
-                    _____ years now,
-                @endif
-                and is known to me to be a person of good moral character.
-            </div>
-
-            <div class="certificate-body" style="text-indent: 50px; margin-top: 15px;">
-                He has not been engaged in <strong>any unlawful activity as per Barangay file.</strong>
-            </div>
-
-            <div class="certificate-body" style="text-indent: 50px; margin-top: 15px;">
-                This certification is issued upon the request of the interested party and whatever legal purpose it may serve him/her best.
-            </div>
-
-            <div class="certificate-body" style="text-indent: 50px; margin-top: 15px;">
-                Issued and signed this 
-                <strong>{{ \Carbon\Carbon::parse($certificate->date_of_issuance)->format('jS') }}</strong> 
-                day of 
-                <strong>{{ \Carbon\Carbon::parse($certificate->date_of_issuance)->format('F, Y') }}</strong> 
-                at {{ $barangayDetails->barangay_name ?? 'Barangay Bacuyangan' }} Administration Center.
-            </div>
-
-            <!-- Signature Section -->
-            <div class="signature-section">
-                <div class="signature-line"></div>
-                @php
-                    $captain = $officials ? $officials->first(fn($official) => 
-                        stripos($official->position->position ?? '', 'punong') !== false || 
-                        stripos($official->committee ?? '', 'punong') !== false
-                    ) : null;
-                @endphp
-                <div class="signature-name">{{ strtoupper($captain->name ?? $barangayDetails->punong_barangay_name ?? 'PUNONG BARANGAY') }}</div>
-                <div class="signature-title">Punong Barangay</div>
-            </div>
-
-            <!-- Payment Information -->
-            @if($certificate->or_number || $certificate->amount_paid)
-            <div class="payment-info">
-                @if($certificate->or_number)
-                    <div><strong>{{ strtoupper($certificate->resident->first_name . ' ' . ($certificate->resident->middle_name ? $certificate->resident->middle_name[0] . '. ' : '') . $certificate->resident->last_name) }}</strong></div>
-                    <div>Paid under Receipt No: {{ $certificate->or_number }}</div>
-                @endif
-                @if($certificate->amount_paid)
-                    <div>Amount: {{ number_format($certificate->amount_paid, 2) }}</div>
-                @endif
-                <div>Date: {{ \Carbon\Carbon::parse($certificate->date_of_issuance)->format('m-d-Y') }}</div>
-            </div>
-            @endif
+        <div class="receipt">
+            <div>Paid under Receipt No: {{ $certificate->or_number ?? '__________' }}</div>
+            <div>Amount :
+                {{ $certificate->amount_paid ? '₱' . number_format($certificate->amount_paid, 2) : '__________' }}</div>
+            <div>Date: {{ \Carbon\Carbon::parse($certificate->date_of_issuance)->format('m/d/Y') }}</div>
         </div>
 
+        <div class="contact">
+            <div class="left">{{ $barangayDetails->email ?? 'brgy@example.com' }}</div>
+            <div class="right">{{ $barangayDetails->facebook ?? 'fb.com/barangay' }} &nbsp;
+                {{ $barangayDetails->telephone ?? '034-000-0000' }}</div>
+        </div>
     </div>
 
     <script>
-        window.onload = function() {
-            window.print();
-        }
-        
-        window.onafterprint = function() {
-            // Try to close if opened in popup, otherwise redirect with success message
-            if (window.opener) {
-                window.close();
-            } else {
-                window.location.href = "{{ route('barangay-certificate.index') }}?printed=1";
-            }
-        }
-        
-        // Fallback: if user closes window/tab without printing
-        window.addEventListener('beforeunload', function() {
-            // This will only trigger if user manually closes without printing
-            if (!window.printed) {
-                // This won't work for navigation, but good for manual close
-            }
-        });
+        window.onload = function () { window.print(); }
+        window.onafterprint = function () {
+            if (window.opener) { window.close(); } else { window.location.href = "{{ route('barangay-certificate.index') }}?printed=1"; }
+        };
     </script>
 </body>
+
 </html>

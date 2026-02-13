@@ -4,15 +4,17 @@
 <div class="animate__animated p-6" :class="[$store.app.animation]">
     <div class="panel">
         <div class="flex items-center justify-between mb-5">
-            <h1 class="text-2xl font-bold">Death Certificate Details</h1>
-            <div class="flex space-x-2">
-                <a href="{{ route('certificate-of-death.edit', $certificate->id) }}" class="btn btn-primary">Edit</a>
-                <a href="{{ route('certificate-of-death.print', $certificate->id) }}" class="btn btn-success" target="_blank">Print</a>
-                <form action="{{ route('certificate-of-death.destroy', $certificate->id) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="button" class="btn btn-danger delete-certificate">Delete</button>
-                </form>
+            @include('partials.certificate_header')
+            <div class="no-print">
+                <div class="flex space-x-2">
+                    <a href="{{ route('certificate-of-death.edit', $certificate->id) }}" class="btn btn-primary">Edit</a>
+                    <a href="{{ route('certificate-of-death.print', $certificate->id) }}" class="btn btn-success" target="_blank">Print</a>
+                    <form action="{{ route('certificate-of-death.destroy', $certificate->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" class="btn btn-danger delete-certificate">Delete</button>
+                    </form>
+                </div>
             </div>
         </div>
 

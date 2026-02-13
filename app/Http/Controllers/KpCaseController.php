@@ -124,7 +124,18 @@ class KpCaseController extends Controller
         $settlementLabels = $settlementData->pluck('mode_of_settlement');
         $settlementCounts = $settlementData->pluck('count');
 
-        return view('kps.report_form', compact('chartLabels', 'chartData', 'natureLabels', 'natureCounts', 'settlementLabels', 'settlementCounts'));
+
+        // Fetch Action Taken Data
+        $actionData = KpCase::select('action_taken', \DB::raw('count(*) as count'))
+            ->whereNotNull('action_taken')
+            ->where('action_taken', '!=', '')
+            ->groupBy('action_taken')
+            ->get();
+
+        $actionLabels = $actionData->pluck('action_taken');
+        $actionCounts = $actionData->pluck('count');
+
+        return view('kps.report_form', compact('chartLabels', 'chartData', 'natureLabels', 'natureCounts', 'settlementLabels', 'settlementCounts', 'actionLabels', 'actionCounts'));
     }
 
     public function generateReport(Request $request)

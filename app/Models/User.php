@@ -60,11 +60,6 @@ class User extends Authenticatable
         return $this->role === self::ROLE_SECRETARY;
     }
 
-    public function isTreasurer(): bool
-    {
-        return $this->role === self::ROLE_TREASURER;
-    }
-
     public function isEncoder(): bool
     {
         return $this->role === self::ROLE_ENCODER;
@@ -75,7 +70,6 @@ class User extends Authenticatable
         return [
             self::ROLE_STAFF,
             self::ROLE_SECRETARY,
-            self::ROLE_TREASURER,
             self::ROLE_ENCODER,
         ];
     }

@@ -14,6 +14,7 @@ class User extends Authenticatable
     const ROLE_STAFF = 'Staff';
     const ROLE_SECRETARY = 'Secretary';
     const ROLE_ENCODER = 'Encoder';
+    const ROLE_TREASURER = 'Treasurer';
 
     /**
      * The attributes that are mass assignable.
@@ -49,7 +50,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    public function isStuff(): bool
+    public function isStaff(): bool
     {
         return $this->role === self::ROLE_STAFF;
     }

@@ -1,5 +1,10 @@
 @extends('layouts.adminLayout.index')
 @section('content')
+<style>
+    input[type="text"], textarea {
+        text-transform: uppercase;
+    }
+</style>
 <div x-data="modal" class="mb-5">
 <div class="animate__animated p-6" :class="[$store.app.animation]">
     <!-- start main content section -->
@@ -152,4 +157,14 @@
 </script>
 
 <script src="{{ asset('admin/assets/js/simple-datatables.js') }}"></script>
+<script>
+    document.addEventListener('input', function(e) {
+        if ((e.target.tagName === 'INPUT' && e.target.getAttribute('type') === 'text') || e.target.tagName === 'TEXTAREA') {
+            let start = e.target.selectionStart;
+            let end = e.target.selectionEnd;
+            e.target.value = e.target.value.toUpperCase();
+            e.target.setSelectionRange(start, end);
+        }
+    });
+</script>
 @endsection

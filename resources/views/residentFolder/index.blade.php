@@ -111,6 +111,10 @@
     background-color: #fee2e2;
     color: #991b1b;
 }
+
+input[type="text"] {
+    text-transform: uppercase;
+}
 </style>
 
 @if(session('success'))
@@ -1631,4 +1635,14 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <script src="{{ asset('admin/assets/js/simple-datatables.js') }}"></script>
+<script>
+    document.addEventListener('input', function(e) {
+        if (e.target.tagName === 'INPUT' && e.target.getAttribute('type') === 'text') {
+            let start = e.target.selectionStart;
+            let end = e.target.selectionEnd;
+            e.target.value = e.target.value.toUpperCase();
+            e.target.setSelectionRange(start, end);
+        }
+    });
+</script>
 @endsection

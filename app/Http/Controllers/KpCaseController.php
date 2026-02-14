@@ -12,7 +12,7 @@ class KpCaseController extends Controller
     use HasBarangayDetails;
     public function index()
     {
-        $kpCases = KpCase::all();
+        $kpCases = KpCase::latest()->get();
         return view('kps.index', compact('kpCases'));
     }
 

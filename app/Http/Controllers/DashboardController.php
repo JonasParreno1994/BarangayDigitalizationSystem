@@ -100,6 +100,7 @@ class DashboardController extends Controller
             'analytics',
             'monthlyData',
             'seniorPurokData',
+            'seniorPurokData',
             'currentYear'
         ));
     }

@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
             <h5 class="font-semibold text-lg dark:text-white-light mb-3">Nature of Disputes</h5>
             <div style="position: relative; height: 300px; width: 100%;">
@@ -23,6 +23,12 @@
             <h5 class="font-semibold text-lg dark:text-white-light mb-3">Mode of Settlement</h5>
             <div style="position: relative; height: 300px; width: 100%;">
                 <canvas id="settlementChart"></canvas>
+            </div>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+            <h5 class="font-semibold text-lg dark:text-white-light mb-3">Action Taken</h5>
+            <div style="position: relative; height: 300px; width: 100%;">
+                <canvas id="actionChart"></canvas>
             </div>
         </div>
     </div>
@@ -223,6 +229,38 @@
                         'rgba(6, 182, 212, 0.8)',  // Cyan
                         'rgba(236, 72, 153, 0.8)', // Pink
                         'rgba(14, 165, 233, 0.8)', // Sky
+                    ],
+                    borderColor: 'transparent',
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { color: '#64748b' }
+                    }
+                }
+            }
+        });
+
+        // Action Taken Chart
+        const actionCtx = document.getElementById('actionChart').getContext('2d');
+        new Chart(actionCtx, {
+            type: 'pie', // using pie chart for consistency with settlement chart
+            data: {
+                labels: {!! json_encode($actionLabels) !!},
+                datasets: [{
+                    data: {!! json_encode($actionCounts) !!},
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.8)',
+                        'rgba(54, 162, 235, 0.8)',
+                        'rgba(255, 206, 86, 0.8)',
+                        'rgba(75, 192, 192, 0.8)',
+                        'rgba(153, 102, 255, 0.8)',
+                        'rgba(255, 159, 64, 0.8)'
                     ],
                     borderColor: 'transparent',
                     borderWidth: 0

@@ -98,7 +98,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/filesCategory/update/{id}', [FilesCategoryController::class, 'update'])->name('filescategory.update');
         Route::delete('/filesCategory/{id}', [FilesCategoryController::class, 'destroy'])->name('filescategory.destroy');
         
-        Route::resource('purok', PurokController::class);
+
         
         Route::get('/barangayiddetails', [BrangayidDetailsController::class, 'index'])->name('barangayid.index');
         Route::get('/barangayiddetails/create', [BrangayidDetailsController::class, 'create'])->name('barangayid.create');
@@ -163,6 +163,7 @@ Route::middleware('auth')->group(function () {
 
     // Certificates & Reports & KP Cases - Admin, Staff, Secretary, Treasurer
     Route::middleware(['role:Admin,Staff,Secretary,Treasurer'])->group(function () {
+        Route::resource('purok', PurokController::class);
         Route::get('/barangayclearance', [BrgyclearanceController::class, 'index'])->name('barangayclearance.index');
         Route::get('/barangayclearance/report', [BrgyclearanceController::class, 'report'])->name('barangayclearance.report');
         Route::post('/barangayclearance', [BrgyclearanceController::class, 'store'])->name('barangayclearance.store');

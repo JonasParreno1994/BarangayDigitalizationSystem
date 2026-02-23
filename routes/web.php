@@ -29,6 +29,7 @@ use App\Http\Controllers\RbiFormCController;
 use App\Http\Controllers\BarangayDetailController;
 use App\Http\Controllers\BarangayCertificateController;
 use App\Http\Controllers\KpCaseController;
+use App\Http\Controllers\BackupController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -66,6 +67,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/officials/update/{id}', [OfficialController::class, 'update'])->name('officials.update');
         Route::delete('/officials/{id}', [OfficialController::class, 'destroy'])->name('officials.destroy');
         Route::get('/get-comelec-data', [OfficialController::class, 'getComelecData'])->name('getComelecData');
+        
+        // System Backup Data
+        Route::get('/backup-data', [BackupController::class, 'exportSql'])->name('admin.backup');
 
         // Barangay Details Management
         Route::get('/barangaydetails', [BarangayDetailController::class, 'index'])->name('barangaydetails.index');

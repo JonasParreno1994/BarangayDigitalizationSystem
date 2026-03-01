@@ -12,6 +12,7 @@ class CertFirstTimeJobseeker extends Model
     protected $fillable = [
         'resident_id',
         'age',
+        'residence_period_years',
         'purok',
         'barangay',
         'cedula_number',

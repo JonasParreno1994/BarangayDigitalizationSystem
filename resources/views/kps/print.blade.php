@@ -36,23 +36,7 @@
 </head>
 <body>
     <div class="page">
-        <div class="header" style="text-align:center; padding-left:0">
-            @if($barangayDetails && $barangayDetails->logo1_path)
-            <img src="{{ asset('storage/' . $barangayDetails->logo1_path) }}" class="logo-left" alt="logo left">
-            @endif
-             @if($barangayDetails && $barangayDetails->logo2_path)
-            <img src="{{ asset('storage/' . $barangayDetails->logo2_path) }}" class="logo-right" alt="logo right">
-            @endif
-            <div class="gov">REPUBLIC OF THE PHILIPPINES</div>
-            <div class="gov">PROVINCE OF {{ strtoupper($barangayDetails->province ?? '') }}</div>
-            <div class="gov">MUNICIPALITY OF {{ strtoupper($barangayDetails->city_municipality ?? $barangayDetails->municipality ?? '') }}</div>
-            <div class="barangay">BARANGAY {{ strtoupper($barangayDetails->barangay_name ?? $barangayDetails->barangay ?? $barangayDetails->name ?? '') }}</div>
-            <div class="office">Office of the Punong Barangay</div>
-            <div style="margin-top:12px">
-            <hr style="border:none; border-top:2px solid #000; margin:6px auto; width:100%">
-            <hr style="border:none; border-top:1px solid #000; margin:0 auto; width:100%">
-            </div>
-        </div>
+        @include('components.cer_header')
 
         <div class="title">KATARUNGANG PAMBARANGAY</div>
         <div class="subtitle">CASE REPORT</div>

@@ -74,6 +74,15 @@ class ResidentModel extends Model
         return "{$this->last_name}, {$this->first_name}" . ($this->middle_name ? " {$this->middle_name}" : '') . ($this->suffix ? " {$this->suffix}" : '');
     }
 
+    public function getFullNameFirstAttribute()
+    {
+        $middleInitial = '';
+        if ($this->middle_name) {
+            $middleInitial = ' ' . strtoupper(substr($this->middle_name, 0, 1)) . '.';
+        }
+        return "{$this->first_name}{$middleInitial} {$this->last_name}" . ($this->suffix ? " {$this->suffix}" : '');
+    }
+
     public function getAgeAttribute()
     {
         return Carbon::parse($this->birth_date)->age;

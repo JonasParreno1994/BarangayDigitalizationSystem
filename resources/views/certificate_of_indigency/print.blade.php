@@ -3,12 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=794px">
+    <meta name="viewport" content="width=210mm">
     <title>Certificate of Indigency - {{ $certificate->resident->full_name ?? 'Resident' }}</title>
     <style>
         @page {
             size: A4;
-            margin: 12mm;
+            margin: 0 12mm 12mm 12mm;
         }
 
         body {
@@ -21,9 +21,12 @@
 
         /* emulate admin "panel" on light gray background */
         .page {
+            display: flex;
+            flex-direction: column;
             width: 210mm;
+            min-height: 297mm;
             margin: 0 auto;
-            padding: 20mm 18mm;
+            padding: 0 18mm 20mm 18mm;
             box-sizing: border-box;
             background: #fff;
             border-radius: .375rem;
@@ -144,7 +147,7 @@
         }
 
         .contact {
-            margin-top: 24px;
+            margin-top: auto;
             font-size: 12px;
             border-top: 2px solid #e6e6e6;
             padding-top: 8px;
@@ -165,11 +168,12 @@
 
             body,
             html {
-                width: 210mm
+                width: 210mm;
+                height: 297mm;
             }
 
             .page {
-                padding: 12mm
+                padding: 0 12mm 12mm 12mm;
             }
 
             /* hide common app UI elements when printing (if present) */
@@ -190,26 +194,7 @@
 
 <body>
     <div class="page">
-        <div class="header" style="text-align:center; padding-left:0">
-            @if($barangayDetails && $barangayDetails->logo1_path)
-                <img src="{{ asset('storage/' . $barangayDetails->logo1_path) }}" class="logo-left" alt="logo left">
-            @endif
-            @if($barangayDetails && $barangayDetails->logo2_path)
-                <img src="{{ asset('storage/' . $barangayDetails->logo2_path) }}" class="logo-right" alt="logo right">
-            @endif
-            <div class="gov">REPUBLIC OF THE PHILIPPINES</div>
-            <div class="gov">PROVINCE OF {{ strtoupper($barangayDetails->province ?? '') }}</div>
-            <div class="gov">MUNICIPALITY OF
-                {{ strtoupper($barangayDetails->city_municipality ?? $barangayDetails->municipality ?? '') }}</div>
-            <div class="barangay">BARANGAY
-                {{ strtoupper($barangayDetails->barangay_name ?? $barangayDetails->barangay ?? $barangayDetails->name ?? '') }}
-            </div>
-            <div class="office">Office of the Punong Barangay</div>
-            <div style="margin-top:12px">
-                <hr style="border:none; border-top:2px solid #000; margin:6px auto; width:100%">
-                <hr style="border:none; border-top:1px solid #000; margin:0 auto; width:100%">
-            </div>
-        </div>
+        @include('components.cer_header')
 
         <div class="title">CERTIFICATE OF INDIGENCY</div>
         <div style="margin-bottom: 30px;"></div>
@@ -219,7 +204,7 @@
 
         <div class="content">
             <p>
-                This is to certify that Mr./Ms./Mrs. <strong
+                This is to certify that <strong
                     class="name">{{ strtoupper($certificate->resident->full_name ?? '__________') }}</strong>
                 of legal age,
                 {{ ucfirst(strtolower($certificate->resident->sex ?? '')) }},
@@ -231,43 +216,34 @@
             </p>
 
             <p>
-                I further certify that the holder/bearer was informed of his/her rights and
-                responsibilities as required.
+                Further certifies that the above-named person is a low income and considered as an indigent family which could hardly meet
+                family basic needs. 
             </p>
-
+              <p>
+                This certification is issued upon the request of the above-named person for whatever
+                legal purpose it may serve best. 
+            </p>
             <p>
                 Issued and signed this <strong>{{ $certificate->date_of_issuance->format('jS') }}</strong> day of
                 <strong>{{ $certificate->date_of_issuance->format('F') }},
                     {{ $certificate->date_of_issuance->format('Y') }}</strong>
                 at Barangay
-                {{ ucfirst(strtolower($barangayDetails->barangay_name ?? $barangayDetails->barangay ?? 'Barangay')) }}
-                Administration Center.
+                {{ ucfirst(strtolower($barangayDetails->barangay_name ?? $barangayDetails->barangay ?? 'Barangay')) }}, Hinoba-an, Negros Occidental.
             </p>
         </div>
 
         <div class="signature-row">
-            <div class="applicant">
-                <div style="margin-top:30px; padding-top:6px; text-decoration:underline">
-                    {{ strtoupper($certificate->resident->full_name ?? '__________') }}<br>
-                </div>
-                <span style="font-size:12px; text-decoration:none">Name and Signature of Applicant</span>
-            </div>
-
-            <div class="sign">
+            <div class="sign" style="text-align: right; width: 100%;">
                 <div style="margin-top:20px">
-                    <span class="name">{{ ($barangayDetails && $barangayDetails->captain_name) ?
-    strtoupper($barangayDetails->captain_name) : '________________' }}</span>
+                    <span class="name" style="text-align: right; width: 100%;">{{ ($barangayDetails && $barangayDetails->captain_name) ?
+                        strtoupper($barangayDetails->captain_name) : ''}}</span>
                     <div class="position">Punong Barangay</div>
                 </div>
             </div>
         </div>
 
-        <div class="contact">
-            <div class="left">{{ $barangayDetails->email ?? 'brgy@example.com' }}</div>
-            <div class="right">{{ $barangayDetails->facebook ?? 'fb.com/barangay' }} &nbsp;
-                {{ $barangayDetails->telephone ?? '034-000-0000' }}</div>
+        @include('components.cer_footer')
         </div>
-    </div>
 
     <script>
         window.onload = function () { window.print(); }

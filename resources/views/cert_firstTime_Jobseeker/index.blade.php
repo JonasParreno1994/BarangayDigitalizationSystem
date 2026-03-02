@@ -166,20 +166,21 @@
                        <form id="clearanceForm" action="{{ route('cert_firstTime_Jobseeker.store') }}" method="POST">
                             @csrf
                             
+                            <div class="mb-4">
+                                <label class="form-label">Name <span class="text-red-500">*</span></label>
+                                <select class="form-select resident-search" name="resident_id" id="residentSelect" required>
+                                    <option value="">Select Resident</option>
+                                    @foreach($residents as $resident)
+                                        <option value="{{ $resident->id }}" 
+                                                data-purok="{{ $resident->purok ? $resident->purok->purok_name : '' }}"
+                                                data-age="{{ $resident->age ?? '' }}">
+                                            {{ $resident->last_name }}, {{ $resident->first_name }} {{ $resident->middle_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
-                                <div>
-                                    <label class="form-label">Name <span class="text-red-500">*</span></label>
-                                    <select class="form-select resident-search" name="resident_id" id="residentSelect" required>
-                                        <option value="">Select Resident</option>
-                                        @foreach($residents as $resident)
-                                            <option value="{{ $resident->id }}" 
-                                                    data-purok="{{ $resident->purok ? $resident->purok->purok_name : '' }}">
-                                                {{ $resident->last_name }}, {{ $resident->first_name }} {{ $resident->middle_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                
                                 <div>
                                     <label class="form-label">Purok <span class="text-red-500">*</span></label>
                                     <input type="text" name="purok"  class="form-input" id="purokField" required>
@@ -188,6 +189,10 @@
                                 <div>
                                     <label class="form-label">Age <span class="text-red-500">*</span></label>
                                     <input type="number" name="age" class="form-input" placeholder="Enter age" min="15" max="100" required>
+                                </div>
+                                <div>
+                                    <label class="form-label">Years Lived <span class="text-red-500">*</span></label>
+                                    <input type="number" name="residence_period_years" class="form-input" placeholder="Years Lived" min="0" required>
                                 </div>
                                 <script>
                                     $(document).ready(function() {
@@ -208,14 +213,18 @@
                                         });
                                     
                                         $('#residentSelect').on('change', function() {
-                                            let purok = $(this).find(':selected').data('purok');
-                                            $('#purokField').val(purok || '');
+                                            let selectedOption = $(this).find('option:selected');
+                                            let purok = selectedOption.data('purok');
+                                            let age = selectedOption.data('age');
+                                            
+                                            $('#purokField').val(purok || '').prop('readonly', !!purok);
+                                            $('input[name="age"]').val(age || '').prop('readonly', !!age);
                                         });
                                     });
                                     </script>
                                      
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-4">
                         
                           
                             <div>

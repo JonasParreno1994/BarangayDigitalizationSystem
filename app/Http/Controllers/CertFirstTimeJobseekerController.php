@@ -72,6 +72,7 @@ class CertFirstTimeJobseekerController extends Controller
         $validated = $request->validate([
             'resident_id' => 'required|exists:tblresidents,id',
             'age' => 'required|integer|min:15|max:100',
+            'residence_period_years' => 'nullable|integer|min:0',
             'purok' => 'required|string|max:100',
             'date_of_issuance' => 'required|date',
             'or_number' => 'nullable|string|max:50',

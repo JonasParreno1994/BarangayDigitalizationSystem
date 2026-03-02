@@ -354,7 +354,7 @@
                                         </svg>
                                         <span
                                             class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Cert.
-                                            of Residency</span>
+                                            for App. for Marriage</span>
                                     </div>
                                 </a>
                             </li>
@@ -379,7 +379,7 @@
                                                 fill="currentColor"></path>
                                         </svg>
                                         <span
-                                            class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Barangay
+                                            class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Residency
                                             Certificate</span>
                                     </div>
                                 </a>
